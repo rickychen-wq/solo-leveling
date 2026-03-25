@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Rank Hunter Terminal</title>
+    <style>
+        :root {
+            --purple: #a020f0;
+            --blue: #00d4ff;
+            --bg: #050a12;
+            --border: #1a2a3a;
+        }
+
+        body {
+            background: #000;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            color: #fff; overflow: hidden;
+        }
+
+        /* --- 5. 優化：外圈紫色順時針流光 --- */
+        .system-panel {
+            position: relative; width: 380px; height: 780px; border-radius: 20px;
+            overflow: hidden; background: var(--bg);
+            box-shadow: 0 0 40px rgba(160, 32, 240, 0.4);
+        }
+        .system-panel::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, var(--purple), transparent, transparent);
+            animation: rotate 4s linear infinite;
+        }
+        .system-panel::after {
+            content: ''; position: absolute; inset: 4px; background: var(--bg);
+            border-radius: 18px; z-index: 1;
+        }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .wrapper { position: relative; z-index: 10; padding: 25px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
+
+        /* --- 4. 登入介面 --- */
+        #login-screen {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .login-card {
+            border: 1px solid var(--purple); padding: 40px; background: #050a12;
+            box-shadow: 0 0 30px var(--purple); border-radius: 12px; text-align: center;
+        }
+        .login-input {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            color: #fff; padding: 12px; margin: 10px 0; width: 250px; border-radius: 6px; text-align: center;
+        }
+
+        /* --- 1. 介面設計 --- */
+        .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 5px; }
+        .tab {
+            padding: 10px 0; background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+            font-size: 0.7rem; cursor: pointer; color: #555; font-weight: bold; text-align: center;
+        }
+        .tab.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+        .page { display: none; flex-direction: column; height: 100%; }
+        .page.active { display: flex; }
+
+        /* --- 6. 進度條優化 (弧度) --- */
+        .exp-container {
+            width: 100%; height: 22px; background: #000; border: 1px solid var(--border);
+            border-radius: 11px; position: relative; overflow: hidden; margin: 15px 0;
+        }
+        .exp-bar {
+            height: 100%; background: linear-gradient(90deg, var(--purple), var(--blue));
+            width: 0%; border-radius: 11px; transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .exp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; }
+
+        /* --- 3. 攻略地下城彈窗 --- */
+        .dg-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 10000; justify-content: center; align-items: center;
+        }
+        .dg-popup {
+            width: 340px; height: 600px; background: var(--bg); border: 2px solid var(--purple);
+            border-radius: 15px; position: relative; display: flex; flex-direction: column;
+        }
+        .dg-close { position: absolute; top: 15px; left: 15px; cursor: pointer; color: var(--purple); font-weight: bold; font-size: 1.2rem; }
+
+        /* 通用組件 */
+        .rank-tag { color: var(--purple); font-weight: 900; font-size: 1.2rem; letter-spacing: 2px; }
+        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-main { background: var(--purple); border: none; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-card">
+            <h2 style="color:var(--purple); letter-spacing:4px;">獵人權限驗證</h2>
+            <input type="text" id="acct" class="login-input" placeholder="帳號">
+            <input type="password" id="pass" class="login-input" placeholder="密碼">
+            <button onclick="handleLogin()" class="btn-main" style="margin-top:20px;">啟動系統</button>
+        </div>
+    </div>
+
+    <div class="system-panel">
+        <div class="wrapper">
+            <div id="player-header" style="margin-bottom: 20px;">
+                <div class="rank-tag" id="ui-rank">E-RANK</div>
+                <h1 style="margin:5px 0; font-size: 1.8rem;">PLAYER: <span id="ui-name">---</span></h1>
+                <div style="font-size: 0.7rem; color: #444;">稱號：<span id="ui-title">新手獵人</span></div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showPage('page-main', event)">主畫面</div>
+                <div class="tab" onclick="showPage('page-dg-set', event)">地下城設定</div>
+                <div class="tab" onclick="showPage('page-titles', event)">稱號切換</div>
+                <div class="tab" onclick="showPage('page-shop', event)">商店</div>
+                <div class="tab" onclick="showPage('page-upgrade', event)">提升系統</div>
+                <div class="tab" onclick="showPage('page-inv', event)">背包</div>
+            </div>
+
+            <div id="page-main" class="page active">
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="font-size: 4rem; font-weight: 900; font-style: italic;">Lv. <span id="ui-lv">1</span></div>
+                </div>
+                <div class="exp-container">
+                    <div id="exp-bar" class="exp-bar"></div>
+                    <div id="exp-text" class="exp-text">0 / 100</div>
+                </div>
+                <div class="stat-box"><span>智力 (INT)</span><b id="ui-int">10</b></div>
+                <div class="stat-box"><span>敏捷 (AGI)</span><b id="ui-agi">10</b></div>
+                <button class="btn-main" style="margin-top: auto; letter-spacing: 5px;" onclick="openDungeon()">進入地下城攻略</button>
+            </div>
+
+            <div id="page-dg-set" class="page">
+                <h3>副本設定</h3>
+                <div id="dg-config-list" style="flex:1; overflow-y:auto;"></div>
+                <div style="padding:15px; border-top:1px solid var(--border);">
+                    <input type="text" id="set-name" class="login-input" style="width:100%; box-sizing:border-box;" placeholder="副本名稱">
+                    <input type="number" id="set-exp" class="login-input" style="width:100%; box-sizing:border-box;" placeholder="獎勵經驗">
+                    <button onclick="saveDungeonConfig()" class="btn-main">生成副本項目</button>
+                </div>
+            </div>
+
+            <div id="page-upgrade" class="page">
+                <h3>提升系統</h3>
+                <div class="stat-box" style="background: rgba(0,255,136,0.1); border-color:#00ff88;">
+                    <span>可用點數</span><b id="ui-points" style="color:#00ff88; font-size:1.5rem;">0</b>
+                </div>
+                <div class="stat-box"><span>智力 (INT)</span><button onclick="addStat('int')" class="btn-main" style="width:60px; padding:5px;">+</button></div>
+                <div class="stat-box"><span>敏捷 (AGI)</span><button onclick="addStat('agi')" class="btn-main" style="width:60px; padding:5px;">+</button></div>
+            </div>
+
+            <div id="page-titles" class="page"><h3>稱號系統</h3><p style="color:#333;">[暫無稱號]</p></div>
+            <div id="page-shop" class="page"><h3>補給商店</h3><p style="color:#333;">[商店裝修中]</p></div>
+            <div id="page-inv" class="page"><h3>玩家背包</h3><p style="color:#333;">[背包空空如也]</p></div>
+        </div>
+    </div>
+
+    <div id="dg-modal" class="dg-overlay">
+        <div class="dg-popup">
+            <div class="dg-close" onclick="closeDungeon()">[ 關閉視窗 ]</div>
+            <h2 style="text-align:center; margin-top:60px; color:var(--purple);">ACTIVE DUNGEONS</h2>
+            <div id="dg-active-list" style="padding:20px; overflow-y:auto;"></div>
+        </div>
+    </div>
+
+    <script>
+        let player = null;
+        let currentUser = "";
+
+        // --- 4. 登入邏輯 ---
+        function handleLogin() {
+            const acct = document.getElementById('acct').value;
+            const pass = document.getElementById('pass').value;
+            if(!acct || !pass) return alert("請輸入完整帳密");
+
+            currentUser = acct;
+            let saved = localStorage.getItem('hunter_save_' + acct);
+
+            if(saved) {
+                let data = JSON.parse(saved);
+                if(data.pass !== pass) return alert("密碼錯誤！");
+                player = data;
+            } else {
+                // 首次登入
+                player = {
+                    pass: pass, name: acct, lv: 1, exp: 0, 
+                    int: 10, agi: 10, points: 0, dgs: []
+                };
+            }
+            document.getElementById('login-screen').style.display = 'none';
+            updateUI();
+        }
+
+        // --- 6 & 7. 等級與階級算法 ---
+        function getNextExp(lv) {
+            let base = 100;
+            for(let i=1; i<lv; i++) {
+                base += (i < 30) ? 50 : 100;
+            }
+            return base;
+        }
+
+        function getRank(lv) {
+            if(lv >= 100) return "國家級獵人";
+            if(lv >= 71) return "S-RANK";
+            if(lv >= 51) return "A-RANK";
+            if(lv >= 36) return "B-RANK";
+            if(lv >= 21) return "C-RANK";
+            if(lv >= 11) return "D-RANK";
+            return "E-RANK";
+        }
+
+        function updateUI() {
+            const next = getNextExp(player.lv);
+            document.getElementById('ui-name').innerText = player.name;
+            document.getElementById('ui-lv').innerText = player.lv;
+            document.getElementById('ui-int').innerText = player.int;
+            document.getElementById('ui-agi').innerText = player.agi;
+            document.getElementById('ui-points').innerText = player.points;
+            document.getElementById('ui-rank').innerText = getRank(player.lv);
+            
+            // 進度條
+            document.getElementById('exp-text').innerText = `${player.exp} / ${next}`;
+            document.getElementById('exp-bar').style.width = (player.exp / next * 100) + "%";
+            
+            renderConfig();
+            save();
+        }
+
+        function save() { localStorage.setItem('hunter_save_' + currentUser, JSON.stringify(player)); }
+
+        // --- 分頁與地下城 ---
+        function showPage(id, e) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            e.currentTarget.classList.add('active');
+        }
+
+        function saveDungeonConfig() {
+            const n = document.getElementById('set-name').value;
+            const e = parseInt(document.getElementById('set-exp').value);
+            if(!n || !e) return;
+            player.dgs.push({ name: n, exp: e });
+            updateUI();
+            document.getElementById('set-name').value = "";
+            document.getElementById('set-exp').value = "";
+        }
+
+        function renderConfig() {
+            const list = document.getElementById('dg-config-list');
+            list.innerHTML = "";
+            player.dgs.forEach((d, i) => {
+                const div = document.createElement('div');
+                div.className = 'stat-box';
+                div.innerHTML = `<span>${d.name} (${d.exp}XP)</span><button onclick="removeDg(${i})" style="background:none; border:none; color:#f44; cursor:pointer;">刪除</button>`;
+                list.appendChild(div);
+            });
+        }
+        function removeDg(i) { player.dgs.splice(i, 1); updateUI(); }
+
+        function openDungeon() {
+            document.getElementById('dg-modal').style.display = 'flex';
+            const list = document.getElementById('dg-active-list');
+            list.innerHTML = "";
+            player.dgs.forEach((d, i) => {
+                const div = document.createElement('div');
+                div.className = 'stat-box';
+                div.innerHTML = `<span>${d.name}</span><button onclick="clearDg(${i})" class="btn-main" style="width:80px; padding:8px;">挑戰</button>`;
+                list.appendChild(div);
+            });
+        }
+        function closeDungeon() { document.getElementById('dg-modal').style.display = 'none'; }
+
+        function clearDg(i) {
+            player.exp += player.dgs[i].exp;
+            let next = getNextExp(player.lv);
+            while(player.exp >= next) {
+                player.exp -= next;
+                player.lv++;
+                player.points += 3;
+                next = getNextExp(player.lv);
+                alert(`【系統】恭喜突破！當前等級：Lv.${player.lv}`);
+            }
+            updateUI();
+            openDungeon();
+        }
+
+        function addStat(s) {
+            if(player.points > 0) { player[s]++; player.points--; updateUI(); }
+        }
+    </script>
+</body>
+</html>
