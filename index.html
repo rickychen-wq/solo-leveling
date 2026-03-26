@@ -3,147 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Noto+Sans+TC:wght@500;900&display=swap" rel="stylesheet">
+    <title>Solo Leveling: Ultimate V12</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@500;900&display=swap" rel="stylesheet">
     <style>
-        :root { --purple: #a020f0; --blue: #00d4ff; --bg: #050a12; --panel-border: #1a2a3a; --success: #00ff88; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; background: #000; color: #fff; font-family: 'Noto Sans TC', sans-serif; position: fixed; }
-        .system-panel { position: relative; width: 100vw; height: 100vh; background: var(--bg); overflow: hidden; display: flex; flex-direction: column; }
-        .system-panel::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--purple), transparent, transparent); animation: rotate 3s linear infinite; }
-        .system-panel::after { content: ''; position: absolute; inset: 4px; background: var(--bg); border-radius: 15px; z-index: 1; }
+        :root { 
+            --purple: #a020f0; 
+            --blue: #00d4ff; 
+            --bg: #050a12; 
+            --glass: rgba(0, 212, 255, 0.08);
+            --success: #00ff88;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { 
+            width: 100%; height: 100%; margin: 0; padding: 0; 
+            overflow: hidden; background: #000; 
+            font-family: 'Noto Sans TC', sans-serif; 
+            touch-action: none; position: fixed;
+        }
+
+        /* 主外框流光 */
+        .system-outer {
+            position: relative; width: 95vw; height: 92vh; 
+            max-width: 450px; background: var(--bg); 
+            margin: 4vh auto; overflow: hidden; border-radius: 20px;
+        }
+        .system-outer::before, .stat-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; 
+            background: conic-gradient(transparent, transparent, var(--purple), transparent, transparent); 
+            animation: rotate 4s linear infinite; z-index: 0;
+        }
+        .system-outer::after {
+            content: ''; position: absolute; inset: 4px; background: var(--bg); border-radius: 17px; z-index: 1;
+        }
+
         @keyframes rotate { 100% { transform: rotate(360deg); } }
-        .wrapper { position: relative; z-index: 10; padding: 15px; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-        #login-screen { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .login-card { border: 2px solid var(--purple); padding: 30px; background: #050a12; border-radius: 15px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 0 20px var(--purple); }
-        input { background: rgba(255,255,255,0.05); border: 1px solid var(--panel-border); color: #fff; padding: 12px; margin: 10px 0; width: 100%; border-radius: 8px; font-size: 16px; outline: none; }
-        .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-bottom: 10px; }
-        .tab { padding: 8px 2px; background: rgba(255,255,255,0.05); border: 1px solid var(--panel-border); font-size: 10px; cursor: pointer; text-align: center; border-radius: 4px; color: #888; font-weight: bold; }
-        .tab.active { background: var(--purple); color: #fff; border-color: var(--purple); }
-        .page { display: none; flex-direction: column; height: 100%; overflow-y: auto; padding-bottom: 80px; -webkit-overflow-scrolling: touch; }
+
+        .content-wrapper { position: relative; z-index: 10; padding: 18px; display: flex; flex-direction: column; height: 100%; color: #fff; }
+
+        /* 登入介面 */
+        #login-screen {
+            position: fixed; inset: 0; background: #000; z-index: 20000; 
+            display: flex; justify-content: center; align-items: center;
+        }
+        .login-card { 
+            border: 2px solid var(--purple); padding: 40px 25px; 
+            background: #050a12; border-radius: 20px; text-align: center; 
+            width: 85%; max-width: 320px; box-shadow: 0 0 40px var(--purple);
+        }
+        .login-card input { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(160,32,240,0.5); 
+            color: #fff; padding: 15px; margin: 10px 0; width: 100%; 
+            border-radius: 10px; font-size: 16px; outline: none;
+        }
+
+        /* 屬性框：獨立流光效果 */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .stat-card {
+            position: relative; width: 100%; aspect-ratio: 1.2 / 1;
+            border-radius: 12px; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .stat-card::after {
+            content: ''; position: absolute; inset: 2px; background: #080f1a; border-radius: 10px; z-index: 1;
+        }
+        .stat-content { position: relative; z-index: 2; text-align: center; }
+        .stat-val { font-family: 'Orbitron'; font-size: 1.8rem; font-weight: 900; color: #fff; line-height: 1; }
+        .stat-label { font-size: 10px; color: var(--blue); letter-spacing: 1px; margin-bottom: 5px; font-weight: 900; }
+
+        /* 等級與進度條 */
+        #ui-lv { font-family: 'Orbitron'; font-size: 4.5rem; font-weight: 900; color: var(--purple); text-shadow: 0 0 20px var(--purple); text-align: center; }
+        .exp-container { 
+            width: 100%; height: 18px; background: rgba(255,255,255,0.05); 
+            border-radius: 20px; position: relative; overflow: hidden; margin: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .exp-bar { height: 100%; background: linear-gradient(90deg, var(--purple), var(--blue)); width: 0%; border-radius: 20px; transition: 1s ease; }
+        .exp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: 'Orbitron'; font-weight: 900; }
+
+        /* 分頁按鈕 */
+        .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 15px 0; }
+        .tab { 
+            padding: 10px; background: var(--glass); 
+            border: 1px solid rgba(0, 212, 255, 0.2); font-size: 10px; 
+            cursor: pointer; text-align: center; border-radius: 8px; color: #888;
+        }
+        .tab.active { background: var(--purple); color: #fff; border-color: var(--purple); box-shadow: 0 0 15px var(--purple); }
+
+        /* 能力提升頁面優化 */
+        .upgrade-row {
+            background: linear-gradient(90deg, var(--glass), transparent);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            margin-bottom: 12px; padding: 15px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .upgrade-info b { font-family: 'Orbitron'; font-size: 1.4rem; color: var(--blue); }
+        .add-btn {
+            width: 50px; height: 50px; background: var(--purple); border: none;
+            border-radius: 10px; color: #fff; font-size: 24px; font-weight: 900;
+            cursor: pointer; box-shadow: 0 4px 0 #6a14a3;
+        }
+        .add-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #6a14a3; }
+
+        /* 地下城與其他頁面 */
+        .page { display: none; flex-direction: column; height: 100%; overflow-y: auto; padding-bottom: 40px; }
         .page.active { display: flex; }
-        .exp-container { width: 100%; height: 18px; background: rgba(0,0,0,0.5); border: 1px solid var(--panel-border); border-radius: 9px; position: relative; overflow: hidden; margin: 10px 0; }
-        .exp-bar { height: 100%; background: linear-gradient(90deg, var(--purple), var(--blue)); width: 0%; transition: 0.5s ease; }
-        .exp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: 'Orbitron'; font-weight: 900; color: #fff; text-shadow: 1px 1px 2px #000; }
-        .btn-main { background: var(--purple); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; font-family: 'Orbitron'; margin-top: 10px; box-shadow: 0 4px 0 #6a14a3; }
-        .btn-main:active { transform: translateY(2px); box-shadow: 0 2px 0 #6a14a3; }
-        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); padding: 12px; margin-bottom: 8px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-        .log-item { background: rgba(255,255,255,0.03); border-left: 3px solid var(--blue); padding: 8px; margin-bottom: 6px; border-radius: 4px; font-size: 12px; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-        .level-up { border-left-color: var(--success); background: rgba(0,255,136,0.05); }
+        .btn-blue {
+            background: var(--glass); border: 1px solid var(--blue);
+            color: #fff; padding: 15px; border-radius: 10px; margin: 8px 0; width: 100%;
+            cursor: pointer; font-weight: bold; text-align: left;
+        }
+
+        .btn-main { 
+            background: var(--purple); border: none; color: #fff; padding: 16px; 
+            border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; 
+            font-family: 'Orbitron'; margin-top: auto;
+        }
+
+        /* 彈窗 */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 15000; justify-content: center; align-items: center; }
+        .modal-box { width: 90%; height: 80vh; background: var(--bg); border: 2px solid var(--blue); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; }
     </style>
 </head>
 <body>
+
 <div id="login-screen">
     <div class="login-card">
-        <h2 style="color:var(--purple); font-family:'Orbitron'; margin:0 0 20px 0; letter-spacing:2px;">SYSTEM LOGIN</h2>
-        <input type="text" id="acct" placeholder="ACCOUNT NAME" autocomplete="off">
-        <input type="password" id="pass" placeholder="PASSWORD" autocomplete="off">
+        <h1 style="color:var(--purple); font-family:'Orbitron';">HUNTER LOGIN</h1>
+        <input type="text" id="acct" placeholder="ACCOUNT" autocomplete="off">
+        <input type="password" id="pass" placeholder="PASSWORD">
         <button onclick="handleLogin()" class="btn-main">INITIALIZE</button>
     </div>
 </div>
-<div class="system-panel">
-    <div class="wrapper">
-        <div id="ui-rank" style="color:var(--purple); font-weight:900; font-family:'Orbitron'; font-size:0.9rem; letter-spacing:1px;">E-RANK</div>
-        <h2 style="margin:2px 0 10px 0; font-size: 1.1rem; font-family:'Orbitron';">HUNTER: <span id="ui-name" style="color:var(--blue);">---</span></h2>
+
+<div class="system-outer">
+    <div class="content-wrapper">
+        <div style="display:flex; justify-content:space-between; align-items:center; font-family:'Orbitron';">
+            <div id="ui-rank" style="color:var(--purple); font-weight:900;">E-RANK</div>
+            <div id="ui-name" style="color:var(--blue); font-size: 1.1rem;">---</div>
+        </div>
+
         <div class="tabs">
             <div class="tab active" onclick="showPage('page-main', event)">主畫面</div>
-            <div class="tab" onclick="showPage('page-dg-set', event)">地下城</div>
-            <div class="tab" onclick="showPage('page-upgrade', event)">能力</div>
+            <div class="tab" onclick="showPage('page-dg-set', event)">地下城設定</div>
+            <div class="tab" onclick="showPage('page-upgrade', event)">能力提升</div>
             <div class="tab" onclick="showPage('page-inv', event)">背包</div>
+            <div class="tab" onclick="showPage('page-store', event)">商店</div>
             <div class="tab" onclick="showPage('page-logs', event)">紀錄</div>
         </div>
+
         <div id="page-main" class="page active">
-            <div style="text-align: center; margin: 10px 0;">
-                <div style="font-size: 0.8rem; color: #888; font-family:'Orbitron';">LEVEL</div>
-                <div id="ui-lv" style="font-size: 5.5rem; font-weight: 900; font-family:'Orbitron'; color:var(--purple); line-height:1; text-shadow: 0 0 20px rgba(160,32,240,0.5);">1</div>
+            <div style="margin-top: 10px;">
+                <div id="ui-lv">1</div>
+                <div style="font-family:'Orbitron'; color:#888; text-align:center; font-size:0.7rem; margin-top:-10px;">LEVEL</div>
             </div>
-            <div class="exp-container"><div id="exp-bar" class="exp-bar"></div><div id="exp-text" class="exp-text">0 / 100</div></div>
-            <div class="stat-box"><span>智力 (INT)</span><b id="ui-int" style="color:var(--blue);">10</b></div>
-            <div class="stat-box"><span>敏捷 (AGI)</span><b id="ui-agi" style="color:var(--blue);">10</b></div>
-            <button class="btn-main" onclick="showPage('page-dg-set', event)">進入地下城區塊</button>
-        </div>
-        <div id="page-dg-set" class="page">
-            <div id="dg-list" class="page active">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;" id="subject-grid"></div>
+            
+            <div class="exp-container">
+                <div id="exp-bar" class="exp-bar"></div>
+                <div id="exp-text" class="exp-text">0 / 100</div>
             </div>
+
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-content"><div class="stat-label">智商 IQ</div><div class="stat-val" id="ui-iq">1</div></div></div>
+                <div class="stat-card"><div class="stat-content"><div class="stat-label">體力 STR</div><div class="stat-val" id="ui-str">1</div></div></div>
+                <div class="stat-card"><div class="stat-content"><div class="stat-label">魔力 MP</div><div class="stat-val" id="ui-mp">1</div></div></div>
+                <div class="stat-card"><div class="stat-content"><div class="stat-label">準確 DEX</div><div class="stat-val" id="ui-dex">1</div></div></div>
+            </div>
+
+            <button class="btn-main" onclick="openQuestModal()">攻略地下城</button>
         </div>
+
         <div id="page-upgrade" class="page">
-            <div class="stat-box" style="border-color:var(--success); background:rgba(0,255,136,0.05);"><span>可用點數</span><b id="ui-points" style="color:var(--success);">0</b></div>
-            <div class="stat-box"><span>智力 (INT)</span><button onclick="addStat('int')" class="tab active" style="width:50px; border:none;">+</button></div>
-            <div class="stat-box"><span>敏捷 (AGI)</span><button onclick="addStat('agi')" class="tab active" style="width:50px; border:none;">+</button></div>
+            <div style="text-align:center; margin-bottom: 20px;">
+                <span style="color:var(--success); font-weight:900; font-family:'Orbitron';">AVAILABLE POINTS</span>
+                <div id="ui-points" style="font-size:3rem; font-family:'Orbitron'; color:var(--success); text-shadow: 0 0 15px var(--success);">0</div>
+            </div>
+            
+            <div class="upgrade-row">
+                <div class="upgrade-info"><span class="stat-label">IQ</span><br><b id="up-iq">1</b></div>
+                <button class="add-btn" onclick="addStat('iq')">+</button>
+            </div>
+            <div class="upgrade-row">
+                <div class="upgrade-info"><span class="stat-label">STR</span><br><b id="up-str">1</b></div>
+                <button class="add-btn" onclick="addStat('str')">+</button>
+            </div>
+            <div class="upgrade-row">
+                <div class="upgrade-info"><span class="stat-label">MP</span><br><b id="up-mp">1</b></div>
+                <button class="add-btn" onclick="addStat('mp')">+</button>
+            </div>
+            <div class="upgrade-row">
+                <div class="upgrade-info"><span class="stat-label">DEX</span><br><b id="up-dex">1</b></div>
+                <button class="add-btn" onclick="addStat('dex')">+</button>
+            </div>
         </div>
-        <div id="page-inv" class="page"><h3 style="color:var(--purple);">背包</h3><div class="stat-box">尚無道具</div></div>
-        <div id="page-logs" class="page"><h3 style="color:var(--success);">最近紀錄</h3><div id="log-list"></div></div>
+
+        <div id="page-dg-set" class="page">
+            <div id="dg-menu">
+                <h3 style="color:var(--blue); font-family:'Orbitron';">SELECT AREA</h3>
+                <button class="btn-blue" onclick="showSub('國文')">國文 (350/150/150)</button>
+                <button class="btn-blue" onclick="showSub('英文')">英文 (100/300/300/200)</button>
+                <button class="btn-blue" onclick="showSub('數學')">數學 (600)</button>
+                <button class="btn-blue" onclick="showSub('物理')">物理 (300)</button>
+                <button class="btn-blue" onclick="showSub('地科')">地科 (350)</button>
+                <button class="btn-blue" onclick="showSub('公民')">公民 (300/350)</button>
+                <button class="btn-blue" onclick="showSub('歷史')">歷史 (500)</button>
+            </div>
+            <div id="dg-detail" style="display:none;">
+                <button onclick="backDG()" style="color:var(--blue); background:none; border:none; cursor:pointer;">← 返回</button>
+                <h3 id="dg-title" style="color:var(--blue);"></h3>
+                <div id="dg-options"></div>
+            </div>
+        </div>
+
+        <div id="page-inv" class="page"><h3>背包</h3><p>空空如也</p></div>
+        <div id="page-store" class="page"><h3>商店</h3><p>維護中</p></div>
+        <div id="page-logs" class="page"><h3>歷史紀錄</h3><div id="log-list"></div></div>
     </div>
 </div>
+
+<div id="quest-modal" class="modal">
+    <div class="modal-box">
+        <span onclick="closeQuestModal()" style="color:#ff4444; font-weight:900; cursor:pointer;">[ 關閉 ]</span>
+        <h2 style="text-align:center; font-family:'Orbitron'; color:var(--blue);">DUNGEON ACTIVE</h2>
+        <div id="active-list" style="flex:1; overflow-y:auto;"></div>
+    </div>
+</div>
+
 <script>
-    let p = null; let currentUser = "";
-    const subjects = { '國文':{'複習講義':350,'閱讀越會':150,'語文練習':150},'數學':{'講義':600},'英文':{'雜誌':100,'單字本':300,'All in One':300,'課本單字':200},'物理':{'講義':300},'地科':{'講義':350},'公民':{'課本':300,'講義':350},'歷史':{'課本':500}};
-    
+    let p = null; let cur = "";
+    const DB = {
+        '國文':{'複習講義':350,'閱讀越會':150,'語文練習':150},
+        '數學':{'講義':600},
+        '英文':{'雜誌':100,'單字本':300,'All in One':300,'課本單字':200},
+        '物理':{'講義':300},'地科':{'講義':350},
+        '公民':{'課本':300,'講義':350},'歷史':{'課本':500}
+    };
+    const RANGES = {'國文':12,'英文':10,'數學':10,'物理':10,'地科':6,'公民':6,'歷史':6};
+
     function handleLogin(){
-        const acct = document.getElementById('acct').value.trim().toLowerCase();
-        const pass = document.getElementById('pass').value;
-        if(!acct) return; currentUser = acct;
-        let saved = localStorage.getItem('solo_save_' + acct);
-        if(saved){
-            p = JSON.parse(saved);
-            if(p.pass !== pass) return alert("密碼錯誤，請重新確認！");
-            if(!p.logs) p.logs = []; if(!p.points) p.points = 0;
+        const a = document.getElementById('acct').value.trim();
+        const pw = document.getElementById('pass').value;
+        if(!a || !pw) return; cur = a;
+        let s = localStorage.getItem('solo_v12_'+a);
+        if(s){
+            p = JSON.parse(s); if(p.pass !== pw) return alert("密碼錯誤");
         } else {
-            p = {pass:pass, name:acct, lv:1, exp:0, int:10, agi:10, points:0, quests:[], logs:[{date:new Date().toLocaleString(), msg:"系統正式啟動，獵人登錄完成"}]};
+            p = {pass:pw, name:a, lv:1, exp:0, iq:1, str:1, mp:1, dex:1, points:0, quests:[], logs:[]};
         }
         document.getElementById('login-screen').style.display = 'none';
-        initDG(); updateUI();
+        updateUI();
     }
 
-    function initDG(){
-        const grid = document.getElementById('subject-grid');
-        grid.innerHTML = Object.keys(subjects).map(s => `<button class="btn-main" style="font-size:14px; margin:0;" onclick="handleQuest('${s}')">${s}</button>`).join('');
+    function showSub(sub){
+        document.getElementById('dg-menu').style.display='none';
+        const d = document.getElementById('dg-detail'); d.style.display='block';
+        document.getElementById('dg-title').innerText = sub;
+        const opts = document.getElementById('dg-options'); opts.innerHTML = "";
+        Object.keys(DB[sub]).forEach(type => {
+            const b = document.createElement('button'); b.className = 'btn-blue';
+            b.innerText = `${type}`;
+            b.onclick = () => showFinal(sub, type);
+            opts.appendChild(b);
+        });
     }
 
-    function handleQuest(s){
-        const sub = subjects[s];
-        const task = Object.keys(sub)[0]; 
-        const xp = sub[task];
-        if(confirm(`確認完成 ${s} 任務嗎？\n獲得獎勵：${xp} XP`)){
-            p.exp += xp;
-            const t = new Date().toLocaleString();
-            p.logs.unshift({date:t, msg:`完成 ${s} 訓練，獲得 ${xp} XP`});
-            checkLvUp(); updateUI();
+    function showFinal(sub, type){
+        const opts = document.getElementById('dg-options');
+        if(sub === '英文' && type === '單字本'){
+            let v = prompt("請輸入回數：");
+            if(v) addQ(`${sub}-${type} [回數:${v}]`, 300);
+        } else {
+            let max = (sub==='英文'&&type==='雜誌')?12:RANGES[sub];
+            let label = (sub==='英文'&&type==='雜誌')?'U':'L';
+            opts.innerHTML = `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;"></div>`;
+            const grid = opts.querySelector('div');
+            for(let i=1; i<=max; i++){
+                let b = document.createElement('button'); b.className = 'tab'; b.innerText = `${label}${i}`;
+                b.onclick = () => addQ(`${sub}-${type} [${label}${i}]`, DB[sub][type]);
+                grid.appendChild(b);
+            }
         }
     }
 
-    function checkLvUp(){
-        let next = getNextExp(p.lv);
-        while(p.exp >= next){
-            p.exp -= next; p.lv++; p.points += 3;
-            p.logs.unshift({date:new Date().toLocaleString(), msg:`[突破] 升級至 Lv.${p.lv}！獲得 3 點能力值`, special:true});
-            next = getNextExp(p.lv);
+    function addQ(t, xp){ p.quests.push({t, xp}); alert("任務已加入！"); backDG(); updateUI(); }
+    function backDG(){ document.getElementById('dg-menu').style.display='block'; document.getElementById('dg-detail').style.display='none'; }
+    function openQuestModal(){
+        document.getElementById('quest-modal').style.display='flex';
+        const list = document.getElementById('active-list');
+        list.innerHTML = p.quests.map((q, i) => `
+            <div class="upgrade-row" style="margin-top:10px;">
+                <div><b>${q.t}</b><br><small>${q.xp} XP</small></div>
+                <button onclick="finishQ(${i})" class="add-btn" style="width:auto; padding:0 15px; font-size:14px;">完成</button>
+            </div>
+        `).join('') || "<p style='text-align:center; color:#555;'>目前無任務</p>";
+    }
+
+    function finishQ(i){
+        const q = p.quests.splice(i, 1)[0];
+        p.exp += q.xp;
+        p.logs.unshift({d:new Date().toLocaleString(), m:`攻略: ${q.t}`});
+        checkLv(); updateUI(); openQuestModal();
+    }
+
+    function checkLv(){
+        let n = getNext(p.lv);
+        while(p.exp >= n){
+            p.exp -= n; p.lv++; p.points += 3;
+            p.iq++; p.str++; p.mp++; p.dex++;
+            n = getNext(p.lv);
         }
+    }
+
+    function getNext(lv){
+        let b = 100;
+        for(let i=1; i<lv; i++) b += (i < 30) ? 50 : 100;
+        return b;
+    }
+
+    function getRank(lv){
+        if(lv >= 100) return "國家級獵人"; if(lv >= 71) return "S-RANK";
+        if(lv >= 51) return "A-RANK"; if(lv >= 36) return "B-RANK";
+        if(lv >= 21) return "C-RANK"; if(lv >= 11) return "D-RANK"; return "E-RANK";
     }
 
     function updateUI(){
-        const next = getNextExp(p.lv);
+        const n = getNext(p.lv);
         document.getElementById('ui-name').innerText = p.name.toUpperCase();
         document.getElementById('ui-lv').innerText = p.lv;
-        document.getElementById('ui-int').innerText = p.int;
-        document.getElementById('ui-agi').innerText = p.agi;
-        document.getElementById('ui-points').innerText = p.points;
         document.getElementById('ui-rank').innerText = getRank(p.lv);
-        document.getElementById('exp-text').innerText = `${p.exp} / ${next} XP`;
-        document.getElementById('exp-bar').style.width = (p.exp/next*100) + "%";
-        document.getElementById('log-list').innerHTML = p.logs.map(l => `<div class="log-item ${l.special?'level-up':''}"><small style="color:#555;">${l.date}</small><div>${l.msg}</div></div>`).join('');
-        localStorage.setItem('solo_save_'+currentUser, JSON.stringify(p));
+        document.getElementById('ui-iq').innerText = p.iq;
+        document.getElementById('ui-str').innerText = p.str;
+        document.getElementById('ui-mp').innerText = p.mp;
+        document.getElementById('ui-dex').innerText = p.dex;
+        // 同步更新能力提升頁面
+        document.getElementById('up-iq').innerText = p.iq;
+        document.getElementById('up-str').innerText = p.str;
+        document.getElementById('up-mp').innerText = p.mp;
+        document.getElementById('up-dex').innerText = p.dex;
+        document.getElementById('ui-points').innerText = p.points;
+        document.getElementById('exp-bar').style.width = (p.exp/n*100) + "%";
+        document.getElementById('exp-text').innerText = `${p.exp} / ${n} XP`;
+        document.getElementById('log-list').innerHTML = p.logs.map(l => `<div class="upgrade-row" style="font-size:12px;"><span>${l.m}</span><small>${l.d}</small></div>`).join('');
+        localStorage.setItem('solo_v12_'+cur, JSON.stringify(p));
     }
 
-    function getNextExp(lv){ let b=100; for(let i=1; i<lv; i++) b+=(i<30)?50:100; return b; }
-    function getRank(lv){ if(lv>=100) return "NATION-RANK"; if(lv>70) return "S-RANK"; if(lv>=51) return "A-RANK"; if(lv>=36) return "B-RANK"; if(lv>=21) return "C-RANK"; if(lv>=11) return "D-RANK"; return "E-RANK"; }
-    function showPage(id, e){ document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
+    function showPage(id, e){
+        document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active');
+    }
     function addStat(s){ if(p.points > 0){ p[s]++; p.points--; updateUI(); } }
-    
-    // 雙擊防縮放
-    document.addEventListener('touchstart', (e) => { if(e.touches.length > 1) e.preventDefault(); }, {passive: false});
+    function closeQuestModal(){ document.getElementById('quest-modal').style.display='none'; }
 </script>
 </body>
 </html>
