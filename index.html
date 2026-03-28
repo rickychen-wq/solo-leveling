@@ -2,358 +2,653 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Ultimate V12</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Solo Leveling: Ultimate System (V8)</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@500;900&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --purple: #a020f0; 
-            --blue: #00d4ff; 
-            --bg: #050a12; 
-            --glass: rgba(0, 212, 255, 0.08);
-            --success: #00ff88;
+        :root {
+            --purple: #bc13fe; --purple-dark: #5a0b80; --gold: #ffd700; --blue: #00d4ff; --bg: #030712;
+            --s-rank: #ff3e3e; --a-rank: #bc13fe; --b-rank: #00d4ff; --c-rank: #00ff88; --d-rank: #aaaaaa; --e-rank: #555555;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { 
-            width: 100%; height: 100%; margin: 0; padding: 0; 
-            overflow: hidden; background: #000; 
-            font-family: 'Noto Sans TC', sans-serif; 
-            touch-action: none; position: fixed;
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Noto Sans TC', sans-serif; user-select: none; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; overflow: hidden; }
+
+        /* 系統外框與紫色流光 */
+        .system-frame {
+            position: relative; width: 100vw; height: 100vh; max-width: 500px; margin: 0 auto;
+            background: var(--bg); overflow: hidden; display: flex; flex-direction: column; z-index: 10;
+        }
+        @media (min-width: 501px) {
+            .system-frame { height: 96vh; margin: 2vh auto; border-radius: 24px; border: 1px solid rgba(188, 19, 254, 0.3); }
+        }
+        .system-frame::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent 70%, var(--purple) 100%);
+            animation: rotateLight 4s linear infinite; z-index: -1;
+        }
+        @keyframes rotateLight { 100% { transform: rotate(360deg); } }
+        
+        .inner-content {
+            position: absolute; inset: 4px; background: radial-gradient(circle at top, #130a24 0%, var(--bg) 80%);
+            border-radius: 20px; z-index: 2; padding: 20px 15px 0 15px; display: flex; flex-direction: column; overflow: hidden;
         }
 
-        /* 主外框流光 */
-        .system-outer {
-            position: relative; width: 95vw; height: 92vh; 
-            max-width: 450px; background: var(--bg); 
-            margin: 4vh auto; overflow: hidden; border-radius: 20px;
+        /* 主畫面數值框樣式 (強制撐開高度，解決字不見的問題) */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .stat-item {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(188, 19, 254, 0.2);
+            border-radius: 15px; padding: 15px 10px; text-align: center; position: relative;
+            min-height: 90px; display: flex; flex-direction: column; justify-content: center;
         }
-        .system-outer::before, .stat-card::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; 
-            background: conic-gradient(transparent, transparent, var(--purple), transparent, transparent); 
-            animation: rotate 4s linear infinite; z-index: 0;
+        .stat-label { font-size: 11px; color: var(--blue); font-family: 'Orbitron'; font-weight: 900; letter-spacing: 1px; margin-bottom: 5px; }
+        .stat-val { font-size: 1.8rem; font-weight: 900; font-family: 'Orbitron'; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+
+        /* XP 條 - 碎玻璃質感 */
+        .xp-bar-container {
+            width: 100%; height: 16px; background: rgba(255,255,255,0.05);
+            border-radius: 10px; position: relative; overflow: hidden; border: 1px solid rgba(188, 19, 254, 0.4); margin: 15px 0 5px 0;
         }
-        .system-outer::after {
-            content: ''; position: absolute; inset: 4px; background: var(--bg); border-radius: 17px; z-index: 1;
+        .xp-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4a00e0, var(--purple)); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 0 10px var(--purple); position: relative; overflow: hidden; }
+        .xp-bar-fill::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.3) 25%, transparent 30%), linear-gradient(70deg, transparent 60%, rgba(255,255,255,0.4) 65%, transparent 70%);
+            background-size: 40px 100%; opacity: 0.8;
         }
 
-        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        /* 列表區域與導航列 */
+        .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 30px; padding-right: 5px; }
+        .scroll-area::-webkit-scrollbar { width: 3px; }
+        .scroll-area::-webkit-scrollbar-thumb { background: var(--purple-dark); border-radius: 10px; }
 
-        .content-wrapper { position: relative; z-index: 10; padding: 18px; display: flex; flex-direction: column; height: 100%; color: #fff; }
+        .nav { display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(188, 19, 254, 0.2); background: rgba(0,0,0,0.9); flex-shrink: 0; margin: 0 -15px; }
+        .nav-link { color: #555; font-size: 11px; font-weight: 900; cursor: pointer; text-align: center; flex: 1; transition: 0.3s; }
+        .nav-link.active { color: var(--purple); text-shadow: 0 0 10px var(--purple); }
 
-        /* 登入介面 */
-        #login-screen {
-            position: fixed; inset: 0; background: #000; z-index: 20000; 
-            display: flex; justify-content: center; align-items: center;
-        }
-        .login-card { 
-            border: 2px solid var(--purple); padding: 40px 25px; 
-            background: #050a12; border-radius: 20px; text-align: center; 
-            width: 85%; max-width: 320px; box-shadow: 0 0 40px var(--purple);
-        }
-        .login-card input { 
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(160,32,240,0.5); 
-            color: #fff; padding: 15px; margin: 10px 0; width: 100%; 
-            border-radius: 10px; font-size: 16px; outline: none;
-        }
+        .page { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+        .page.active { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        /* 屬性框：獨立流光效果 */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .stat-card {
-            position: relative; width: 100%; aspect-ratio: 1.2 / 1;
-            border-radius: 12px; overflow: hidden;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .stat-card::after {
-            content: ''; position: absolute; inset: 2px; background: #080f1a; border-radius: 10px; z-index: 1;
-        }
-        .stat-content { position: relative; z-index: 2; text-align: center; }
-        .stat-val { font-family: 'Orbitron'; font-size: 1.8rem; font-weight: 900; color: #fff; line-height: 1; }
-        .stat-label { font-size: 10px; color: var(--blue); letter-spacing: 1px; margin-bottom: 5px; font-weight: 900; }
+        /* 卡片與按鈕 */
+        .card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 15px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .card.equipped { border: 1px solid var(--purple); background: rgba(188, 19, 254, 0.05); box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.1); }
+        .btn-action { background: var(--purple); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 13px; font-family: 'Orbitron'; transition: 0.1s; }
+        .btn-action:active { transform: scale(0.95); }
 
-        /* 等級與進度條 */
-        #ui-lv { font-family: 'Orbitron'; font-size: 4.5rem; font-weight: 900; color: var(--purple); text-shadow: 0 0 20px var(--purple); text-align: center; }
-        .exp-container { 
-            width: 100%; height: 18px; background: rgba(255,255,255,0.05); 
-            border-radius: 20px; position: relative; overflow: hidden; margin: 15px 0;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .exp-bar { height: 100%; background: linear-gradient(90deg, var(--purple), var(--blue)); width: 0%; border-radius: 20px; transition: 1s ease; }
-        .exp-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: 'Orbitron'; font-weight: 900; }
+        /* 階級顏色 */
+        .rank-S { color: var(--s-rank); text-shadow: 0 0 8px var(--s-rank); font-weight: 900; }
+        .rank-A { color: var(--a-rank); font-weight: 900; }
+        .rank-B { color: var(--b-rank); font-weight: 900; }
+        .rank-C { color: var(--c-rank); font-weight: 900; }
+        .rank-D { color: var(--d-rank); font-weight: 900; }
+        .rank-E { color: var(--e-rank); font-weight: 900; }
+        .rank-UNKNOWN { color: #ff0055; text-shadow: 0 0 15px #ff0055, 0 0 30px #ff0055; font-weight: 900; }
 
-        /* 分頁按鈕 */
-        .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 15px 0; }
-        .tab { 
-            padding: 10px; background: var(--glass); 
-            border: 1px solid rgba(0, 212, 255, 0.2); font-size: 10px; 
-            cursor: pointer; text-align: center; border-radius: 8px; color: #888;
-        }
-        .tab.active { background: var(--purple); color: #fff; border-color: var(--purple); box-shadow: 0 0 15px var(--purple); }
+        #login-ui { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; }
+        .login-box { width: 85%; max-width: 400px; padding: 40px; border: 2px solid var(--purple); border-radius: 20px; text-align: center; background: rgba(10, 15, 30, 0.9); box-shadow: 0 0 30px var(--purple-dark); }
+        input { width: 100%; padding: 15px; margin: 15px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; text-align: center; font-size: 1.1rem; outline: none; }
+        input:focus { border-color: var(--purple); }
 
-        /* 能力提升頁面優化 */
-        .upgrade-row {
-            background: linear-gradient(90deg, var(--glass), transparent);
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            margin-bottom: 12px; padding: 15px; border-radius: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .upgrade-info b { font-family: 'Orbitron'; font-size: 1.4rem; color: var(--blue); }
-        .add-btn {
-            width: 50px; height: 50px; background: var(--purple); border: none;
-            border-radius: 10px; color: #fff; font-size: 24px; font-weight: 900;
-            cursor: pointer; box-shadow: 0 4px 0 #6a14a3;
-        }
-        .add-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #6a14a3; }
-
-        /* 地下城與其他頁面 */
-        .page { display: none; flex-direction: column; height: 100%; overflow-y: auto; padding-bottom: 40px; }
-        .page.active { display: flex; }
-        .btn-blue {
-            background: var(--glass); border: 1px solid var(--blue);
-            color: #fff; padding: 15px; border-radius: 10px; margin: 8px 0; width: 100%;
-            cursor: pointer; font-weight: bold; text-align: left;
-        }
-
-        .btn-main { 
-            background: var(--purple); border: none; color: #fff; padding: 16px; 
-            border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; 
-            font-family: 'Orbitron'; margin-top: auto;
-        }
-
-        /* 彈窗 */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 15000; justify-content: center; align-items: center; }
-        .modal-box { width: 90%; height: 80vh; background: var(--bg); border: 2px solid var(--blue); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #0a0f1e; border: 1px solid var(--blue); border-radius: 20px; padding: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
+        
+        #gacha-pop { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .gacha-glow { font-size: 2.5rem; font-family: 'Orbitron'; font-weight: 900; padding: 20px; animation: popGlow 1.5s infinite alternate; }
+        @keyframes popGlow { from { transform: scale(1); text-shadow: 0 0 10px currentColor; } to { transform: scale(1.05); text-shadow: 0 0 30px currentColor, 0 0 60px currentColor; } }
     </style>
 </head>
 <body>
 
-<div id="login-screen">
-    <div class="login-card">
-        <h1 style="color:var(--purple); font-family:'Orbitron';">HUNTER LOGIN</h1>
-        <input type="text" id="acct" placeholder="ACCOUNT" autocomplete="off">
-        <input type="password" id="pass" placeholder="PASSWORD">
-        <button onclick="handleLogin()" class="btn-main">INITIALIZE</button>
+<div id="login-ui">
+    <div class="login-box">
+        <h1 style="font-family:'Orbitron'; color:var(--purple); letter-spacing: 5px; margin-bottom: 30px;">ARISE</h1>
+        <input type="text" id="inp-acc" placeholder="HUNTER ID">
+        <input type="password" id="inp-pwd" placeholder="ACCESS CODE">
+        <button onclick="System.login()" style="width:100%; padding:15px; background:var(--purple); color:#fff; border:none; border-radius:10px; font-weight:900; font-family:'Orbitron'; cursor:pointer; font-size:1.1rem;">INITIALIZE</button>
     </div>
 </div>
 
-<div class="system-outer">
-    <div class="content-wrapper">
-        <div style="display:flex; justify-content:space-between; align-items:center; font-family:'Orbitron';">
-            <div id="ui-rank" style="color:var(--purple); font-weight:900;">E-RANK</div>
-            <div id="ui-name" style="color:var(--blue); font-size: 1.1rem;">---</div>
+<div id="gacha-pop" onclick="this.style.display='none'">
+    <div style="color:var(--blue); font-family:'Orbitron'; font-size:14px; margin-bottom:10px;">SYSTEM NOTIFICATION</div>
+    <div id="gacha-msg" style="color:#fff; font-size:1.2rem; font-weight:900;">恭喜獲得稱號</div>
+    <div id="gacha-result" class="gacha-glow">S-RANK</div>
+    <div style="margin-top:40px; color:#666; font-size:12px;">TAP ANYWHERE TO CLOSE</div>
+</div>
+
+<div id="dungeon-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,212,255,0.3); padding-bottom:10px; margin-bottom:15px;">
+            <h2 id="dm-title" style="color:var(--blue); font-family:'Orbitron'; margin:0;">SUBJECT</h2>
+            <button class="btn-action" style="background:transparent; border:1px solid #555; color:#aaa; padding:5px 10px;" onclick="document.getElementById('dungeon-modal').style.display='none'">返回</button>
         </div>
-
-        <div class="tabs">
-            <div class="tab active" onclick="showPage('page-main', event)">主畫面</div>
-            <div class="tab" onclick="showPage('page-dg-set', event)">地下城設定</div>
-            <div class="tab" onclick="showPage('page-upgrade', event)">能力提升</div>
-            <div class="tab" onclick="showPage('page-inv', event)">背包</div>
-            <div class="tab" onclick="showPage('page-store', event)">商店</div>
-            <div class="tab" onclick="showPage('page-logs', event)">紀錄</div>
-        </div>
-
-        <div id="page-main" class="page active">
-            <div style="margin-top: 10px;">
-                <div id="ui-lv">1</div>
-                <div style="font-family:'Orbitron'; color:#888; text-align:center; font-size:0.7rem; margin-top:-10px;">LEVEL</div>
-            </div>
-            
-            <div class="exp-container">
-                <div id="exp-bar" class="exp-bar"></div>
-                <div id="exp-text" class="exp-text">0 / 100</div>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-content"><div class="stat-label">智商 IQ</div><div class="stat-val" id="ui-iq">1</div></div></div>
-                <div class="stat-card"><div class="stat-content"><div class="stat-label">體力 STR</div><div class="stat-val" id="ui-str">1</div></div></div>
-                <div class="stat-card"><div class="stat-content"><div class="stat-label">魔力 MP</div><div class="stat-val" id="ui-mp">1</div></div></div>
-                <div class="stat-card"><div class="stat-content"><div class="stat-label">準確 DEX</div><div class="stat-val" id="ui-dex">1</div></div></div>
-            </div>
-
-            <button class="btn-main" onclick="openQuestModal()">攻略地下城</button>
-        </div>
-
-        <div id="page-upgrade" class="page">
-            <div style="text-align:center; margin-bottom: 20px;">
-                <span style="color:var(--success); font-weight:900; font-family:'Orbitron';">AVAILABLE POINTS</span>
-                <div id="ui-points" style="font-size:3rem; font-family:'Orbitron'; color:var(--success); text-shadow: 0 0 15px var(--success);">0</div>
-            </div>
-            
-            <div class="upgrade-row">
-                <div class="upgrade-info"><span class="stat-label">IQ</span><br><b id="up-iq">1</b></div>
-                <button class="add-btn" onclick="addStat('iq')">+</button>
-            </div>
-            <div class="upgrade-row">
-                <div class="upgrade-info"><span class="stat-label">STR</span><br><b id="up-str">1</b></div>
-                <button class="add-btn" onclick="addStat('str')">+</button>
-            </div>
-            <div class="upgrade-row">
-                <div class="upgrade-info"><span class="stat-label">MP</span><br><b id="up-mp">1</b></div>
-                <button class="add-btn" onclick="addStat('mp')">+</button>
-            </div>
-            <div class="upgrade-row">
-                <div class="upgrade-info"><span class="stat-label">DEX</span><br><b id="up-dex">1</b></div>
-                <button class="add-btn" onclick="addStat('dex')">+</button>
-            </div>
-        </div>
-
-        <div id="page-dg-set" class="page">
-            <div id="dg-menu">
-                <h3 style="color:var(--blue); font-family:'Orbitron';">SELECT AREA</h3>
-                <button class="btn-blue" onclick="showSub('國文')">國文 (350/150/150)</button>
-                <button class="btn-blue" onclick="showSub('英文')">英文 (100/300/300/200)</button>
-                <button class="btn-blue" onclick="showSub('數學')">數學 (600)</button>
-                <button class="btn-blue" onclick="showSub('物理')">物理 (300)</button>
-                <button class="btn-blue" onclick="showSub('地科')">地科 (350)</button>
-                <button class="btn-blue" onclick="showSub('公民')">公民 (300/350)</button>
-                <button class="btn-blue" onclick="showSub('歷史')">歷史 (500)</button>
-            </div>
-            <div id="dg-detail" style="display:none;">
-                <button onclick="backDG()" style="color:var(--blue); background:none; border:none; cursor:pointer;">← 返回</button>
-                <h3 id="dg-title" style="color:var(--blue);"></h3>
-                <div id="dg-options"></div>
-            </div>
-        </div>
-
-        <div id="page-inv" class="page"><h3>背包</h3><p>空空如也</p></div>
-        <div id="page-store" class="page"><h3>商店</h3><p>維護中</p></div>
-        <div id="page-logs" class="page"><h3>歷史紀錄</h3><div id="log-list"></div></div>
+        <div id="dm-content"></div>
     </div>
 </div>
 
-<div id="quest-modal" class="modal">
-    <div class="modal-box">
-        <span onclick="closeQuestModal()" style="color:#ff4444; font-weight:900; cursor:pointer;">[ 關閉 ]</span>
-        <h2 style="text-align:center; font-family:'Orbitron'; color:var(--blue);">DUNGEON ACTIVE</h2>
-        <div id="active-list" style="flex:1; overflow-y:auto;"></div>
+<div class="system-frame">
+    <div class="inner-content">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; flex-shrink:0;">
+            <div>
+                <div id="ui-name" style="font-family:'Orbitron'; font-weight:900; color:var(--blue); font-size: 1.5rem; text-transform:uppercase;">PLAYER</div>
+                <div id="ui-title" style="font-size:12px; color:var(--gold); font-weight: 900; margin-top:2px;">[ 尚未覺醒 ]</div>
+            </div>
+            <div style="text-align: right;">
+                <div id="ui-coins" style="color:var(--gold); font-weight:900; font-size: 1.2rem; font-family: 'Orbitron';">💰 0</div>
+                <div id="ui-sp" style="font-size: 11px; color: var(--purple); font-weight: 900; margin-top: 3px;">剩餘點數: 0</div>
+            </div>
+        </div>
+
+        <div id="p-home" class="page active">
+            <div style="text-align:center; margin-top: 10px;">
+                <div id="ui-rank" style="font-size:13px; letter-spacing:3px; font-family: 'Orbitron'; font-weight:900; color:#888;">E-RANK HUNTER</div>
+                <div id="ui-lv" style="font-size:6.5rem; font-weight:900; color:var(--purple); font-family:'Orbitron'; line-height: 1.1; text-shadow: 0 0 30px rgba(188, 19, 254, 0.6);">1</div>
+                
+                <div class="xp-bar-container"><div id="ui-xp-fill" class="xp-bar-fill"></div></div>
+                <div id="ui-xp-txt" style="font-size:11px; color:#aaa; font-family: 'Orbitron'; font-weight:900;">0 / 100 XP</div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-item"><div class="stat-label">IQ (智力)</div><div id="v-iq" class="stat-val">1</div></div>
+                <div class="stat-item"><div class="stat-label">STR (力量)</div><div id="v-str" class="stat-val">1</div></div>
+                <div class="stat-item"><div class="stat-label">MP (魔力)</div><div id="v-mp" class="stat-val">1</div></div>
+                <div class="stat-item"><div class="stat-label">DEX (敏捷)</div><div id="v-dex" class="stat-val">1</div></div>
+            </div>
+            
+            <div style="flex:1"></div>
+            <button class="btn-action" style="width:100%; padding:20px; background:rgba(0,212,255,0.05); border:1px solid var(--blue); color:var(--blue); border-radius:15px; font-size:1.2rem; letter-spacing: 2px; margin-bottom: 10px;" onclick="System.nav('p-dungeon')">攻略地下城 (ENTER)</button>
+        </div>
+
+        <div id="p-dungeon" class="page">
+            <h2 style="font-family:'Orbitron'; color:var(--blue); margin: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">DUNGEON GATES</h2>
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:15px; flex-shrink:0;">
+                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('國文')">國文</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('英文')">英文</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('數學')">數學</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('物理')">物理</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('地科')">地科</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('公民')">公民</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('歷史')">歷史</button>
+            </div>
+            <h2 style="font-family:'Orbitron'; color:var(--purple); margin: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">ACTIVE QUESTS</h2>
+            <div id="active-quests-list" class="scroll-area"></div>
+        </div>
+
+        <div id="p-enhance" class="page">
+            <h2 style="font-family:'Orbitron'; color:var(--purple); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">STATUS UPGRADE</h2>
+            <div style="text-align:center; margin-bottom:20px; font-size:1.1rem; color:var(--purple); font-weight:900;">剩餘自由配點: <span id="up-sp-display" style="font-family:'Orbitron'; font-size:1.6rem; color:#fff;">0</span></div>
+            <div id="upgrade-list" class="scroll-area"></div>
+        </div>
+
+        <div id="p-titles" class="page">
+            <h2 style="color:var(--gold); font-family:'Orbitron'; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 10px;">TITLES COLLECTION</h2>
+            <div id="titles-list" class="scroll-area"></div>
+        </div>
+
+        <div id="p-store" class="page">
+            <h2 style="font-family:'Orbitron'; color:var(--blue); border-bottom: 1px solid rgba(0,212,255,0.3); padding-bottom: 10px;">DAILY SHOP <span id="shop-time" style="font-size:10px; color:#555; float:right; line-height:2.5;"></span></h2>
+            <div style="display:flex; gap:10px; margin-bottom:15px; flex-shrink:0;">
+                <button class="btn-action" id="tab-sword" style="flex:1" onclick="System.renderShop('sword')">武器庫</button>
+                <button class="btn-action" id="tab-potion" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('potion')">藥水</button>
+                <button class="btn-action" id="tab-mat" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('mat')">材料</button>
+                <button class="btn-action" id="tab-title" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('title')">稱號卷軸</button>
+            </div>
+            <div id="store-list" class="scroll-area"></div>
+        </div>
+
+        <div id="p-inventory" class="page">
+            <h2 style="color:var(--blue); font-family:'Orbitron'; border-bottom: 1px solid rgba(0,212,255,0.3); padding-bottom: 10px;">INVENTORY</h2>
+            <div id="bag-list" class="scroll-area"></div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-link active" onclick="System.nav('p-home', event)">主畫面</div>
+            <div class="nav-link" onclick="System.nav('p-dungeon', event)">地下城</div>
+            <div class="nav-link" onclick="System.nav('p-enhance', event)">提升</div>
+            <div class="nav-link" onclick="System.nav('p-titles', event)">稱號</div>
+            <div class="nav-link" onclick="System.nav('p-store', event)">商店</div>
+            <div class="nav-link" onclick="System.nav('p-inventory', event)">背包</div>
+        </div>
     </div>
 </div>
 
 <script>
-    let p = null; let cur = "";
-    const DB = {
-        '國文':{'複習講義':350,'閱讀越會':150,'語文練習':150},
-        '數學':{'講義':600},
-        '英文':{'雜誌':100,'單字本':300,'All in One':300,'課本單字':200},
-        '物理':{'講義':300},'地科':{'講義':350},
-        '公民':{'課本':300,'講義':350},'歷史':{'課本':500}
-    };
-    const RANGES = {'國文':12,'英文':10,'數學':10,'物理':10,'地科':6,'公民':6,'歷史':6};
+/* =========================================
+   完整數據庫 (100% 不刪減)
+========================================= */
+const DB = {
+    titles: {
+        S: ["創世神：萬象起源", "虛空之王：秩序崩壞者", "因果律：命運編織者", "永恆傳說：不朽之冠", "唯一神：降臨之光"],
+        A: ["位面守護者", "不滅戰神", "真理探求者", "弒龍大師", "諸神黃昏", "至高審判長", "永恆之光", "極暗深淵", "時空旅人", "萬物生靈主", "禁忌魔法師", "聖靈大先知", "絕對零度", "戰場的主宰", "混沌掌控者", "劍之頂峰", "傳奇奠基人", "天災化身", "銀河開拓者", "靈魂收割者", "帝國之牆", "神聖制裁者", "無極劍聖", "末日執行官", "破法領主"],
+        B: ["大地粉碎者", "蒼穹之眼", "暗夜主宰", "王國重臣", "災厄終結者", "巨龍獵人", "戰地指揮官", "聖殿執行官", "幻影遊俠", "秘法大師", "鋼鐵要塞", "風暴使徒", "斷罪之刃", "極限生存者", "審判官", "狂瀾追逐者", "守護神盾", "破曉之星", "血色紅蓮", "孤傲之狼", "聖域守門人", "虛空行者", "戰鬥藝術家", "王牌尖兵", "無懼勇者", "輝煌之刃", "元素主導者", "深淵監視者", "重力主宰", "鐵血領主"],
+        C: ["前線突擊手", "荒野獵手", "鋼鐵意志", "熟練冒險家", "戰術小隊長", "狂暴戰斧", "影之追蹤者", "銀翼先鋒", "疾風劍士", "元素感知者", "守望先驅", "烈焰行者", "重裝步兵", "沉默的暗殺員", "穿雲箭手", "黎明守護者", "符文操作員", "鋼鐵守望", "中堅力量", "碎石者", "極光使者", "戰場齒輪", "精銳士官", "秘法學徒", "獵魔小隊", "不屈之魂", "疾走之影", "狂想曲員", "寒冰操縱者", "堅盾守衛"],
+        D: ["村莊守望者", "鐵鏽新秀", "持劍平民", "冒險初學者", "見習騎士", "準時下班員", "小鎮地頭蛇", "森林清道夫", "略懂皮毛", "憤怒的小鳥", "正義路人", "銅級傭兵", "脫殼小龍", "剛學會走路", "基礎操縱者", "先遣部隊", "戰地記者", "幸運的生還者", "武器試用員", "略有小成", "粗糙的戰士", "模仿大師", "鐵打的龍套", "初級執行者", "民間高手(自稱)", "熱血少年", "頑強的甲蟲", "破舊皮甲魂", "基礎訓練生", "準準準冒險者"],
+        E: ["戰鬥力 0.5", "走路草", "實習砲灰", "裝備回收員", "迷路的羔羊", "萌新一號", "戰場觀光客", "史萊姆之友", "甚至不是人類", "呼吸也會累", "落地成盒", "走位靠賽", "後勤搬運工", "萬年候補生", "塵埃邊緣人", "訓練用假人", "尚未覺醒", "零戰力戰士", "掃地阿伯", "路人甲", "雜草魂", "無名小卒", "勇者預備軍", "體力廢材", "眼神死的菜鳥", "邊緣雜魚", "戰場背景板", "脆弱的靈魂", "純潔無垢", "剛下山的傻子"]
+    },
+    swords: {
+        UNKNOWN: [{name:"虛空之痕 · 零", desc:"數值顯示為 ???"}],
+        S: [{name:"天御·雷神切", desc:"攻擊附帶連鎖閃電"}, {name:"冥王·枯萎之鐮", desc:"擊中吸取 5% 生命值"}, {name:"時空·斷層", desc:"機率觸發「時間靜止」1 秒"}, {name:"聖光·大領主", desc:"對暗屬性雙倍傷害，自帶護盾"}],
+        A: ["龍脊長刀", "碎星者", "妖刀·村正", "極光細劍", "重力粉碎者", "寒冰之咬", "黑曜石巨劍", "風靈疾走"],
+        B: ["鋼鐵重刃", "影殺短刀", "獵人彎刀", "符文長劍", "烈焰直劍", "毒牙匕首", "騎士團佩劍", "破甲刺劍", "巨浪斬馬刀", "守望者長槍", "精準獵刀", "閃爍之刃", "荒野戰斧", "密林獵手", "沉重鐵鎚"],
+        C: ["老練長劍", "士兵佩刀", "強化鐵劍", "寬刃大刀", "輕量化匕首", "巡邏隊長之劍", "護衛手杖", "鋒利切肉刀", "雙手巨劍", "練習用長刀", "鐵製短劍", "守城衛士槍", "野外求生刀", "礦工十字鎬", "粗製大劍"],
+        D: ["生鏽鐵片", "磨損的砍刀", "舊式刺刀", "木柄短劍", "歪斜的匕首", "鈍掉的菜刀", "破損長槍", "重鑄的廢鐵", "路邊的小刀", "脆弱的竹劍", "農用鐮刀", "缺口的佩刀", "簡易長矛", "粗糙的斧頭", "採集用小鏟"],
+        E: ["傳說中的木棒", "削鉛筆刀", "斷掉的樹枝", "生鏽的圖釘", "破爛的鍋鏟", "紙紮的劍", "髒掉的抹布", "塑膠玩具刀", "爛掉的傘骨", "沒水的原子筆", "湯勺", "雞毛撣子", "缺了一角的小石塊", "過期的法棍麵包", "只有柄的劍"]
+    },
+    subjects: {
+        '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, range: 12 },
+        '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, range: 10 },
+        '數學': { items: {'講義':600}, range: 10 },
+        '物理': { items: {'講義':300}, range: 10 },
+        '地科': { items: {'講義':350}, range: 6 },
+        '公民': { items: {'課本':300, '講義':350}, range: 6 },
+        '歷史': { items: {'課本':500}, range: 6 }
+    }
+};
 
-    function handleLogin(){
-        const a = document.getElementById('acct').value.trim();
-        const pw = document.getElementById('pass').value;
-        if(!a || !pw) return; cur = a;
-        let s = localStorage.getItem('solo_v12_'+a);
-        if(s){
-            p = JSON.parse(s); if(p.pass !== pw) return alert("密碼錯誤");
+/* =========================================
+   核心系統邏輯
+========================================= */
+const System = {
+    p: null, 
+    shopCache: null,
+    rankWeight: { 'UNKNOWN': 7, 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'E': 1 },
+
+    login() {
+        const acc = document.getElementById('inp-acc').value.trim() || "HUNTER";
+        const pwd = document.getElementById('inp-pwd').value;
+        const key = `sl_v8_user_${acc}`; // 強制更新快取 KEY
+        
+        let saved;
+        try { saved = localStorage.getItem(key); } catch(e) {}
+        
+        if(saved) {
+            this.p = JSON.parse(saved);
+            // 兼容舊存檔防呆
+            if(!this.p.bag) this.p.bag = { swords: [], potions: [], mats: [] };
+            if(!this.p.activeQuests) this.p.activeQuests = [];
+            if(!this.p.titles) this.p.titles = ["尚未覺醒"];
+            if(!this.p.iq) { this.p.iq=1; this.p.str=1; this.p.mp=1; this.p.dex=1; }
         } else {
-            p = {pass:pw, name:a, lv:1, exp:0, iq:1, str:1, mp:1, dex:1, points:0, quests:[], logs:[]};
+            this.p = {
+                acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0,
+                iq: 1, str: 1, mp: 1, dex: 1,
+                titles: ["尚未覺醒"], curTitle: "尚未覺醒",
+                bag: { swords: [], potions: [], mats: [] },
+                activeQuests: []
+            };
         }
-        document.getElementById('login-screen').style.display = 'none';
-        updateUI();
-    }
+        document.getElementById('login-ui').style.display = 'none';
+        this.checkShopRefresh();
+        this.updateUI();
+    },
 
-    function showSub(sub){
-        document.getElementById('dg-menu').style.display='none';
-        const d = document.getElementById('dg-detail'); d.style.display='block';
-        document.getElementById('dg-title').innerText = sub;
-        const opts = document.getElementById('dg-options'); opts.innerHTML = "";
-        Object.keys(DB[sub]).forEach(type => {
-            const b = document.createElement('button'); b.className = 'btn-blue';
-            b.innerText = `${type}`;
-            b.onclick = () => showFinal(sub, type);
-            opts.appendChild(b);
+    save() { 
+        if(!this.p) return;
+        try { localStorage.setItem(`sl_v8_user_${this.p.acc}`, JSON.stringify(this.p)); } catch(e){} 
+    },
+
+    nav(id, e) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(e) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+        if(id === 'p-dungeon') this.renderQuests();
+        if(id === 'p-enhance') this.renderUpgrades();
+        if(id === 'p-titles') this.renderTitles();
+        if(id === 'p-shop') this.renderShop('sword');
+        if(id === 'p-inventory') this.renderBag();
+    },
+
+    /* -- 等級與經驗計算 -- */
+    getMaxExp(lv) {
+        if (lv <= 30) return 100 + (lv - 1) * 50;
+        return 100 + 29 * 50 + (lv - 30) * 100;
+    },
+
+    getRank(lv) {
+        if(lv >= 100) return { r: "國家級獵人", c: "rank-UNKNOWN" };
+        if(lv >= 71) return { r: "S-RANK HUNTER", c: "rank-S" };
+        if(lv >= 51) return { r: "A-RANK HUNTER", c: "rank-A" };
+        if(lv >= 36) return { r: "B-RANK HUNTER", c: "rank-B" };
+        if(lv >= 21) return { r: "C-RANK HUNTER", c: "rank-C" };
+        if(lv >= 11) return { r: "D-RANK HUNTER", c: "rank-D" };
+        return { r: "E-RANK HUNTER", c: "rank-E" };
+    },
+
+    updateUI() {
+        if(!this.p) return;
+        document.getElementById('ui-name').innerText = this.p.acc;
+        document.getElementById('ui-lv').innerText = this.p.lv;
+        document.getElementById('ui-coins').innerText = `💰 ${this.p.coins.toLocaleString()}`;
+        document.getElementById('ui-sp').innerText = `剩餘點數: ${this.p.sp}`;
+        document.getElementById('ui-title').innerText = this.p.curTitle ? `[ ${this.p.curTitle} ]` : "[ 尚未覺醒 ]";
+        
+        const rankInfo = this.getRank(this.p.lv);
+        const rankEl = document.getElementById('ui-rank');
+        rankEl.innerText = rankInfo.r; rankEl.className = rankInfo.c;
+
+        const maxExp = this.getMaxExp(this.p.lv);
+        document.getElementById('ui-xp-fill').style.width = `${Math.min((this.p.exp / maxExp) * 100, 100)}%`;
+        document.getElementById('ui-xp-txt').innerText = `${this.p.exp} / ${maxExp} XP`;
+
+        ['iq', 'str', 'mp', 'dex'].forEach(k => {
+            const el = document.getElementById(`v-${k}`);
+            if(el) el.innerText = this.p[k];
         });
-    }
+        this.save();
+    },
 
-    function showFinal(sub, type){
-        const opts = document.getElementById('dg-options');
-        if(sub === '英文' && type === '單字本'){
-            let v = prompt("請輸入回數：");
-            if(v) addQ(`${sub}-${type} [回數:${v}]`, 300);
-        } else {
-            let max = (sub==='英文'&&type==='雜誌')?12:RANGES[sub];
-            let label = (sub==='英文'&&type==='雜誌')?'U':'L';
-            opts.innerHTML = `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;"></div>`;
-            const grid = opts.querySelector('div');
-            for(let i=1; i<=max; i++){
-                let b = document.createElement('button'); b.className = 'tab'; b.innerText = `${label}${i}`;
-                b.onclick = () => addQ(`${sub}-${type} [${label}${i}]`, DB[sub][type]);
-                grid.appendChild(b);
+    addExp(amount) {
+        this.p.exp += amount;
+        this.p.coins += amount; // 1 XP = 1 蓮幣
+        this.checkLevelUp();
+        this.updateUI();
+    },
+
+    checkLevelUp() {
+        let max = this.getMaxExp(this.p.lv);
+        if (this.p.exp >= max) {
+            this.p.exp -= max;
+            this.p.lv++;
+            this.p.sp += 3;
+            this.p.iq++; this.p.str++; this.p.mp++; this.p.dex++;
+            
+            // 50級內每升2級抽卡
+            if (this.p.lv <= 50 && this.p.lv % 2 === 0) this.drawTitle();
+            
+            if(this.p.exp >= this.getMaxExp(this.p.lv)) {
+                setTimeout(() => this.checkLevelUp(), 10);
             }
         }
-    }
+    },
 
-    function addQ(t, xp){ p.quests.push({t, xp}); alert("任務已加入！"); backDG(); updateUI(); }
-    function backDG(){ document.getElementById('dg-menu').style.display='block'; document.getElementById('dg-detail').style.display='none'; }
-    function openQuestModal(){
-        document.getElementById('quest-modal').style.display='flex';
-        const list = document.getElementById('active-list');
-        list.innerHTML = p.quests.map((q, i) => `
-            <div class="upgrade-row" style="margin-top:10px;">
-                <div><b>${q.t}</b><br><small>${q.xp} XP</small></div>
-                <button onclick="finishQ(${i})" class="add-btn" style="width:auto; padding:0 15px; font-size:14px;">完成</button>
-            </div>
-        `).join('') || "<p style='text-align:center; color:#555;'>目前無任務</p>";
-    }
-
-    function finishQ(i){
-        const q = p.quests.splice(i, 1)[0];
-        p.exp += q.xp;
-        p.logs.unshift({d:new Date().toLocaleString(), m:`攻略: ${q.t}`});
-        checkLv(); updateUI(); openQuestModal();
-    }
-
-    function checkLv(){
-        let n = getNext(p.lv);
-        while(p.exp >= n){
-            p.exp -= n; p.lv++; p.points += 3;
-            p.iq++; p.str++; p.mp++; p.dex++;
-            n = getNext(p.lv);
+    /* -- 抽獎系統 -- */
+    drawTitle() {
+        const r = Math.random() * 100;
+        let rank = 'E'; if(r<0.5) rank='S'; else if(r<2.0) rank='A'; else if(r<20.0) rank='B'; else if(r<40.0) rank='C'; else if(r<65.0) rank='D';
+        const t = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
+        
+        if (!this.p.titles.includes(t)) {
+            this.p.titles.push(t);
+            document.getElementById('gacha-msg').innerText = "系統覺醒：恭喜獲得稱號";
+        } else {
+            this.p.coins += 500;
+            document.getElementById('gacha-msg').innerText = "獲得重複稱號 (已轉化為 500 蓮幣)";
         }
-    }
+        const resEl = document.getElementById('gacha-result');
+        resEl.innerText = t; resEl.className = `gacha-glow rank-${rank}`;
+        document.getElementById('gacha-pop').style.display = 'flex';
+        this.updateUI();
+    },
 
-    function getNext(lv){
-        let b = 100;
-        for(let i=1; i<lv; i++) b += (i < 30) ? 50 : 100;
-        return b;
-    }
+    /* -- 地下城系統 -- */
+    openDungeonModal(sub) {
+        const data = DB.subjects[sub];
+        document.getElementById('dm-title').innerText = `${sub} 攻略設定`;
+        let html = "";
+        
+        Object.entries(data.items).forEach(([task, xp]) => {
+            html += `<div class="card" style="flex-direction:column; align-items:flex-start; background:rgba(0,212,255,0.05); border-color:rgba(0,212,255,0.2);">
+                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <strong style="font-size:1.1rem; color:#fff;">${task}</strong>
+                            <span style="color:var(--purple); font-weight:900;">${xp} XP</span>
+                        </div>
+                        <div style="width:100%; display:flex; gap:10px;">`;
+            
+            if(task === '單字本') {
+                html += `<input type="number" id="inp-t-${task}" placeholder="輸入回數" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none;">`;
+            } else {
+                let range = (task === '雜誌') ? 12 : data.range;
+                let prefix = (task === '雜誌') ? 'U' : 'L';
+                html += `<select id="sel-t-${task}" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none;">`;
+                for(let i=1; i<=range; i++) html += `<option value="${prefix}${i}">${prefix}${i}</option>`;
+                html += `</select>`;
+            }
+            html += `<button class="btn-action" style="background:var(--blue); color:#000;" onclick="System.acceptQuest('${sub}', '${task}', ${xp})">接取</button>
+                     </div></div>`;
+        });
+        document.getElementById('dm-content').innerHTML = html;
+        document.getElementById('dungeon-modal').style.display = 'flex';
+    },
 
-    function getRank(lv){
-        if(lv >= 100) return "國家級獵人"; if(lv >= 71) return "S-RANK";
-        if(lv >= 51) return "A-RANK"; if(lv >= 36) return "B-RANK";
-        if(lv >= 21) return "C-RANK"; if(lv >= 11) return "D-RANK"; return "E-RANK";
-    }
+    acceptQuest(sub, task, xp) {
+        let rangeVal = "";
+        if(task === '單字本') {
+            const el = document.getElementById(`inp-t-${task}`);
+            if(!el.value) return alert('請輸入第幾回');
+            rangeVal = `第 ${el.value} 回`;
+        } else {
+            rangeVal = document.getElementById(`sel-t-${task}`).value;
+        }
+        
+        this.p.activeQuests.push({ id: Date.now(), sub, task, range: rangeVal, xp });
+        this.save();
+        document.getElementById('dungeon-modal').style.display = 'none';
+        this.renderQuests();
+    },
 
-    function updateUI(){
-        const n = getNext(p.lv);
-        document.getElementById('ui-name').innerText = p.name.toUpperCase();
-        document.getElementById('ui-lv').innerText = p.lv;
-        document.getElementById('ui-rank').innerText = getRank(p.lv);
-        document.getElementById('ui-iq').innerText = p.iq;
-        document.getElementById('ui-str').innerText = p.str;
-        document.getElementById('ui-mp').innerText = p.mp;
-        document.getElementById('ui-dex').innerText = p.dex;
-        // 同步更新能力提升頁面
-        document.getElementById('up-iq').innerText = p.iq;
-        document.getElementById('up-str').innerText = p.str;
-        document.getElementById('up-mp').innerText = p.mp;
-        document.getElementById('up-dex').innerText = p.dex;
-        document.getElementById('ui-points').innerText = p.points;
-        document.getElementById('exp-bar').style.width = (p.exp/n*100) + "%";
-        document.getElementById('exp-text').innerText = `${p.exp} / ${n} XP`;
-        document.getElementById('log-list').innerHTML = p.logs.map(l => `<div class="upgrade-row" style="font-size:12px;"><span>${l.m}</span><small>${l.d}</small></div>`).join('');
-        localStorage.setItem('solo_v12_'+cur, JSON.stringify(p));
-    }
+    renderQuests() {
+        let html = "";
+        if(this.p.activeQuests.length === 0) html = `<div style="text-align:center; color:#555; padding:20px; font-family:'Orbitron';">NO ACTIVE QUESTS</div>`;
+        this.p.activeQuests.forEach(q => {
+            html += `<div class="card" style="border-left: 4px solid var(--blue);">
+                        <div class="card-col">
+                            <strong style="font-size:1.1rem; color:#fff;">${q.sub} - ${q.task}</strong>
+                            <span style="color:#888; font-size:11px; margin-top:3px;">範圍: ${q.range} | 獎勵: ${q.xp} XP</span>
+                        </div>
+                        <button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id}, ${q.xp})">結算</button>
+                     </div>`;
+        });
+        document.getElementById('active-quests-list').innerHTML = html;
+    },
 
-    function showPage(id, e){
-        document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active');
+    completeQuest(id, xp) {
+        this.p.activeQuests = this.p.activeQuests.filter(q => q.id !== id);
+        this.addExp(xp);
+        this.renderQuests();
+    },
+
+    /* -- 提升配點系統 -- */
+    renderUpgrades() {
+        document.getElementById('up-sp-display').innerText = this.p.sp;
+        const stats = [{ id: 'iq', n: '智商 (IQ)' }, { id: 'str', n: '體力 (STR)' }, { id: 'mp', n: '魔力 (MP)' }, { id: 'dex', n: '準確度 (DEX)' }];
+        let html = "";
+        stats.forEach(s => {
+            html += `<div class="card">
+                        <div class="card-col">
+                            <strong style="color:var(--blue); font-size:1.1rem;">${s.n}</strong>
+                            <span style="color:#fff; font-size:1.8rem; font-family:'Orbitron'; font-weight:900; margin-top:5px;">${this.p[s.id]}</span>
+                        </div>
+                        <button class="btn-action" style="font-size:1.5rem; padding:10px 25px;" onclick="System.addStat('${s.id}')">+</button>
+                     </div>`;
+        });
+        document.getElementById('upgrade-list').innerHTML = html;
+    },
+
+    addStat(id) {
+        if(this.p.sp > 0) {
+            this.p[id]++;
+            this.p.sp--;
+            this.updateUI();
+            this.renderUpgrades();
+        } else alert('配點不足，請攻略地下城升級');
+    },
+
+    /* -- 稱號圖鑑切換系統 -- */
+    renderTitles() {
+        let html = "";
+        ['S','A','B','C','D','E'].forEach(r => {
+            html += `<div class="section-title rank-${r}">${r}-RANK</div>`;
+            DB.titles[r].forEach(t => {
+                const unlocked = this.p.titles.includes(t);
+                const isEq = this.p.curTitle === t;
+                if(unlocked) {
+                    html += `<div class="card ${isEq ? 'equipped' : ''}" style="cursor:pointer;" onclick="System.equip('${t}')">
+                                <div class="card-col">
+                                    <strong class="rank-${r}" style="font-size:1.1rem;">${t}</strong>
+                                    <span style="font-size:10px; color:#aaa; margin-top:5px;">${isEq ? '✨ 當前裝備中' : '點擊切換裝備'}</span>
+                                </div>
+                                ${isEq ? '<span style="color:var(--purple); font-weight:900; font-family:\'Orbitron\';">EQUIPPED</span>' : ''}
+                             </div>`;
+                } else {
+                    html += `<div class="card locked-title"><strong class="rank-E">${r==='S'?'???':t}</strong><span style="font-size:10px;">未解鎖</span></div>`;
+                }
+            });
+        });
+        document.getElementById('titles-list').innerHTML = html;
+    },
+
+    equip(t) {
+        this.p.curTitle = t;
+        this.updateUI();
+        this.renderTitles();
+    },
+
+    /* -- 商店系統防呆與渲染 -- */
+    checkShopRefresh() {
+        const today = new Date().toLocaleDateString();
+        let stored;
+        try { stored = localStorage.getItem('sl_shop_v8'); } catch(e){}
+        if(stored) {
+            const parsed = JSON.parse(stored);
+            if(parsed.date === today) {
+                this.shopCache = parsed.data;
+                document.getElementById('shop-time').innerText = `Refreshed: ${today}`;
+                return;
+            }
+        }
+        this.refreshShop(today);
+    },
+
+    getWearRate(rank) {
+        const r = Math.random();
+        if(rank === 'S') return (0.500 + r * 4.500).toFixed(3);
+        if(rank === 'A') return (5.000 + r * 10.000).toFixed(3);
+        if(rank === 'B') return (20.000 + r * 5.000).toFixed(3);
+        if(rank === 'C') return (30.000 + r * 10.000).toFixed(3);
+        if(rank === 'D') return (45.000 + r * 10.000).toFixed(3);
+        return (70.000 + r * 20.000).toFixed(3);
+    },
+
+    refreshShop(today) {
+        let shop = { swords: [], titles: [] };
+        
+        Object.keys(DB.swords).forEach(rank => {
+            DB.swords[rank].forEach(sw => {
+                let name = typeof sw === 'object' ? sw.name : sw;
+                let desc = typeof sw === 'object' ? sw.desc : '';
+                let wear = rank === 'UNKNOWN' ? '???' : this.getWearRate(rank);
+                let price = rank === 'UNKNOWN' ? 999999 : (rank==='S'?50000:rank==='A'?20000:rank==='B'?5000:rank==='C'?2500:rank==='D'?1500:50);
+                shop.swords.push({ name, rank, wear, desc, price });
+            });
+        });
+        shop.swords.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
+
+        for(let i=0; i<12; i++) {
+            const r = Math.random() * 100;
+            let rank = 'E'; if(r<1.5) rank='S'; else if(r<5) rank='A'; else if(r<25) rank='B'; else if(r<45) rank='C'; else if(r<65) rank='D';
+            let name = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
+            let price = rank==='S'?50000 : rank==='A'?25000 : rank==='B'?10000 : rank==='C'?5000 : rank==='D'?2000 : 100;
+            shop.titles.push({ name, rank, price });
+        }
+        shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
+
+        this.shopCache = shop;
+        try { localStorage.setItem('sl_shop_v8', JSON.stringify({ date: today, data: this.shopCache })); } catch(e){}
+        document.getElementById('shop-time').innerText = `Refreshed: ${today}`;
+    },
+
+    renderShop(tab) {
+        ['sword','potion','mat','title'].forEach(t => {
+            const btn = document.getElementById(`tab-${t}`);
+            if(btn) {
+                btn.style.background = t === tab ? 'var(--purple)' : '#222';
+                btn.style.color = t === tab ? '#fff' : '#888';
+            }
+        });
+
+        let html = "";
+        try {
+            if(!this.shopCache) this.refreshShop(new Date().toLocaleDateString());
+
+            if(tab === 'sword') {
+                this.shopCache.swords.forEach((sw, idx) => {
+                    let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055; background:linear-gradient(45deg,#220011,#000); box-shadow:0 0 15px rgba(255,0,85,0.3);' : (sw.rank === 'S' ? 'border:1px solid var(--gold); box-shadow:inset 0 0 15px rgba(255,215,0,0.1);' : '');
+                    html += `<div class="card" style="${spec}">
+                                <div class="card-col">
+                                    <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
+                                    ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
+                                    <span style="color:#888; font-size:10px; margin-top:5px;">磨損度: ${sw.wear}%</span>
+                                </div>
+                                <button class="btn-action" onclick="System.buyShop('sword', ${idx})">💰 ${sw.price.toLocaleString()}</button>
+                             </div>`;
+                });
+            } else if(tab === 'title') {
+                this.shopCache.titles.forEach((t, idx) => {
+                    const owned = this.p.titles.includes(t.name);
+                    html += `<div class="card">
+                                <div class="card-col">
+                                    <strong class="rank-${t.rank}" style="font-size:1.1rem;">${t.name}</strong>
+                                    <span style="color:#888; font-size:10px; margin-top:5px;">${t.rank}-RANK TITLE</span>
+                                </div>
+                                <button class="btn-action" ${owned?'style="background:#333;color:#666;" disabled':''} onclick="System.buyShop('title', ${idx})">
+                                    ${owned ? '已解鎖' : '💰 ' + t.price.toLocaleString()}
+                                </button>
+                             </div>`;
+                });
+            } else {
+                html = `<div style="text-align:center; padding:50px; color:#555; font-family:'Orbitron';">STORE RESTOCKING...</div>`;
+            }
+        } catch(e) {
+            html = `<div style="text-align:center; padding:50px; color:red;">讀取商店資料時發生錯誤，請重新載入網頁。</div>`;
+        }
+        document.getElementById('store-list').innerHTML = html;
+    },
+
+    buyShop(type, idx) {
+        const item = this.shopCache[`${type}s`][idx];
+        if(this.p.coins >= item.price) {
+            this.p.coins -= item.price;
+            if(type === 'title') {
+                this.p.titles.push(item.name);
+                alert(`成功解鎖稱號: ${item.name}`);
+            } else {
+                this.p.bag.swords.push(item);
+                alert(`獲得裝備: ${item.name}`);
+            }
+            this.updateUI();
+            this.renderShop(type);
+        } else alert('蓮幣餘額不足！');
+    },
+
+    /* -- 背包系統 -- */
+    renderBag() {
+        let html = `<div class="section-title">🗡️ 武器庫</div>`;
+        if(this.p.bag.swords.length === 0) html += `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(尚未獲得任何武器)</div>`;
+        this.p.bag.swords.forEach(sw => {
+            let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055;' : (sw.rank === 'S' ? 'border:1px solid var(--gold);' : '');
+            html += `<div class="card" style="${spec}">
+                        <div class="card-col">
+                            <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
+                            ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
+                            <span style="font-size:10px; color:#aaa; margin-top:3px;">磨損: ${sw.wear}%</span>
+                        </div>
+                        <span style="color:#555; font-size:10px;">[ ${sw.rank} ]</span>
+                     </div>`;
+        });
+        
+        html += `<div class="section-title" style="color:var(--c-rank); margin-top:20px;">🧪 消耗品與藥水</div><div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
+        html += `<div class="section-title" style="color:var(--gold); margin-top:20px;">💎 稀有材料</div><div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
+        document.getElementById('bag-list').innerHTML = html;
     }
-    function addStat(s){ if(p.points > 0){ p[s]++; p.points--; updateUI(); } }
-    function closeQuestModal(){ document.getElementById('quest-modal').style.display='none'; }
+};
+
+window.System = System;
+
+window.onload = () => {
+    document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+};
 </script>
 </body>
 </html>
