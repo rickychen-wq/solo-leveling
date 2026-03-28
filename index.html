@@ -2,21 +2,23 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Solo Leveling: Ultimate System (V8)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@500;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Solo Leveling: Void Gate V15</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --purple: #bc13fe; --purple-dark: #5a0b80; --gold: #ffd700; --blue: #00d4ff; --bg: #030712;
             --s-rank: #ff3e3e; --a-rank: #bc13fe; --b-rank: #00d4ff; --c-rank: #00ff88; --d-rank: #aaaaaa; --e-rank: #555555;
+            --glass: rgba(10, 15, 30, 0.75); --glass-blue: rgba(0, 212, 255, 0.1);
+            --red-alert: #ff0055;
+            --portal-blue: #0088ff;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Noto Sans TC', sans-serif; user-select: none; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; overflow: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Noto Sans TC', sans-serif; user-select: none; outline: none; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: #fff; overflow: hidden; touch-action: manipulation; }
 
-        /* 系統外框與紫色流光 */
         .system-frame {
-            position: relative; width: 100vw; height: 100vh; max-width: 500px; margin: 0 auto;
+            position: relative; width: 100vw; height: 100dvh; max-width: 500px; margin: 0 auto;
             background: var(--bg); overflow: hidden; display: flex; flex-direction: column; z-index: 10;
         }
         @media (min-width: 501px) {
@@ -34,85 +36,158 @@
             border-radius: 20px; z-index: 2; padding: 20px 15px 0 15px; display: flex; flex-direction: column; overflow: hidden;
         }
 
-        /* 主畫面數值框樣式 (強制撐開高度，解決字不見的問題) */
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .xp-wrapper { width: 100%; margin: 15px 0; }
+        .xp-bar-container { width: 100%; height: 24px; background: rgba(255,255,255,0.05); border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 0 15px #000; border: 1px solid rgba(188, 19, 254, 0.4); }
+        .xp-bar-fill { height: 100%; width: 0%; border-radius: 12px; background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 50%, var(--purple) 100%); box-shadow: 0 0 15px var(--purple); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; overflow: hidden; }
+        .xp-bar-fill::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 25%, transparent 30%), linear-gradient(245deg, transparent 40%, rgba(255,255,255,0.3) 45%, transparent 50%), linear-gradient(70deg, transparent 60%, rgba(255,255,255,0.5) 65%, transparent 70%); background-size: 30px 100%; opacity: 0.9; }
+
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
         .stat-item {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(188, 19, 254, 0.2);
-            border-radius: 15px; padding: 15px 10px; text-align: center; position: relative;
-            min-height: 90px; display: flex; flex-direction: column; justify-content: center;
+            background: linear-gradient(135deg, rgba(8,12,23,0.9), rgba(20,10,40,0.9));
+            border-radius: 15px; padding: 15px 10px; text-align: center;
+            border: 1px solid rgba(188, 19, 254, 0.4);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
+            animation: statPulse 2.5s infinite alternate ease-in-out;
+            transform: translateZ(0); 
         }
-        .stat-label { font-size: 11px; color: var(--blue); font-family: 'Orbitron'; font-weight: 900; letter-spacing: 1px; margin-bottom: 5px; }
-        .stat-val { font-size: 1.8rem; font-weight: 900; font-family: 'Orbitron'; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        @keyframes statPulse {
+            0% { box-shadow: 0 0 5px rgba(188, 19, 254, 0.1), inset 0 0 10px rgba(188, 19, 254, 0.1); border-color: rgba(188, 19, 254, 0.2); }
+            100% { box-shadow: 0 0 15px rgba(188, 19, 254, 0.5), inset 0 0 25px rgba(188, 19, 254, 0.3); border-color: rgba(188, 19, 254, 0.8); }
+        }
+        .stat-item::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.05) 50%, transparent 55%);
+            animation: sweepLight 4s linear infinite; pointer-events: none;
+        }
+        @keyframes sweepLight { 0% { transform: translate(-50%, -50%); } 100% { transform: translate(50%, 50%); } }
 
-        /* XP 條 - 碎玻璃質感 */
-        .xp-bar-container {
-            width: 100%; height: 16px; background: rgba(255,255,255,0.05);
-            border-radius: 10px; position: relative; overflow: hidden; border: 1px solid rgba(188, 19, 254, 0.4); margin: 15px 0 5px 0;
+        .stat-label { font-size: 11px; color: var(--blue); font-family: 'Orbitron'; font-weight: 900; z-index: 3; position: relative; margin-bottom: 5px; letter-spacing: 1px;}
+        .stat-val { font-size: 2rem; font-weight: 900; font-family: 'Orbitron'; color: #fff; text-shadow: 0 0 15px rgba(188, 19, 254, 0.8); z-index: 3; position: relative; line-height: 1; }
+        .stat-bonus { font-size: 12px; color: var(--c-rank); font-weight: 900; margin-left: 5px; text-shadow: none; vertical-align: middle;}
+
+        /* 🔥 【二次覺醒 - 最終美學】地下城專屬按鈕：虛空傳送門 Portal Style */
+        .btn-portal {
+            width: 100%; padding: 22px; margin-bottom: 15px;
+            /* 底色為深邃的圓形漸層，像一個黑洞 */
+            background: radial-gradient(circle at center, #001a33 0%, #00050a 70%);
+            border: none; border-radius: 12px;
+            color: #fff; font-family: 'Orbitron'; font-weight: 900; font-size: 1.3rem; letter-spacing: 3px;
+            cursor: pointer; position: relative; overflow: hidden;
+            /* 霓虹藍色呼吸外光暈 */
+            box-shadow: 0 0 15px rgba(0, 136, 255, 0.6), 0 8px 0 #000;
+            transition: all 0.1s ease; z-index: 1;
+            animation: portalNeonPulse 2s infinite alternate ease-in-out;
+            transform: translateZ(0);
         }
-        .xp-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4a00e0, var(--purple)); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 0 10px var(--purple); position: relative; overflow: hidden; }
-        .xp-bar-fill::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.3) 25%, transparent 30%), linear-gradient(70deg, transparent 60%, rgba(255,255,255,0.4) 65%, transparent 70%);
-            background-size: 40px 100%; opacity: 0.8;
+        @keyframes portalNeonPulse {
+            0% { box-shadow: 0 0 10px rgba(0, 136, 255, 0.5), 0 8px 0 #000; }
+            100% { box-shadow: 0 0 25px rgba(0, 136, 255, 0.9), 0 8px 0 #000, inset 0 0 15px rgba(0, 136, 255, 0.3); }
         }
 
-        /* 列表區域與導航列 */
-        .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 30px; padding-right: 5px; }
-        .scroll-area::-webkit-scrollbar { width: 3px; }
+        /* 漩渦特效層 1 (順時針) */
+        .btn-portal::before {
+            content: ''; position: absolute; inset: -50%;
+            background: radial-gradient(circle at center, transparent 30%, rgba(0, 136, 255, 0.1) 40%, transparent 60%);
+            background-size: 50% 50%;
+            background-image: repeating-conic-gradient(from 0deg, transparent 0deg 20deg, rgba(0, 136, 255, 0.1) 25deg 35deg, transparent 40deg);
+            animation: portalRotate 6s linear infinite;
+            z-index: -2; opacity: 0.8;
+        }
+        /* 漩渦特效層 2 (反時針，增加層次感) */
+        .btn-portal::after {
+            content: ''; position: absolute; inset: -70%;
+            background-image: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, rgba(0, 212, 255, 0.08) 20deg 30deg, transparent 35deg);
+            animation: portalRotate 4s linear infinite reverse;
+            z-index: -1; opacity: 0.6; filter: blur(1px);
+        }
+        @keyframes portalRotate { 100% { transform: rotate(360deg); } }
+
+        /* 點擊時的手感：往下沉 */
+        .btn-portal:active {
+            transform: translateY(8px);
+            box-shadow: 0 0px 0 #000, 0 5px 15px rgba(0, 136, 255, 0.7);
+        }
+        /* 點擊時漩渦加速 */
+        .btn-portal:active::before { animation-duration: 2s; }
+        .btn-portal:active::after { animation-duration: 1s; }
+
+
+        .dg-btn { background: var(--glass-blue); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 12px; margin-bottom: 10px; color: var(--blue); font-weight: 900; font-size: 1.1rem; letter-spacing: 2px; cursor: pointer; transition: 0.2s; text-align: center; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.05); }
+        .dg-btn:active { background: rgba(0, 212, 255, 0.3); transform: scale(0.98); }
+
+        .section-title { font-family: 'Orbitron'; color: var(--blue); margin: 20px 0 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 900; flex-shrink: 0; }
+        .card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 15px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .card-col { display: flex; flex-direction: column; flex: 1; margin-right: 10px; }
+        .btn-action { background: var(--purple); color: #fff; border: none; padding: 10px 15px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 12px; font-family: 'Orbitron'; transition: 0.2s; flex-shrink: 0; }
+        .btn-action:active { transform: scale(0.95); }
+        .btn-action:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+        .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 20px; padding-right: 5px; }
+        .scroll-area::-webkit-scrollbar { width: 4px; }
         .scroll-area::-webkit-scrollbar-thumb { background: var(--purple-dark); border-radius: 10px; }
 
-        .nav { display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(188, 19, 254, 0.2); background: rgba(0,0,0,0.9); flex-shrink: 0; margin: 0 -15px; }
-        .nav-link { color: #555; font-size: 11px; font-weight: 900; cursor: pointer; text-align: center; flex: 1; transition: 0.3s; }
-        .nav-link.active { color: var(--purple); text-shadow: 0 0 10px var(--purple); }
+        .nav { display: flex; overflow-x: auto; padding: 12px 5px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(188, 19, 254, 0.2); background: #000; z-index: 100; flex-shrink: 0; margin: 0 -15px; border-radius: 0 0 20px 20px; scrollbar-width: none; }
+        .nav::-webkit-scrollbar { display: none; }
+        .nav-link { color: #555; font-size: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; flex-shrink: 0; text-align: center; padding: 5px 12px; white-space: nowrap; }
+        .nav-link.active { color: var(--purple); text-shadow: 0 0 15px var(--purple); border-bottom: 2px solid var(--purple); }
 
         .page { display: none; flex: 1; flex-direction: column; overflow: hidden; }
         .page.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        /* 卡片與按鈕 */
-        .card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 15px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .card.equipped { border: 1px solid var(--purple); background: rgba(188, 19, 254, 0.05); box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.1); }
-        .btn-action { background: var(--purple); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 13px; font-family: 'Orbitron'; transition: 0.1s; }
-        .btn-action:active { transform: scale(0.95); }
-
-        /* 階級顏色 */
-        .rank-S { color: var(--s-rank); text-shadow: 0 0 8px var(--s-rank); font-weight: 900; }
-        .rank-A { color: var(--a-rank); font-weight: 900; }
-        .rank-B { color: var(--b-rank); font-weight: 900; }
+        .rank-S { color: var(--gold); text-shadow: 0 0 10px var(--gold); font-weight: 900; }
+        .rank-A { color: var(--purple); font-weight: 900; }
+        .rank-B { color: var(--blue); font-weight: 900; }
         .rank-C { color: var(--c-rank); font-weight: 900; }
         .rank-D { color: var(--d-rank); font-weight: 900; }
         .rank-E { color: var(--e-rank); font-weight: 900; }
-        .rank-UNKNOWN { color: #ff0055; text-shadow: 0 0 15px #ff0055, 0 0 30px #ff0055; font-weight: 900; }
+        .rank-UNKNOWN { color: var(--red-alert); text-shadow: 0 0 15px var(--red-alert), 0 0 30px var(--red-alert); font-weight: 900; }
 
-        #login-ui { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; }
-        .login-box { width: 85%; max-width: 400px; padding: 40px; border: 2px solid var(--purple); border-radius: 20px; text-align: center; background: rgba(10, 15, 30, 0.9); box-shadow: 0 0 30px var(--purple-dark); }
-        input { width: 100%; padding: 15px; margin: 15px 0; background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; text-align: center; font-size: 1.1rem; outline: none; }
-        input:focus { border-color: var(--purple); }
+        .locked-title { opacity: 0.2; filter: grayscale(100%); pointer-events: none; }
+        .equipped { border: 1px solid var(--purple); background: rgba(188, 19, 254, 0.1); box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.2); }
+
+        #login-ui { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
+        .login-box { width: 85%; max-width: 400px; padding: 40px; background: var(--glass); border: 2px solid var(--purple); border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(188, 19, 254, 0.3); }
+        .login-input { width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--purple-dark); color: #fff; border-radius: 10px; margin-bottom: 15px; text-align: center; font-size: 1rem; outline:none;}
+        .login-input:focus { border-color: var(--purple); box-shadow: 0 0 10px var(--purple); }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #0a0f1e; border: 1px solid var(--blue); border-radius: 20px; padding: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
-        
+
         #gacha-pop { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .gacha-glow { font-size: 2.5rem; font-family: 'Orbitron'; font-weight: 900; padding: 20px; animation: popGlow 1.5s infinite alternate; }
         @keyframes popGlow { from { transform: scale(1); text-shadow: 0 0 10px currentColor; } to { transform: scale(1.05); text-shadow: 0 0 30px currentColor, 0 0 60px currentColor; } }
+
+        .admin-input { width: 100%; padding: 10px; background: rgba(0,0,0,0.8); border: 1px solid #555; color: #fff; border-radius: 5px; margin-bottom: 10px; font-family: 'Orbitron'; text-align:center; }
+        .admin-label { font-size: 10px; color: #aaa; margin-bottom: 5px; display: block; text-align:left; }
+        .admin-box { background: rgba(255, 0, 85, 0.05); border: 1px solid rgba(255, 0, 85, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
 <div id="login-ui">
     <div class="login-box">
-        <h1 style="font-family:'Orbitron'; color:var(--purple); letter-spacing: 5px; margin-bottom: 30px;">ARISE</h1>
-        <input type="text" id="inp-acc" placeholder="HUNTER ID">
-        <input type="password" id="inp-pwd" placeholder="ACCESS CODE">
-        <button onclick="System.login()" style="width:100%; padding:15px; background:var(--purple); color:#fff; border:none; border-radius:10px; font-weight:900; font-family:'Orbitron'; cursor:pointer; font-size:1.1rem;">INITIALIZE</button>
+        <h1 style="font-family:'Orbitron'; color:var(--purple); margin: 0 0 30px 0; letter-spacing:8px; font-size:2.5rem; text-shadow:0 0 20px var(--purple);">ARISE</h1>
+        <input type="text" id="inp-acc" class="login-input" placeholder="HUNTER ACCOUNT">
+        <input type="password" id="inp-pwd" class="login-input" placeholder="ACCESS CODE">
+        <button onclick="System.login()" style="width:100%; padding:18px; background:var(--purple); border:none; color:#fff; border-radius:10px; font-weight:900; font-size:1.1rem; cursor:pointer; font-family:'Orbitron'; margin-top:10px; box-shadow:0 0 15px var(--purple-dark);">SYSTEM INITIALIZE</button>
     </div>
 </div>
 
 <div id="gacha-pop" onclick="this.style.display='none'">
-    <div style="color:var(--blue); font-family:'Orbitron'; font-size:14px; margin-bottom:10px;">SYSTEM NOTIFICATION</div>
+    <div style="color:var(--blue); font-family:'Orbitron'; font-size:14px; margin-bottom:10px; letter-spacing:2px;">SYSTEM NOTIFICATION</div>
     <div id="gacha-msg" style="color:#fff; font-size:1.2rem; font-weight:900;">恭喜獲得稱號</div>
     <div id="gacha-result" class="gacha-glow">S-RANK</div>
-    <div style="margin-top:40px; color:#666; font-size:12px;">TAP ANYWHERE TO CLOSE</div>
+    <div style="margin-top:40px; color:#666; font-size:12px; letter-spacing:1px;">TAP ANYWHERE TO CLOSE</div>
+</div>
+
+<div id="seven-clover-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2 style="color:var(--purple); font-family:'Orbitron'; margin:0 0 15px 0; text-align:center;">選擇 A 級稱號</h2>
+        <div id="seven-clover-list" style="display:flex; flex-direction:column; gap:10px; max-height:vh; overflow-y:auto; padding-right:5px;"></div>
+        <button class="btn-action" style="width:100%; margin-top:15px; background:#333;" onclick="document.getElementById('seven-clover-modal').style.display='none'">取消</button>
+    </div>
 </div>
 
 <div id="dungeon-modal" class="modal-overlay">
@@ -129,8 +204,9 @@
     <div class="inner-content">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; flex-shrink:0;">
             <div>
-                <div id="ui-name" style="font-family:'Orbitron'; font-weight:900; color:var(--blue); font-size: 1.5rem; text-transform:uppercase;">PLAYER</div>
-                <div id="ui-title" style="font-size:12px; color:var(--gold); font-weight: 900; margin-top:2px;">[ 尚未覺醒 ]</div>
+                <div id="ui-name" style="font-family:'Orbitron'; font-weight:900; font-size:1.5rem; color:var(--blue); text-transform:uppercase;">PLAYER</div>
+                <div id="ui-title" style="font-size:11px; color:var(--gold); font-weight: 900; margin-top:2px;">[ 尚未覺醒 ]</div>
+                <div id="ui-weapon" style="font-size:11px; color:#aaa; font-weight: 900; margin-top:2px;">⚔️ 徒手</div>
             </div>
             <div style="text-align: right;">
                 <div id="ui-coins" style="color:var(--gold); font-weight:900; font-size: 1.2rem; font-family: 'Orbitron';">💰 0</div>
@@ -138,13 +214,17 @@
             </div>
         </div>
 
+        <div id="buff-zone" style="display:flex; gap:5px; margin-bottom:10px; min-height: 20px;"></div>
+
         <div id="p-home" class="page active">
             <div style="text-align:center; margin-top: 10px;">
                 <div id="ui-rank" style="font-size:13px; letter-spacing:3px; font-family: 'Orbitron'; font-weight:900; color:#888;">E-RANK HUNTER</div>
                 <div id="ui-lv" style="font-size:6.5rem; font-weight:900; color:var(--purple); font-family:'Orbitron'; line-height: 1.1; text-shadow: 0 0 30px rgba(188, 19, 254, 0.6);">1</div>
                 
-                <div class="xp-bar-container"><div id="ui-xp-fill" class="xp-bar-fill"></div></div>
-                <div id="ui-xp-txt" style="font-size:11px; color:#aaa; font-family: 'Orbitron'; font-weight:900;">0 / 100 XP</div>
+                <div class="xp-wrapper">
+                    <div class="xp-bar-container"><div id="ui-xp-fill" class="xp-bar-fill"></div></div>
+                    <div id="ui-xp-txt" style="font-size:11px; color:#aaa; font-family: 'Orbitron'; font-weight:900;">0 / 100 XP</div>
+                </div>
             </div>
 
             <div class="stat-grid">
@@ -155,11 +235,11 @@
             </div>
             
             <div style="flex:1"></div>
-            <button class="btn-action" style="width:100%; padding:20px; background:rgba(0,212,255,0.05); border:1px solid var(--blue); color:var(--blue); border-radius:15px; font-size:1.2rem; letter-spacing: 2px; margin-bottom: 10px;" onclick="System.nav('p-dungeon')">攻略地下城 (ENTER)</button>
+            <button class="btn-portal" onclick="System.nav('p-dungeon')">攻略地下城 (ENTER)</button>
         </div>
 
         <div id="p-dungeon" class="page">
-            <h2 style="font-family:'Orbitron'; color:var(--blue); margin: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">DUNGEON GATES</h2>
+            <h2 class="section-title">DUNGEON GATES</h2>
             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:15px; flex-shrink:0;">
                 <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('國文')">國文</button>
                 <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('英文')">英文</button>
@@ -169,51 +249,113 @@
                 <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('公民')">公民</button>
                 <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('歷史')">歷史</button>
             </div>
-            <h2 style="font-family:'Orbitron'; color:var(--purple); margin: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">ACTIVE QUESTS</h2>
-            <div id="active-quests-list" class="scroll-area"></div>
+            
+            <h2 class="section-title" style="color:var(--purple);">ACTIVE QUESTS</h2>
+            <div class="scroll-area" id="active-quests-list"></div>
         </div>
 
         <div id="p-enhance" class="page">
-            <h2 style="font-family:'Orbitron'; color:var(--purple); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">STATUS UPGRADE</h2>
-            <div style="text-align:center; margin-bottom:20px; font-size:1.1rem; color:var(--purple); font-weight:900;">剩餘自由配點: <span id="up-sp-display" style="font-family:'Orbitron'; font-size:1.6rem; color:#fff;">0</span></div>
+            <h2 class="section-title" style="color:var(--purple);">STATUS UPGRADE</h2>
+            <div style="text-align:center; margin-bottom:20px; font-size:1.1rem; color:var(--purple); font-weight:900;">剩餘自由配點: <span id="up-sp-display" style="font-family:'Orbitron'; font-size:1.8rem; color:#fff; text-shadow:0 0 10px var(--purple);">0</span></div>
             <div id="upgrade-list" class="scroll-area"></div>
         </div>
 
         <div id="p-titles" class="page">
-            <h2 style="color:var(--gold); font-family:'Orbitron'; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 10px;">TITLES COLLECTION</h2>
+            <h2 class="section-title" style="color:var(--gold);">TITLE COLLECTION</h2>
             <div id="titles-list" class="scroll-area"></div>
         </div>
 
-        <div id="p-store" class="page">
-            <h2 style="font-family:'Orbitron'; color:var(--blue); border-bottom: 1px solid rgba(0,212,255,0.3); padding-bottom: 10px;">DAILY SHOP <span id="shop-time" style="font-size:10px; color:#555; float:right; line-height:2.5;"></span></h2>
-            <div style="display:flex; gap:10px; margin-bottom:15px; flex-shrink:0;">
-                <button class="btn-action" id="tab-sword" style="flex:1" onclick="System.renderShop('sword')">武器庫</button>
+        <div id="p-shop" class="page">
+            <h2 class="section-title">DAILY SHOP <span id="shop-time" style="font-size:10px; color:#555; float:right; line-height:2.5; font-family:'Orbitron';"></span></h2>
+            <div style="display:flex; gap:8px; margin-bottom:15px; flex-shrink:0;">
+                <button class="btn-action" id="tab-sword" style="flex:1;" onclick="System.renderShop('sword')">刀具</button>
                 <button class="btn-action" id="tab-potion" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('potion')">藥水</button>
                 <button class="btn-action" id="tab-mat" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('mat')">材料</button>
-                <button class="btn-action" id="tab-title" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('title')">稱號卷軸</button>
+                <button class="btn-action" id="tab-title" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('title')">稱號</button>
             </div>
-            <div id="store-list" class="scroll-area"></div>
+            <div id="shop-list" class="scroll-area"></div>
         </div>
 
         <div id="p-inventory" class="page">
-            <h2 style="color:var(--blue); font-family:'Orbitron'; border-bottom: 1px solid rgba(0,212,255,0.3); padding-bottom: 10px;">INVENTORY</h2>
+            <h2 class="section-title">INVENTORY</h2>
+            <div style="display:flex; gap:8px; margin-bottom:10px; flex-shrink:0;">
+                <button class="btn-action" id="bag-tab-sword" style="flex:1;" onclick="System.renderBag('sword')">刀具</button>
+                <button class="btn-action" id="bag-tab-potion" style="flex:1; background:#222; color:#888;" onclick="System.renderBag('potion')">藥水</button>
+                <button class="btn-action" id="bag-tab-mat" style="flex:1; background:#222; color:#888;" onclick="System.renderBag('mat')">材料</button>
+            </div>
             <div id="bag-list" class="scroll-area"></div>
+        </div>
+
+        <div id="p-forge" class="page">
+            <h2 class="section-title" style="color:#ff8c00;">BLACKSMITH (打鐵舖)</h2>
+            <div style="background:rgba(255,140,0,0.1); border:1px solid rgba(255,140,0,0.3); padding:10px; border-radius:10px; margin-bottom:15px; font-size:11px; color:#ddd;">
+                <span class="mat-icon">📐</span> 邏輯碎片: <b id="forge-m-logic" style="color:var(--blue)">0</b> | 
+                <span class="mat-icon">📖</span> 語文符文: <b id="forge-m-lang" style="color:var(--gold)">0</b> | 
+                <span class="mat-icon">🧠</span> 記憶結晶: <b id="forge-m-mem" style="color:var(--purple)">0</b><br>
+                <small style="color:#888; display:block; margin-top:5px;">消耗對應數量的碎片可修復武器磨損度，S級需7套/A級需3套/B~E級需1套。</small>
+            </div>
+            <div id="forge-list" class="scroll-area"></div>
+        </div>
+
+        <div id="p-code" class="page">
+            <h2 class="section-title" style="color:var(--red-alert);">DEVELOPER TERMINAL</h2>
+            
+            <div id="admin-login" style="text-align:center; margin-top:20px;">
+                <div style="font-family:'Orbitron'; color:var(--red-alert); margin-bottom:10px; font-weight:900;">RESTRICTED AREA</div>
+                <input type="password" id="inp-admin-pwd" class="login-input" placeholder="OVERRIDE CODE" style="border-color:var(--red-alert);">
+                <button class="btn-action" style="width:100%; background:var(--red-alert);" onclick="System.verifyAdmin()">ACCESS OVERRIDE</button>
+            </div>
+
+            <div id="admin-panel" class="scroll-area" style="display:none; flex-direction:column; padding-top:10px;">
+                <div class="admin-box">
+                    <h3 style="color:var(--blue); font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">🎛️ 數值竄改器 (STATS)</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div><span class="admin-label">等級 (Level)</span><input type="number" id="adm-lv" class="admin-input"></div>
+                        <div><span class="admin-label">蓮幣 (Coins)</span><input type="number" id="adm-coins" class="admin-input"></div>
+                        <div><span class="admin-label">剩餘點數 (SP)</span><input type="number" id="adm-sp" class="admin-input"></div>
+                        <div><span class="admin-label">智力 (IQ)</span><input type="number" id="adm-iq" class="admin-input"></div>
+                        <div><span class="admin-label">力量 (STR)</span><input type="number" id="adm-str" class="admin-input"></div>
+                        <div><span class="admin-label">魔力 (MP)</span><input type="number" id="adm-mp" class="admin-input"></div>
+                        <div style="grid-column: span 2;"><span class="admin-label">敏捷 (DEX)</span><input type="number" id="adm-dex" class="admin-input"></div>
+                    </div>
+                    <button class="btn-action" style="width:100%; margin-top:10px;" onclick="System.adminSetStats()">強制寫入數值 (APPLY)</button>
+                </div>
+                <div class="admin-box">
+                    <h3 style="color:var(--gold); font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">🗡️ 神兵印表機 (SPAWN SWORD)</h3>
+                    <span class="admin-label">強制生成磨損度為 0.000% 的完美武器</span>
+                    <select id="adm-sel-sword" class="admin-input" style="text-align:left;"></select>
+                    <button class="btn-action" style="width:100%; background:var(--gold); color:#000;" onclick="System.adminGiveSword()">生成至背包 (SPAWN)</button>
+                </div>
+                <div class="admin-box">
+                    <h3 style="color:var(--purple); font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">📜 稱號提款機 (SPAWN TITLE)</h3>
+                    <span class="admin-label">直接解鎖系統內任意稱號</span>
+                    <select id="adm-sel-title" class="admin-input" style="text-align:left;"></select>
+                    <button class="btn-action" style="width:100%;" onclick="System.adminGiveTitle()">解鎖稱號 (UNLOCK)</button>
+                </div>
+                <div class="admin-box">
+                    <h3 style="color:#00ff88; font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">📦 素材與藥水派發 (SUPPLIES)</h3>
+                    <button class="btn-action" style="width:100%; background:#00ff88; color:#000; margin-bottom:10px;" onclick="System.adminGiveMats()">所有材料 +100</button>
+                    <button class="btn-action" style="width:100%; background:#00ff88; color:#000;" onclick="System.adminGivePotions()">所有藥水 +10</button>
+                </div>
+            </div>
         </div>
 
         <div class="nav">
             <div class="nav-link active" onclick="System.nav('p-home', event)">主畫面</div>
             <div class="nav-link" onclick="System.nav('p-dungeon', event)">地下城</div>
             <div class="nav-link" onclick="System.nav('p-enhance', event)">提升</div>
-            <div class="nav-link" onclick="System.nav('p-titles', event)">稱號</div>
-            <div class="nav-link" onclick="System.nav('p-store', event)">商店</div>
+            <div class="nav-link" onclick="System.nav('p-titles', event)">圖鑑</div>
+            <div class="nav-link" onclick="System.nav('p-shop', event)">商店</div>
             <div class="nav-link" onclick="System.nav('p-inventory', event)">背包</div>
+            <div class="nav-link" onclick="System.nav('p-forge', event)" style="color:#ff8c00;">打鐵舖</div>
+            <div class="nav-link" onclick="System.nav('p-code', event)" style="color:var(--red-alert);">終端</div>
         </div>
     </div>
 </div>
 
 <script>
 /* =========================================
-   完整數據庫 (100% 不刪減)
+   完整大數據庫
 ========================================= */
 const DB = {
     titles: {
@@ -233,6 +375,12 @@ const DB = {
         D: ["生鏽鐵片", "磨損的砍刀", "舊式刺刀", "木柄短劍", "歪斜的匕首", "鈍掉的菜刀", "破損長槍", "重鑄的廢鐵", "路邊的小刀", "脆弱的竹劍", "農用鐮刀", "缺口的佩刀", "簡易長矛", "粗糙的斧頭", "採集用小鏟"],
         E: ["傳說中的木棒", "削鉛筆刀", "斷掉的樹枝", "生鏽的圖釘", "破爛的鍋鏟", "紙紮的劍", "髒掉的抹布", "塑膠玩具刀", "爛掉的傘骨", "沒水的原子筆", "湯勺", "雞毛撣子", "缺了一角的小石塊", "過期的法棍麵包", "只有柄的劍"]
     },
+    potions: [
+        { id: "p_double", name: "🧪 雙倍經驗藥劑", price: 350, desc: "喝下後，下一場地下城任務 XP 變 2 倍" },
+        { id: "p_time", name: "⏳ 時光沙漏", price: 450, desc: "立刻重置商店所有物品與武器磨損度" },
+        { id: "p_luck", name: "🍀 幸運四葉草", price: 850, desc: "喝下後，下次升級抽稱號保底 B 級以上" },
+        { id: "p_seven", name: "✨ 七葉草藥水", price: 3500, desc: "喝下後可直接選擇並獲得一個 A 級稱號" }
+    ],
     subjects: {
         '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, range: 12 },
         '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, range: 10 },
@@ -244,35 +392,42 @@ const DB = {
     }
 };
 
-/* =========================================
-   核心系統邏輯
-========================================= */
+const StorageMgr = {
+    get(key) { 
+        try { return localStorage.getItem(key); } 
+        catch(e) { return window.tempStore ? window.tempStore[key] : null; } 
+    },
+    set(key, val) { 
+        try { localStorage.setItem(key, val); } 
+        catch(e) { window.tempStore = window.tempStore || {}; window.tempStore[key] = val; } 
+    }
+};
+
 const System = {
     p: null, 
     shopCache: null,
     rankWeight: { 'UNKNOWN': 7, 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'E': 1 },
+    isAdminUnlocked: false,
 
     login() {
         const acc = document.getElementById('inp-acc').value.trim() || "HUNTER";
-        const pwd = document.getElementById('inp-pwd').value;
-        const key = `sl_v8_user_${acc}`; // 強制更新快取 KEY
+        const key = `sl_v14_godmode_${acc}`;
         
-        let saved;
-        try { saved = localStorage.getItem(key); } catch(e) {}
+        let saved = StorageMgr.get(key);
         
         if(saved) {
             this.p = JSON.parse(saved);
-            // 兼容舊存檔防呆
-            if(!this.p.bag) this.p.bag = { swords: [], potions: [], mats: [] };
-            if(!this.p.activeQuests) this.p.activeQuests = [];
-            if(!this.p.titles) this.p.titles = ["尚未覺醒"];
-            if(!this.p.iq) { this.p.iq=1; this.p.str=1; this.p.mp=1; this.p.dex=1; }
+            if(!this.p.bag) this.p.bag = { swords: [], potions: {}, mats: { logic:0, lang:0, mem:0 } };
+            if(!this.p.buffs) this.p.buffs = { doubleXp: false, luck: false };
+            if(!this.p.curWeapon) this.p.curWeapon = null;
         } else {
             this.p = {
-                acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0,
+                acc, lv: 1, exp: 0, coins: 0, sp: 0,
                 iq: 1, str: 1, mp: 1, dex: 1,
                 titles: ["尚未覺醒"], curTitle: "尚未覺醒",
-                bag: { swords: [], potions: [], mats: [] },
+                curWeapon: null,
+                bag: { swords: [], potions: { p_double:0, p_time:0, p_luck:0, p_seven:0 }, mats: { logic:0, lang:0, mem:0 } },
+                buffs: { doubleXp: false, luck: false },
                 activeQuests: []
             };
         }
@@ -282,8 +437,7 @@ const System = {
     },
 
     save() { 
-        if(!this.p) return;
-        try { localStorage.setItem(`sl_v8_user_${this.p.acc}`, JSON.stringify(this.p)); } catch(e){} 
+        if(this.p) StorageMgr.set(`sl_v14_godmode_${this.p.acc}`, JSON.stringify(this.p)); 
     },
 
     nav(id, e) {
@@ -293,14 +447,21 @@ const System = {
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             e.target.classList.add('active');
         }
+        
         if(id === 'p-dungeon') this.renderQuests();
         if(id === 'p-enhance') this.renderUpgrades();
         if(id === 'p-titles') this.renderTitles();
-        if(id === 'p-shop') this.renderShop('sword');
-        if(id === 'p-inventory') this.renderBag();
+        if(id === 'p-inventory') this.renderBag('sword');
+        if(id === 'p-forge') this.renderForge();
+        if(id === 'p-shop') {
+            if(!this.shopCache) this.checkShopRefresh();
+            this.renderShop('sword');
+        }
+        if(id === 'p-code' && this.isAdminUnlocked) {
+            this.renderAdminPanel();
+        }
     },
 
-    /* -- 等級與經驗計算 -- */
     getMaxExp(lv) {
         if (lv <= 30) return 100 + (lv - 1) * 50;
         return 100 + 29 * 50 + (lv - 30) * 100;
@@ -320,9 +481,13 @@ const System = {
         if(!this.p) return;
         document.getElementById('ui-name').innerText = this.p.acc;
         document.getElementById('ui-lv').innerText = this.p.lv;
-        document.getElementById('ui-coins').innerText = `💰 ${this.p.coins.toLocaleString()}`;
+        document.getElementById('ui-coins').innerText = `💰 ${Math.floor(this.p.coins).toLocaleString()}`;
         document.getElementById('ui-sp').innerText = `剩餘點數: ${this.p.sp}`;
         document.getElementById('ui-title').innerText = this.p.curTitle ? `[ ${this.p.curTitle} ]` : "[ 尚未覺醒 ]";
+        
+        let weaponText = "⚔️ 徒手";
+        if(this.p.curWeapon) weaponText = `⚔️ ${this.p.curWeapon.name} [${this.p.curWeapon.rank}]`;
+        document.getElementById('ui-weapon').innerText = weaponText;
         
         const rankInfo = this.getRank(this.p.lv);
         const rankEl = document.getElementById('ui-rank');
@@ -330,43 +495,55 @@ const System = {
 
         const maxExp = this.getMaxExp(this.p.lv);
         document.getElementById('ui-xp-fill').style.width = `${Math.min((this.p.exp / maxExp) * 100, 100)}%`;
-        document.getElementById('ui-xp-txt').innerText = `${this.p.exp} / ${maxExp} XP`;
+        document.getElementById('ui-xp-txt').innerText = `${Math.floor(this.p.exp)} / ${maxExp} XP`;
+
+        let bonusStr = 0;
+        if(this.p.curWeapon) {
+            if(this.p.curWeapon.rank === 'B') bonusStr = 5;
+            if(this.p.curWeapon.rank === 'C') bonusStr = 3;
+            if(this.p.curWeapon.rank === 'D') bonusStr = 1;
+        }
 
         ['iq', 'str', 'mp', 'dex'].forEach(k => {
             const el = document.getElementById(`v-${k}`);
-            if(el) el.innerText = this.p[k];
+            if(el) {
+                let disp = this.p[k];
+                if(k === 'str' && bonusStr > 0) disp += `<span class="stat-bonus">+${bonusStr}</span>`;
+                el.innerHTML = disp;
+            }
         });
-        this.save();
-    },
 
-    addExp(amount) {
-        this.p.exp += amount;
-        this.p.coins += amount; // 1 XP = 1 蓮幣
-        this.checkLevelUp();
-        this.updateUI();
+        let buffHtml = "";
+        if(this.p.buffs.doubleXp) buffHtml += `<span class="badge badge-buff">2x XP</span>`;
+        if(this.p.buffs.luck) buffHtml += `<span class="badge badge-buff">幸運保底</span>`;
+        document.getElementById('buff-zone').innerHTML = buffHtml;
+
+        this.save();
     },
 
     checkLevelUp() {
         let max = this.getMaxExp(this.p.lv);
-        if (this.p.exp >= max) {
+        while (this.p.exp >= max) {
             this.p.exp -= max;
             this.p.lv++;
             this.p.sp += 3;
             this.p.iq++; this.p.str++; this.p.mp++; this.p.dex++;
-            
-            // 50級內每升2級抽卡
             if (this.p.lv <= 50 && this.p.lv % 2 === 0) this.drawTitle();
-            
-            if(this.p.exp >= this.getMaxExp(this.p.lv)) {
-                setTimeout(() => this.checkLevelUp(), 10);
-            }
+            max = this.getMaxExp(this.p.lv);
         }
     },
 
-    /* -- 抽獎系統 -- */
     drawTitle() {
         const r = Math.random() * 100;
-        let rank = 'E'; if(r<0.5) rank='S'; else if(r<2.0) rank='A'; else if(r<20.0) rank='B'; else if(r<40.0) rank='C'; else if(r<65.0) rank='D';
+        let rank = 'E'; 
+        
+        if(this.p.buffs.luck) {
+            if(r < 5) rank = 'S'; else if(r < 25) rank = 'A'; else rank = 'B';
+            this.p.buffs.luck = false; 
+        } else {
+            if(r<0.5) rank='S'; else if(r<2.0) rank='A'; else if(r<20.0) rank='B'; else if(r<40.0) rank='C'; else if(r<65.0) rank='D';
+        }
+        
         const t = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
         
         if (!this.p.titles.includes(t)) {
@@ -374,7 +551,7 @@ const System = {
             document.getElementById('gacha-msg').innerText = "系統覺醒：恭喜獲得稱號";
         } else {
             this.p.coins += 500;
-            document.getElementById('gacha-msg').innerText = "獲得重複稱號 (已轉化為 500 蓮幣)";
+            document.getElementById('gacha-msg').innerText = "獲得重複稱號 (轉化為 500 蓮幣)";
         }
         const resEl = document.getElementById('gacha-result');
         resEl.innerText = t; resEl.className = `gacha-glow rank-${rank}`;
@@ -382,7 +559,6 @@ const System = {
         this.updateUI();
     },
 
-    /* -- 地下城系統 -- */
     openDungeonModal(sub) {
         const data = DB.subjects[sub];
         document.getElementById('dm-title').innerText = `${sub} 攻略設定`;
@@ -421,7 +597,6 @@ const System = {
         } else {
             rangeVal = document.getElementById(`sel-t-${task}`).value;
         }
-        
         this.p.activeQuests.push({ id: Date.now(), sub, task, range: rangeVal, xp });
         this.save();
         document.getElementById('dungeon-modal').style.display = 'none';
@@ -435,32 +610,62 @@ const System = {
             html += `<div class="card" style="border-left: 4px solid var(--blue);">
                         <div class="card-col">
                             <strong style="font-size:1.1rem; color:#fff;">${q.sub} - ${q.task}</strong>
-                            <span style="color:#888; font-size:11px; margin-top:3px;">範圍: ${q.range} | 獎勵: ${q.xp} XP</span>
+                            <span style="color:#888; font-size:11px; margin-top:3px;">範圍: ${q.range} | 基礎獎勵: ${q.xp} XP</span>
                         </div>
-                        <button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id}, ${q.xp})">結算</button>
+                        <button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id}, ${q.xp}, '${q.sub}')">結算</button>
                      </div>`;
         });
         document.getElementById('active-quests-list').innerHTML = html;
     },
 
-    completeQuest(id, xp) {
+    completeQuest(id, baseXP, sub) {
         this.p.activeQuests = this.p.activeQuests.filter(q => q.id !== id);
-        this.addExp(xp);
+        
+        let finalXP = baseXP;
+        let finalCoins = baseXP; 
+        
+        if(this.p.buffs.doubleXp) {
+            finalXP *= 2;
+            this.p.buffs.doubleXp = false;
+            alert("✨ 雙倍經驗藥劑生效！");
+        }
+
+        if(this.p.curWeapon) {
+            if(this.p.curWeapon.rank === 'S') { finalXP *= 1.20; finalCoins *= 1.50; }
+            else if(this.p.curWeapon.rank === 'A') { finalXP *= 1.10; finalCoins *= 1.20; }
+        }
+
+        this.p.exp += finalXP;
+        this.p.coins += finalCoins;
+
+        const rDrop = Math.random();
+        let dropMsg = "";
+        if(sub === '數學' || sub === '物理') {
+            if(rDrop < 0.10) { this.p.bag.mats.logic++; dropMsg = "\n🧩 掉落：邏輯碎片 x1"; }
+        } else if(sub === '國文' || sub === '英文') {
+            if(rDrop < 0.15) { this.p.bag.mats.lang++; dropMsg = "\n📖 掉落：語文符文 x1"; }
+        } else {
+            if(rDrop < 0.15) { this.p.bag.mats.mem++; dropMsg = "\n🧠 掉落：記憶結晶 x1"; }
+        }
+
+        alert(`任務結算完成！\n獲得 ${Math.floor(finalXP)} XP 與 ${Math.floor(finalCoins)} 蓮幣${dropMsg}`);
+        
+        this.checkLevelUp();
+        this.updateUI();
         this.renderQuests();
     },
 
-    /* -- 提升配點系統 -- */
     renderUpgrades() {
         document.getElementById('up-sp-display').innerText = this.p.sp;
         const stats = [{ id: 'iq', n: '智商 (IQ)' }, { id: 'str', n: '體力 (STR)' }, { id: 'mp', n: '魔力 (MP)' }, { id: 'dex', n: '準確度 (DEX)' }];
         let html = "";
         stats.forEach(s => {
-            html += `<div class="card">
+            html += `<div class="card" style="border-left: 4px solid var(--purple); background: linear-gradient(90deg, rgba(188,19,254,0.05), transparent); position: relative; overflow:hidden;">
                         <div class="card-col">
-                            <strong style="color:var(--blue); font-size:1.1rem;">${s.n}</strong>
-                            <span style="color:#fff; font-size:1.8rem; font-family:'Orbitron'; font-weight:900; margin-top:5px;">${this.p[s.id]}</span>
+                            <strong style="color:var(--blue); font-size:1.2rem; letter-spacing: 1px; font-family:'Orbitron';">${s.n}</strong>
+                            <span style="color:#fff; font-size:2.2rem; font-family:'Orbitron'; font-weight:900; text-shadow: 0 0 10px var(--purple);">${this.p[s.id]}</span>
                         </div>
-                        <button class="btn-action" style="font-size:1.5rem; padding:10px 25px;" onclick="System.addStat('${s.id}')">+</button>
+                        <button class="btn-action" style="font-size:2rem; width: 50px; height: 50px; display:flex; justify-content:center; align-items:center; border-radius: 12px; background: transparent; border: 2px solid var(--purple); color: var(--purple); box-shadow: inset 0 0 10px rgba(188,19,254,0.5);" onclick="System.addStat('${s.id}')">+</button>
                      </div>`;
         });
         document.getElementById('upgrade-list').innerHTML = html;
@@ -475,7 +680,6 @@ const System = {
         } else alert('配點不足，請攻略地下城升級');
     },
 
-    /* -- 稱號圖鑑切換系統 -- */
     renderTitles() {
         let html = "";
         ['S','A','B','C','D','E'].forEach(r => {
@@ -484,7 +688,7 @@ const System = {
                 const unlocked = this.p.titles.includes(t);
                 const isEq = this.p.curTitle === t;
                 if(unlocked) {
-                    html += `<div class="card ${isEq ? 'equipped' : ''}" style="cursor:pointer;" onclick="System.equip('${t}')">
+                    html += `<div class="card ${isEq ? 'equipped' : ''}" style="cursor:pointer;" onclick="System.equipTitle('${t}')">
                                 <div class="card-col">
                                     <strong class="rank-${r}" style="font-size:1.1rem;">${t}</strong>
                                     <span style="font-size:10px; color:#aaa; margin-top:5px;">${isEq ? '✨ 當前裝備中' : '點擊切換裝備'}</span>
@@ -499,17 +703,15 @@ const System = {
         document.getElementById('titles-list').innerHTML = html;
     },
 
-    equip(t) {
+    equipTitle(t) {
         this.p.curTitle = t;
         this.updateUI();
         this.renderTitles();
     },
 
-    /* -- 商店系統防呆與渲染 -- */
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored;
-        try { stored = localStorage.getItem('sl_shop_v8'); } catch(e){}
+        let stored = StorageMgr.get('sl_shop_v14');
         if(stored) {
             const parsed = JSON.parse(stored);
             if(parsed.date === today) {
@@ -518,7 +720,7 @@ const System = {
                 return;
             }
         }
-        this.refreshShop(today);
+        this.refreshShop(today, false);
     },
 
     getWearRate(rank) {
@@ -531,7 +733,7 @@ const System = {
         return (70.000 + r * 20.000).toFixed(3);
     },
 
-    refreshShop(today) {
+    refreshShop(today, force = false) {
         let shop = { swords: [], titles: [] };
         
         Object.keys(DB.swords).forEach(rank => {
@@ -539,7 +741,17 @@ const System = {
                 let name = typeof sw === 'object' ? sw.name : sw;
                 let desc = typeof sw === 'object' ? sw.desc : '';
                 let wear = rank === 'UNKNOWN' ? '???' : this.getWearRate(rank);
-                let price = rank === 'UNKNOWN' ? 999999 : (rank==='S'?50000:rank==='A'?20000:rank==='B'?5000:rank==='C'?2500:rank==='D'?1500:50);
+                
+                let price = 999999;
+                if(rank !== 'UNKNOWN') {
+                    let wFloat = parseFloat(wear);
+                    if(rank === 'S') price = Math.floor(10000 * (10 - wFloat));
+                    else if(rank === 'A') price = Math.floor(Math.random() * 5001) + 10000;
+                    else if(rank === 'B') price = Math.floor(Math.random() * 1001) + 4000;
+                    else if(rank === 'C') price = Math.floor(Math.random() * 1001) + 3000;
+                    else if(rank === 'D') price = Math.floor(Math.random() * 1001) + 2000;
+                    else if(rank === 'E') price = Math.floor(Math.random() * 1001) + 1000;
+                }
                 shop.swords.push({ name, rank, wear, desc, price });
             });
         });
@@ -549,106 +761,341 @@ const System = {
             const r = Math.random() * 100;
             let rank = 'E'; if(r<1.5) rank='S'; else if(r<5) rank='A'; else if(r<25) rank='B'; else if(r<45) rank='C'; else if(r<65) rank='D';
             let name = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
-            let price = rank==='S'?50000 : rank==='A'?25000 : rank==='B'?10000 : rank==='C'?5000 : rank==='D'?2000 : 100;
+            let price = rank==='S'?5000 : rank==='A'?2500 : rank==='B'?1000 : rank==='C'?500 : rank==='D'?200 : 100;
             shop.titles.push({ name, rank, price });
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
 
         this.shopCache = shop;
-        try { localStorage.setItem('sl_shop_v8', JSON.stringify({ date: today, data: this.shopCache })); } catch(e){}
-        document.getElementById('shop-time').innerText = `Refreshed: ${today}`;
+        StorageMgr.set('sl_shop_v14', JSON.stringify({ date: today, data: this.shopCache }));
+        if(force) document.getElementById('shop-time').innerText = `Refreshed (Hourglass)`;
+        else document.getElementById('shop-time').innerText = `Refreshed: ${today}`;
     },
 
     renderShop(tab) {
+        if(!this.shopCache) this.checkShopRefresh();
+        if(!this.shopCache) return; 
+
         ['sword','potion','mat','title'].forEach(t => {
             const btn = document.getElementById(`tab-${t}`);
-            if(btn) {
-                btn.style.background = t === tab ? 'var(--purple)' : '#222';
-                btn.style.color = t === tab ? '#fff' : '#888';
-            }
+            if(btn) { btn.style.background = t === tab ? 'var(--purple)' : '#222'; btn.style.color = t === tab ? '#fff' : '#888'; }
         });
 
         let html = "";
-        try {
-            if(!this.shopCache) this.refreshShop(new Date().toLocaleDateString());
-
-            if(tab === 'sword') {
-                this.shopCache.swords.forEach((sw, idx) => {
-                    let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055; background:linear-gradient(45deg,#220011,#000); box-shadow:0 0 15px rgba(255,0,85,0.3);' : (sw.rank === 'S' ? 'border:1px solid var(--gold); box-shadow:inset 0 0 15px rgba(255,215,0,0.1);' : '');
-                    html += `<div class="card" style="${spec}">
-                                <div class="card-col">
-                                    <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
-                                    ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
-                                    <span style="color:#888; font-size:10px; margin-top:5px;">磨損度: ${sw.wear}%</span>
-                                </div>
-                                <button class="btn-action" onclick="System.buyShop('sword', ${idx})">💰 ${sw.price.toLocaleString()}</button>
-                             </div>`;
-                });
-            } else if(tab === 'title') {
-                this.shopCache.titles.forEach((t, idx) => {
-                    const owned = this.p.titles.includes(t.name);
-                    html += `<div class="card">
-                                <div class="card-col">
-                                    <strong class="rank-${t.rank}" style="font-size:1.1rem;">${t.name}</strong>
-                                    <span style="color:#888; font-size:10px; margin-top:5px;">${t.rank}-RANK TITLE</span>
-                                </div>
-                                <button class="btn-action" ${owned?'style="background:#333;color:#666;" disabled':''} onclick="System.buyShop('title', ${idx})">
-                                    ${owned ? '已解鎖' : '💰 ' + t.price.toLocaleString()}
-                                </button>
-                             </div>`;
-                });
-            } else {
-                html = `<div style="text-align:center; padding:50px; color:#555; font-family:'Orbitron';">STORE RESTOCKING...</div>`;
-            }
-        } catch(e) {
-            html = `<div style="text-align:center; padding:50px; color:red;">讀取商店資料時發生錯誤，請重新載入網頁。</div>`;
+        if(tab === 'sword') {
+            this.shopCache.swords.forEach((sw, idx) => {
+                let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055; background:linear-gradient(45deg,#220011,#000); box-shadow:0 0 15px rgba(255,0,85,0.3);' : (sw.rank === 'S' ? 'border:1px solid var(--gold); box-shadow:inset 0 0 15px rgba(255,215,0,0.1);' : '');
+                let btnTxt = sw.rank === 'UNKNOWN' ? '非賣品' : `💰 ${sw.price.toLocaleString()}`;
+                let disabled = sw.rank === 'UNKNOWN' ? 'disabled' : '';
+                
+                html += `<div class="card" style="${spec}">
+                            <div class="card-col">
+                                <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
+                                ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
+                                <span style="color:#888; font-size:10px; margin-top:5px;">磨損度: ${sw.wear}%</span>
+                            </div>
+                            <button class="btn-action" ${disabled} onclick="System.buyShop('sword', ${idx})">${btnTxt}</button>
+                         </div>`;
+            });
+        } else if(tab === 'potion') {
+            DB.potions.forEach(pot => {
+                html += `<div class="card">
+                            <div class="card-col">
+                                <strong style="font-size:1.1rem; color:#fff;">${pot.name}</strong>
+                                <span style="font-size:10px; color:#aaa; margin-top:5px;">${pot.desc}</span>
+                            </div>
+                            <button class="btn-action" onclick="System.buyPotion('${pot.id}', ${pot.price})">💰 ${pot.price}</button>
+                         </div>`;
+            });
+        } else if(tab === 'mat') {
+            html = `<div style="text-align:center; padding:50px; color:#555; font-family:'Orbitron';">MATERIALS ARE DROP-ONLY</div>`;
+        } else if(tab === 'title') {
+            this.shopCache.titles.forEach((t, idx) => {
+                const owned = this.p.titles.includes(t.name);
+                html += `<div class="card">
+                            <div class="card-col">
+                                <strong class="rank-${t.rank}" style="font-size:1.1rem;">${t.name}</strong>
+                                <span style="color:#888; font-size:10px; margin-top:5px;">${t.rank}-RANK TITLE</span>
+                            </div>
+                            <button class="btn-action" ${owned?'disabled':''} onclick="System.buyShop('title', ${idx})">
+                                ${owned ? '已解鎖' : '💰 ' + t.price.toLocaleString()}
+                            </button>
+                         </div>`;
+            });
         }
-        document.getElementById('store-list').innerHTML = html;
+        document.getElementById('shop-list').innerHTML = html;
     },
 
     buyShop(type, idx) {
         const item = this.shopCache[`${type}s`][idx];
+        if(!item) return;
         if(this.p.coins >= item.price) {
-            this.p.coins -= item.price;
             if(type === 'title') {
+                if(this.p.titles.includes(item.name)) return alert("你已經擁有此稱號了！");
+                this.p.coins -= item.price;
                 this.p.titles.push(item.name);
-                alert(`成功解鎖稱號: ${item.name}`);
+                alert(`✨ 成功解鎖稱號：${item.name}`);
             } else {
+                this.p.coins -= item.price;
+                item.id = Date.now() + Math.floor(Math.random()*1000);
                 this.p.bag.swords.push(item);
-                alert(`獲得裝備: ${item.name}`);
+                alert(`🗡️ 獲得裝備：${item.name}`);
             }
             this.updateUI();
             this.renderShop(type);
+        } else alert(`❌ 蓮幣餘額不足！`);
+    },
+
+    buyPotion(pid, price) {
+        if(this.p.coins >= price) {
+            this.p.coins -= price;
+            this.p.bag.potions[pid] = (this.p.bag.potions[pid] || 0) + 1;
+            this.updateUI();
+            alert("成功購買藥水，請至背包使用");
         } else alert('蓮幣餘額不足！');
     },
 
-    /* -- 背包系統 -- */
-    renderBag() {
-        let html = `<div class="section-title">🗡️ 武器庫</div>`;
-        if(this.p.bag.swords.length === 0) html += `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(尚未獲得任何武器)</div>`;
-        this.p.bag.swords.forEach(sw => {
-            let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055;' : (sw.rank === 'S' ? 'border:1px solid var(--gold);' : '');
-            html += `<div class="card" style="${spec}">
-                        <div class="card-col">
-                            <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
-                            ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
-                            <span style="font-size:10px; color:#aaa; margin-top:3px;">磨損: ${sw.wear}%</span>
-                        </div>
-                        <span style="color:#555; font-size:10px;">[ ${sw.rank} ]</span>
+    renderBag(tab) {
+        ['sword','potion','mat'].forEach(t => {
+            const btn = document.getElementById(`bag-tab-${t}`);
+            if(btn) { btn.style.background = t === tab ? 'var(--purple)' : '#222'; btn.style.color = t === tab ? '#fff' : '#888'; }
+        });
+
+        let html = "";
+        if(tab === 'sword') {
+            if(this.p.bag.swords.length === 0) html += `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(尚未獲得任何武器)</div>`;
+            this.p.bag.swords.forEach(sw => {
+                let isEq = (this.p.curWeapon && this.p.curWeapon.id === sw.id);
+                let spec = isEq ? 'border:1px solid var(--purple); background:rgba(188,19,254,0.1);' : '';
+                html += `<div class="card" style="${spec}">
+                            <div class="card-col">
+                                <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
+                                ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
+                                <span style="font-size:10px; color:#aaa; margin-top:3px;">磨損: ${sw.wear}%</span>
+                            </div>
+                            <button class="btn-action" style="${isEq ? 'background:#333;color:#888;' : ''}" onclick="System.equipWeapon(${sw.id})">${isEq ? '卸下' : '裝備'}</button>
+                         </div>`;
+            });
+        } else if(tab === 'potion') {
+            let hasPotion = false;
+            DB.potions.forEach(pot => {
+                let amt = this.p.bag.potions[pot.id] || 0;
+                if(amt > 0) {
+                    hasPotion = true;
+                    html += `<div class="card">
+                                <div class="card-col">
+                                    <strong style="font-size:1.1rem; color:#fff;">${pot.name} <span style="color:var(--gold)">x${amt}</span></strong>
+                                    <span style="font-size:10px; color:#aaa; margin-top:5px;">${pot.desc}</span>
+                                </div>
+                                <button class="btn-action" onclick="System.usePotion('${pot.id}')">使用</button>
+                             </div>`;
+                }
+            });
+            if(!hasPotion) html = `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
+        } else {
+            html += `
+            <div class="card"><div class="card-col"><strong style="color:var(--blue)"><span class="mat-icon">📐</span> 邏輯碎片</strong><span style="font-size:10px; color:#888;">理科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Orbitron'; font-weight:900;">${this.p.bag.mats.logic}</span></div>
+            <div class="card"><div class="card-col"><strong style="color:var(--gold)"><span class="mat-icon">📖</span> 語文符文</strong><span style="font-size:10px; color:#888;">文科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Orbitron'; font-weight:900;">${this.p.bag.mats.lang}</span></div>
+            <div class="card"><div class="card-col"><strong style="color:var(--purple)"><span class="mat-icon">🧠</span> 記憶結晶</strong><span style="font-size:10px; color:#888;">背科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Orbitron'; font-weight:900;">${this.p.bag.mats.mem}</span></div>`;
+        }
+        document.getElementById('bag-list').innerHTML = html;
+    },
+
+    equipWeapon(id) {
+        if(this.p.curWeapon && this.p.curWeapon.id === id) this.p.curWeapon = null;
+        else this.p.curWeapon = this.p.bag.swords.find(w => w.id === id);
+        this.updateUI();
+        this.renderBag('sword');
+    },
+
+    usePotion(pid) {
+        if(this.p.bag.potions[pid] <= 0) return;
+        this.p.bag.potions[pid]--;
+
+        if(pid === 'p_double') { this.p.buffs.doubleXp = true; alert("✨ 雙倍經驗藥劑已啟用！"); }
+        else if(pid === 'p_time') { this.refreshShop(new Date().toLocaleDateString(), true); alert("⏳ 商店已強制刷新！"); }
+        else if(pid === 'p_luck') { this.p.buffs.luck = true; alert("🍀 幸運四葉草生效！"); }
+        else if(pid === 'p_seven') this.openSevenCloverModal();
+        
+        this.updateUI();
+        this.renderBag('potion');
+    },
+
+    openSevenCloverModal() {
+        let html = "";
+        DB.titles['A'].forEach(t => {
+            const owned = this.p.titles.includes(t);
+            html += `<div class="card" style="margin-bottom:5px; padding:10px;">
+                        <span class="rank-A">${t}</span>
+                        <button class="btn-action" style="padding:5px 10px;" ${owned?'disabled':''} onclick="System.pickATitle('${t}')">${owned?'擁有':'選擇'}</button>
                      </div>`;
         });
+        document.getElementById('seven-clover-list').innerHTML = html;
+        document.getElementById('seven-clover-modal').style.display = 'flex';
+    },
+
+    pickATitle(t) {
+        this.p.titles.push(t);
+        this.p.curTitle = t; 
+        document.getElementById('seven-clover-modal').style.display = 'none';
+        alert(`✨ 憑藉七葉草的魔力，你獲得並裝備了 A 級稱號：【${t}】`);
+        this.updateUI();
+    },
+
+    renderForge() {
+        document.getElementById('forge-m-logic').innerText = this.p.bag.mats.logic;
+        document.getElementById('forge-m-lang').innerText = this.p.bag.mats.lang;
+        document.getElementById('forge-m-mem').innerText = this.p.bag.mats.mem;
+
+        let html = "";
+        if(this.p.bag.swords.length === 0) html = `<div style="text-align:center; color:#555; padding:20px;">背包空空如也，沒有武器可以鍛造。</div>`;
+        this.p.bag.swords.forEach(sw => {
+            let req = sw.rank === 'S' ? 7 : (sw.rank === 'A' ? 3 : 1);
+            let canForge = (this.p.bag.mats.logic >= req && this.p.bag.mats.lang >= req && this.p.bag.mats.mem >= req);
+            
+            html += `<div class="card" style="flex-direction:column; align-items:flex-start;">
+                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:5px;">
+                            <strong class="rank-${sw.rank}">${sw.name}</strong>
+                            <span style="color:#aaa; font-size:12px;">磨損: ${sw.wear}%</span>
+                        </div>
+                        <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:10px; color:#888;">消耗各碎片 x${req}</span>
+                            <button class="btn-action" style="${canForge?'background:#ff8c00;':'background:#333;color:#666;'}" ${canForge?'':'disabled'} onclick="System.forgeWeapon(${sw.id}, '${sw.rank}', ${req})">修復鍛造</button>
+                        </div>
+                     </div>`;
+        });
+        document.getElementById('forge-list').innerHTML = html;
+    },
+
+    forgeWeapon(id, rank, req) {
+        if(this.p.bag.mats.logic < req || this.p.bag.mats.lang < req || this.p.bag.mats.mem < req) return;
+        this.p.bag.mats.logic -= req; this.p.bag.mats.lang -= req; this.p.bag.mats.mem -= req;
+
+        let sw = this.p.bag.swords.find(w => w.id === id);
+        let reduction = rank === 'S' ? (1.000 + Math.random()*0.500) : (1.000 + Math.random()*2.000);
         
-        html += `<div class="section-title" style="color:var(--c-rank); margin-top:20px;">🧪 消耗品與藥水</div><div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
-        html += `<div class="section-title" style="color:var(--gold); margin-top:20px;">💎 稀有材料</div><div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
-        document.getElementById('bag-list').innerHTML = html;
+        let oldWear = parseFloat(sw.wear);
+        let newWear = oldWear - reduction;
+        if(newWear < 0) newWear = 0;
+        sw.wear = newWear.toFixed(3);
+
+        if(this.p.curWeapon && this.p.curWeapon.id === id) this.p.curWeapon.wear = sw.wear;
+        alert(`🔨 鍛造成功！${sw.name} 磨損度降低了 ${reduction.toFixed(3)}% \n(目前磨損: ${sw.wear}%)`);
+        this.save();
+        this.renderForge();
+    },
+
+    verifyAdmin() {
+        if(document.getElementById('inp-admin-pwd').value === 'Ricky_0414') {
+            this.isAdminUnlocked = true;
+            document.getElementById('admin-login').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            this.renderAdminPanel();
+        } else {
+            alert("ACCESS DENIED: 密碼錯誤");
+        }
+    },
+
+    renderAdminPanel() {
+        document.getElementById('adm-lv').value = this.p.lv;
+        document.getElementById('adm-coins').value = Math.floor(this.p.coins);
+        document.getElementById('adm-sp').value = this.p.sp;
+        document.getElementById('adm-iq').value = this.p.iq;
+        document.getElementById('adm-str').value = this.p.str;
+        document.getElementById('adm-mp').value = this.p.mp;
+        document.getElementById('adm-dex').value = this.p.dex;
+
+        let swordHtml = `<option value="">-- 請選擇武器 --</option>`;
+        Object.keys(DB.swords).forEach(rank => {
+            let optGroup = `<optgroup label="${rank}-RANK">`;
+            DB.swords[rank].forEach(sw => {
+                let name = typeof sw === 'object' ? sw.name : sw;
+                optGroup += `<option value="${rank}|${name}">${name}</option>`;
+            });
+            optGroup += `</optgroup>`;
+            swordHtml += optGroup;
+        });
+        document.getElementById('adm-sel-sword').innerHTML = swordHtml;
+
+        let titleHtml = `<option value="">-- 請選擇稱號 --</option>`;
+        Object.keys(DB.titles).forEach(rank => {
+            let optGroup = `<optgroup label="${rank}-RANK">`;
+            DB.titles[rank].forEach(t => {
+                optGroup += `<option value="${t}">${t}</option>`;
+            });
+            optGroup += `</optgroup>`;
+            titleHtml += optGroup;
+        });
+        document.getElementById('adm-sel-title').innerHTML = titleHtml;
+    },
+
+    adminSetStats() {
+        this.p.lv = parseInt(document.getElementById('adm-lv').value) || 1;
+        this.p.coins = parseInt(document.getElementById('adm-coins').value) || 0;
+        this.p.sp = parseInt(document.getElementById('adm-sp').value) || 0;
+        this.p.iq = parseInt(document.getElementById('adm-iq').value) || 1;
+        this.p.str = parseInt(document.getElementById('adm-str').value) || 1;
+        this.p.mp = parseInt(document.getElementById('adm-mp').value) || 1;
+        this.p.dex = parseInt(document.getElementById('adm-dex').value) || 1;
+        
+        this.p.exp = this.getMaxExp(this.p.lv - 1);
+        if(this.p.lv === 1) this.p.exp = 0;
+
+        this.updateUI();
+        alert("✅ 數值已強制覆寫寫入！");
+    },
+
+    adminGiveSword() {
+        const val = document.getElementById('adm-sel-sword').value;
+        if(!val) return alert("請先選擇一把武器");
+        
+        const parts = val.split('|');
+        const rank = parts[0];
+        const name = parts[1];
+
+        let desc = "";
+        let target = DB.swords[rank].find(s => (typeof s === 'object' ? s.name : s) === name);
+        if(typeof target === 'object') desc = target.desc;
+
+        let godItem = { id: Date.now() + Math.floor(Math.random()*1000), name: name, rank: rank, wear: rank === 'UNKNOWN' ? '???' : '0.000', desc: desc, price: 0 };
+        this.p.bag.swords.push(godItem);
+        this.save();
+        alert(`🗡️ [上帝模式] 已將完美無瑕的【${name}】放入背包！`);
+    },
+
+    adminGiveTitle() {
+        const title = document.getElementById('adm-sel-title').value;
+        if(!title) return alert("請先選擇一個稱號");
+
+        if(!this.p.titles.includes(title)) {
+            this.p.titles.push(title);
+            this.save();
+            alert(`📜 [上帝模式] 成功解鎖稱號：【${title}】`);
+        } else {
+            alert(`⚠️ 你已經擁有這個稱號了`);
+        }
+    },
+
+    adminGiveMats() {
+        this.p.bag.mats.logic += 100;
+        this.p.bag.mats.lang += 100;
+        this.p.bag.mats.mem += 100;
+        this.save();
+        alert("📦 已派發所有打鐵素材各 100 個！");
+    },
+
+    adminGivePotions() {
+        this.p.bag.potions.p_double += 10;
+        this.p.bag.potions.p_time += 10;
+        this.p.bag.potions.p_luck += 10;
+        this.p.bag.potions.p_seven += 10;
+        this.save();
+        alert("🧪 已派發所有藥水各 10 瓶！");
     }
 };
 
 window.System = System;
-
-window.onload = () => {
-    document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
-};
+document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
 </script>
 </body>
 </html>
