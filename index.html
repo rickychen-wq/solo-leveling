@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Dynamic System V27</title>
+    <title>Solo Leveling: Flawless System V28</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,12 +21,12 @@
         .system-frame::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent 70%, var(--purple) 100%); animation: rotateLight 4s linear infinite; z-index: -1; }
         @keyframes rotateLight { 100% { transform: rotate(360deg); } }
         
-        .inner-content { position: absolute; inset: 4px; background: radial-gradient(circle at top, #130a24 0%, var(--bg) 80%); border-radius: 20px; z-index: 2; padding: 15px 15px 0 15px; display: flex; flex-direction: column; overflow: hidden; }
+        .inner-content { position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; background: radial-gradient(circle at top, #130a24 0%, var(--bg) 80%); border-radius: 20px; z-index: 2; padding: 15px 15px 0 15px; display: flex; flex-direction: column; overflow: hidden; }
 
         .xp-wrapper { width: 100%; margin: 10px 0; }
         .xp-bar-container { width: 100%; height: 18px; background: rgba(255,255,255,0.05); border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 0 10px #000; border: 1px solid rgba(188, 19, 254, 0.4); }
         .xp-bar-fill { height: 100%; width: 0%; border-radius: 12px; background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 50%, var(--purple) 100%); box-shadow: 0 0 15px var(--purple); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; overflow: hidden; }
-        .xp-bar-fill::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 25%, transparent 30%), linear-gradient(70deg, transparent 60%, rgba(255,255,255,0.5) 65%, transparent 70%); background-size: 30px 100%; opacity: 0.9; }
+        .xp-bar-fill::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 25%, transparent 30%), linear-gradient(70deg, transparent 60%, rgba(255,255,255,0.5) 65%, transparent 70%); background-size: 30px 100%; opacity: 0.9; }
 
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; margin-bottom: 10px; }
         .stat-item { background: linear-gradient(135deg, rgba(8,12,23,0.9), rgba(20,10,40,0.9)); border-radius: 12px; padding: 12px 5px; text-align: center; border: 1px solid rgba(188, 19, 254, 0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; animation: statPulse 3s infinite alternate ease-in-out; transform: translateZ(0); }
@@ -67,15 +67,17 @@
         .rank-D { color: var(--d-rank); font-weight: 900; }
         .rank-E { color: var(--e-rank); font-weight: 900; }
         .rank-UNKNOWN { color: var(--red-alert); text-shadow: 0 0 15px var(--red-alert), 0 0 30px var(--red-alert); font-weight: 900; }
-
-        .locked-title { opacity: 0.2; filter: grayscale(100%); pointer-events: none; }
         .equipped { border: 1px solid var(--purple) !important; background: rgba(188, 19, 254, 0.1) !important; box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.2); }
 
-        #login-ui { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
+        /* 🔥 我就是不小心刪掉這兩行救命的彈出視窗魔法！現在幫你加回來了！ */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #0a0f1e; border: 1px solid var(--blue); border-radius: 16px; padding: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(0,212,255,0.2); }
+
+        #login-ui { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
         .login-box { width: 85%; max-width: 400px; padding: 40px; background: rgba(10, 15, 30, 0.95); border: 1px solid var(--purple); border-radius: 16px; text-align: center; box-shadow: 0 0 40px rgba(188, 19, 254, 0.2); }
         .login-input { width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 1rem; outline:none; font-family: 'Rajdhani', sans-serif;}
         
-        #gacha-pop { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        #gacha-pop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .gacha-glow { font-size: 3rem; font-family: 'Rajdhani', sans-serif; font-weight: 900; padding: 20px; animation: popGlow 1s infinite alternate; }
         @keyframes popGlow { from { transform: scale(1); text-shadow: 0 0 15px currentColor; } to { transform: scale(1.05); text-shadow: 0 0 30px currentColor, 0 0 50px currentColor; } }
 
@@ -84,7 +86,6 @@
         .mat-icon { display: inline-block; width: 20px; text-align: center; font-size: 14px; }
         
         .admin-input { width: 100%; padding: 10px; background: rgba(0,0,0,0.8); border: 1px solid #555; color: #fff; border-radius: 5px; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; font-weight:700; text-align:center; }
-        .admin-label { font-size: 11px; color: #aaa; margin-bottom: 5px; display: block; text-align:left; font-family:'Rajdhani', sans-serif;}
         .admin-box { background: rgba(255, 0, 85, 0.05); border: 1px solid rgba(255, 0, 85, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
 
         .rank-badge { width: 30px; height: 30px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; justify-content: center; align-items: center; font-weight: 900; font-family: 'Orbitron'; margin-right: 15px; font-size: 14px; box-shadow: 0 0 10px var(--purple); flex-shrink:0;}
@@ -92,7 +93,7 @@
         .rank-badge.top-2 { background: silver; box-shadow: 0 0 10px silver; color: #000; }
         .rank-badge.top-3 { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; color: #fff; }
 
-        .cooldown-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; pointer-events: none; z-index: 5; }
+        .cooldown-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; pointer-events: none; z-index: 5; }
         .cooldown-timer { font-size: 1.5rem; color: var(--red-alert); text-shadow: 0 0 10px var(--red-alert); letter-spacing: 2px;}
         .partner-glow { box-shadow: 0 0 20px rgba(0, 255, 170, 0.3); border: 1px solid var(--comrade-green) !important; background: rgba(0, 255, 170, 0.05) !important; }
     </style>
@@ -208,6 +209,17 @@
             <div id="bag-list" class="scroll-area"></div>
         </div>
 
+        <div id="p-forge" class="page">
+            <h2 class="section-title" style="color:#ff8c00;">BLACKSMITH</h2>
+            <div style="background:rgba(255,140,0,0.05); border:1px solid rgba(255,140,0,0.2); padding:12px; border-radius:10px; margin-bottom:15px; font-size:12px; color:#ccc;">
+                <span class="mat-icon">📐</span> 邏輯: <b id="forge-m-logic" style="color:var(--blue); font-size:14px;">0</b> | 
+                <span class="mat-icon">📖</span> 語文: <b id="forge-m-lang" style="color:var(--gold); font-size:14px;">0</b> | 
+                <span class="mat-icon">🧠</span> 記憶: <b id="forge-m-mem" style="color:var(--purple); font-size:14px;">0</b><br>
+                <small style="color:#666; display:block; margin-top:5px;">鍛造消耗碎片：S級(7) / A級(3) / B~E級(1)</small>
+            </div>
+            <div id="forge-list" class="scroll-area"></div>
+        </div>
+
         <div id="p-partner" class="page">
             <h2 class="section-title" style="color:var(--comrade-green);">HUNTER PACT (戰友)</h2>
             <div id="partner-status-area" class="scroll-area"></div>
@@ -277,6 +289,7 @@
             <div class="nav-link" onclick="System.nav('p-titles', event)">圖鑑</div>
             <div class="nav-link" onclick="System.nav('p-shop', event)">商店</div>
             <div class="nav-link" onclick="System.nav('p-inventory', event)">背包</div>
+            <div class="nav-link" onclick="System.nav('p-forge', event)" style="color:#ff8c00;">打鐵</div>
             <div class="nav-link" onclick="System.nav('p-partner', event)" style="color:var(--comrade-green);">戰友</div>
             <div class="nav-link" onclick="System.nav('p-rank', event)" style="color:var(--gold);">排行</div>
             <div class="nav-link" onclick="System.nav('p-code', event)" style="color:var(--red-alert);">終端</div>
@@ -300,8 +313,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig); 
 const db = getFirestore(app);
 
-// 🔥 完整還原 150+ 稱號與 60+ 武器 (絕對不刪減！)
-// 💡 注意：作弊者稱號已從圖鑑 (E級) 移除，保證抽不到、也看不到
+// 150+ 稱號與 60+ 武器全集 (作弊者稱號已拔除，保障圖鑑純潔度)
 const DB = {
     titles: {
         S: ["創世神：萬象起源", "虛空之王：秩序崩壞者", "因果律：命運編織者", "永恆傳說：不朽之冠", "唯一神：降臨之光"],
@@ -326,7 +338,7 @@ const DB = {
         { id: "p_luck", name: "🍀 幸運四葉草", price: 850, desc: "稱號保底 B 級" },
         { id: "p_seven", name: "✨ 七葉草藥水", price: 3500, desc: "任選 A 級稱號" }
     ],
-    cloudGates: [] // 這裡存放從總監後台讀取到的世界任務
+    cloudGates: [] // 從終端機載入的世界任務
 };
 
 const StorageMgr = {
@@ -356,14 +368,12 @@ const System = {
                 }
                 if (!d.pwd) { d.pwd = pwd; await setDoc(docRef, d); }
                 this.p = d;
-                // 確保舊帳號也有新的欄位
                 if(!this.p.bag) this.p.bag = {swords:[], potions:{}, mats:{logic:0, lang:0, mem:0}};
                 if(!this.p.buffs) this.p.buffs = {doubleXp:false, luck:false};
                 if(!this.p.activeQuests) this.p.activeQuests = [];
                 if(this.p.partner === undefined) this.p.partner = null;
                 if(!this.p.requests) this.p.requests = [];
             } else {
-                // 創建新帳號
                 this.p = { 
                     acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0, iq: 1, str: 1, mp: 1, dex: 1, 
                     titles: ["尚未覺醒"], curTitle: "尚未覺醒", curWeapon: null, 
@@ -414,6 +424,7 @@ const System = {
         if(id === 'p-enhance') this.renderUpgrades();
         if(id === 'p-titles') this.renderTitles();
         if(id === 'p-inventory') this.renderBag('sword');
+        if(id === 'p-forge') this.renderForge();
         if(id === 'p-shop') { if(!this.shopCache) this.checkShopRefresh(); this.renderShop('sword'); }
         if(id === 'p-rank') this.renderLeaderboard();
         if(id === 'p-partner') this.renderPartner(); 
@@ -708,6 +719,9 @@ const System = {
         ['S','A','B','C','D','E'].forEach(r => {
             html += `<div class="section-title rank-${r}">${r}-RANK</div>`;
             DB.titles[r].forEach(t => {
+                // 防呆：確保不渲染作弊者稱號
+                if (t === "🚫 卑鄙的作弊者") return;
+                
                 const unlocked = this.p.titles.includes(t); 
                 const isEq = this.p.curTitle === t;
                 if(unlocked) {
@@ -734,7 +748,7 @@ const System = {
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v27_cloud');
+        let stored = StorageMgr.get('sl_shop_v28_cloud');
         if(stored) { 
             const parsed = JSON.parse(stored); 
             if(parsed.date === today) { 
@@ -790,7 +804,7 @@ const System = {
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
         
         this.shopCache = shop; 
-        StorageMgr.set('sl_shop_v27_cloud', JSON.stringify({ date: today, data: this.shopCache }));
+        StorageMgr.set('sl_shop_v28_cloud', JSON.stringify({ date: today, data: this.shopCache }));
         document.getElementById('shop-time').innerText = force ? `Refreshed` : `Refreshed: ${today}`;
     },
 
