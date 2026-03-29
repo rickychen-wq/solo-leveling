@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Shadow Enforcer V21 (Full Uncut)</title>
+    <title>Solo Leveling: Comrade Pact V23 (Sync Patch)</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --purple: #bc13fe; --purple-dark: #5a0b80; --gold: #ffd700; --blue: #00d4ff; --bg: #030712;
             --s-rank: #ff3e3e; --a-rank: #bc13fe; --b-rank: #00d4ff; --c-rank: #00ff88; --d-rank: #aaaaaa; --e-rank: #555555;
             --glass: rgba(10, 15, 30, 0.75); --glass-blue: rgba(0, 212, 255, 0.1);
-            --red-alert: #ff0055;
+            --red-alert: #ff0055; --comrade-green: #00ffaa;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Noto Sans TC', sans-serif; user-select: none; outline: none; }
@@ -41,11 +41,11 @@
         .btn-cyber:active { transform: scale(0.96); box-shadow: 0 0 30px rgba(188, 19, 254, 0.8), inset 0 0 30px rgba(188, 19, 254, 0.4); background: rgba(188, 19, 254, 0.25); border-color: #fff; }
 
         .section-title { font-family: 'Rajdhani', sans-serif; color: var(--blue); margin: 15px 0 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 900; font-size: 1.2rem; flex-shrink: 0; letter-spacing: 1px;}
-        .card { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .card { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; position: relative; overflow: hidden;}
         .card-col { display: flex; flex-direction: column; flex: 1; margin-right: 10px; }
         .btn-action { background: var(--purple); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 900; cursor: pointer; font-size: 12px; font-family: 'Rajdhani', sans-serif; transition: 0.2s; flex-shrink: 0; letter-spacing: 1px;}
         .btn-action:active { transform: scale(0.95); }
-        .btn-action:disabled { background: #333 !important; color: #666 !important; cursor: not-allowed; border:1px solid #444; }
+        .btn-action:disabled { background: #222 !important; color: #555 !important; cursor: not-allowed; border:1px solid #333; }
 
         .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 20px; padding-right: 5px; }
         .scroll-area::-webkit-scrollbar { width: 3px; }
@@ -53,7 +53,7 @@
 
         .nav { display: flex; overflow-x: auto; padding: 10px 5px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(188, 19, 254, 0.2); background: #000; z-index: 100; flex-shrink: 0; margin: 0 -15px; border-radius: 0 0 20px 20px; scrollbar-width: none; }
         .nav::-webkit-scrollbar { display: none; }
-        .nav-link { color: #555; font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.3s; flex-shrink: 0; text-align: center; padding: 5px 12px; white-space: nowrap; font-family: 'Rajdhani', 'Noto Sans TC', sans-serif;}
+        .nav-link { color: #555; font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.3s; flex-shrink: 0; text-align: center; padding: 5px 12px; white-space: nowrap; font-family: 'Rajdhani', sans-serif;}
         .nav-link.active { color: var(--purple); text-shadow: 0 0 15px var(--purple); border-bottom: 2px solid var(--purple); }
 
         .page { display: none; flex: 1; flex-direction: column; overflow: hidden; }
@@ -96,8 +96,10 @@
         .rank-badge.top-2 { background: silver; box-shadow: 0 0 10px silver; color: #000; }
         .rank-badge.top-3 { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; color: #fff; }
 
-        /* 🔥 冷卻計時器樣式 */
-        .cooldown-timer { font-family: 'Rajdhani', sans-serif; font-weight: 900; letter-spacing: 2px; }
+        .cooldown-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; pointer-events: none; z-index: 5; }
+        .cooldown-timer { font-size: 1.5rem; color: var(--red-alert); text-shadow: 0 0 10px var(--red-alert); }
+        
+        .partner-glow { box-shadow: 0 0 20px rgba(0, 255, 170, 0.3); border: 1px solid var(--comrade-green) !important; background: rgba(0, 255, 170, 0.05) !important; }
     </style>
 </head>
 <body>
@@ -237,6 +239,13 @@
             </div>
         </div>
 
+        <div id="p-partner" class="page">
+            <h2 class="section-title" style="color:var(--comrade-green);">HUNTER PACT (戰友契約)</h2>
+            <div id="partner-status-area" class="scroll-area">
+                <div style="text-align:center; padding:30px; color:#555;">載入中...</div>
+            </div>
+        </div>
+
         <div id="p-code" class="page">
             <h2 class="section-title" style="color:var(--red-alert);">SYS.TERMINAL</h2>
             
@@ -298,6 +307,7 @@
             <div class="nav-link" onclick="System.nav('p-inventory', event)">背包</div>
             <div class="nav-link" onclick="System.nav('p-forge', event)" style="color:#ff8c00;">打鐵</div>
             <div class="nav-link" onclick="System.nav('p-rank', event)" style="color:var(--gold);">排行</div>
+            <div class="nav-link" onclick="System.nav('p-partner', event)" style="color:var(--comrade-green);">戰友</div>
             <div class="nav-link" onclick="System.nav('p-code', event)" style="color:var(--red-alert);">終端</div>
         </div>
     </div>
@@ -320,9 +330,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* =========================================
-   完整大數據庫 (含任務冷卻時間 time: 分鐘)
-========================================= */
 const DB = {
     titles: {
         S: ["創世神：萬象起源", "虛空之王：秩序崩壞者", "因果律：命運編織者", "永恆傳說：不朽之冠", "唯一神：降臨之光"],
@@ -369,9 +376,6 @@ const StorageMgr = {
     }
 };
 
-/* =========================================
-   雲端遊戲引擎核心 (100% 完整版)
-========================================= */
 const System = {
     p: null, 
     shopCache: null,
@@ -413,6 +417,9 @@ const System = {
                 if(!this.p.buffs) this.p.buffs = { doubleXp: false, luck: false };
                 if(!this.p.curWeapon) this.p.curWeapon = null;
                 if(!this.p.activeQuests) this.p.activeQuests = [];
+                if(this.p.partner === undefined) this.p.partner = null;
+                if(!this.p.requests) this.p.requests = [];
+
             } else {
                 this.p = {
                     acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0,
@@ -421,7 +428,9 @@ const System = {
                     curWeapon: null,
                     bag: { swords: [], potions: { p_double:0, p_time:0, p_luck:0, p_seven:0 }, mats: { logic:0, lang:0, mem:0 } },
                     buffs: { doubleXp: false, luck: false },
-                    activeQuests: []
+                    activeQuests: [],
+                    partner: null,
+                    requests: []
                 };
                 await setDoc(docRef, this.p);
             }
@@ -429,7 +438,7 @@ const System = {
             document.getElementById('login-ui').style.display = 'none';
             this.checkShopRefresh();
             this.updateUI();
-            this.startGlobalTimer(); // 啟動全域冷卻計時器
+            this.startGlobalTimer(); 
         } catch (e) {
             console.error(e);
             alert("伺服器連線失敗，請確認 Firebase 規則設定是否為 true。");
@@ -438,10 +447,18 @@ const System = {
         }
     },
 
+    // 🔥 V23防護補丁：儲存前先同步社交資料，防覆蓋！
     async save() { 
         if(this.p) {
-            try { await setDoc(doc(db, "players", this.p.acc), this.p); } 
-            catch(e) { console.error("雲端存檔失敗:", e); }
+            try { 
+                const snap = await getDoc(doc(db, "players", this.p.acc));
+                if(snap.exists()) {
+                    let cloudData = snap.data();
+                    this.p.partner = cloudData.partner !== undefined ? cloudData.partner : this.p.partner;
+                    this.p.requests = cloudData.requests || [];
+                }
+                await setDoc(doc(db, "players", this.p.acc), this.p); 
+            } catch(e) { console.error("雲端存檔失敗:", e); }
         }
     },
 
@@ -460,6 +477,7 @@ const System = {
         if(id === 'p-forge') this.renderForge();
         if(id === 'p-shop') { if(!this.shopCache) this.checkShopRefresh(); this.renderShop('sword'); }
         if(id === 'p-rank') this.renderLeaderboard();
+        if(id === 'p-partner') this.renderPartner(); 
         if(id === 'p-code' && this.isAdminUnlocked) this.renderAdminPanel();
     },
 
@@ -570,7 +588,6 @@ const System = {
             const el = document.getElementById(`inp-t-${task}`); if(!el.value) return alert('請輸入第幾回'); rangeVal = `第 ${el.value} 回`;
         } else rangeVal = document.getElementById(`sel-t-${task}`).value;
         
-        // 🔥 設定冷卻時間
         let waitMin = DB.subjects[sub].time || 10;
         if(task === '單字本' || task === '雜誌' || task === '語文練習') waitMin = 15;
         let readyAt = Date.now() + waitMin * 60 * 1000;
@@ -587,7 +604,6 @@ const System = {
         this.p.activeQuests.forEach(q => {
             const isReady = !q.readyAt || now >= q.readyAt;
             
-            // 🔥 根據冷卻狀態切換按鈕
             let btnHtml = isReady 
                 ? `<button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id}, ${q.xp}, '${q.sub}')">結算</button>`
                 : `<button class="btn-action cooldown-timer" style="background:#222; color:var(--red-alert); border:1px solid #444;" disabled data-until="${q.readyAt}">00:00</button>`;
@@ -603,7 +619,6 @@ const System = {
         document.getElementById('active-quests-list').innerHTML = html;
     },
 
-    // 🔥 全域計時器
     startGlobalTimer() {
         if(this.timerIdx) clearInterval(this.timerIdx);
         this.timerIdx = setInterval(() => {
@@ -612,7 +627,7 @@ const System = {
                 const until = parseInt(el.dataset.until);
                 const diff = until - Date.now();
                 if(diff <= 0) {
-                    needsRender = true; // 時間到了，觸發重新渲染按鈕
+                    needsRender = true;
                 } else {
                     const m = Math.floor(diff/60000);
                     const s = Math.floor((diff%60000)/1000);
@@ -688,7 +703,7 @@ const System = {
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v21_cloud');
+        let stored = StorageMgr.get('sl_shop_v23_cloud');
         if(stored) {
             const parsed = JSON.parse(stored);
             if(parsed.date === today) {
@@ -734,7 +749,7 @@ const System = {
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
 
-        this.shopCache = shop; StorageMgr.set('sl_shop_v21_cloud', JSON.stringify({ date: today, data: this.shopCache }));
+        this.shopCache = shop; StorageMgr.set('sl_shop_v23_cloud', JSON.stringify({ date: today, data: this.shopCache }));
         document.getElementById('shop-time').innerText = force ? `Refreshed (Hourglass)` : `Refreshed: ${today}`;
     },
 
@@ -917,7 +932,7 @@ const System = {
     },
 
     /* =========================================
-       🌟 排行榜 (Leaderboard) 繞過索引限制版
+       🌟 排行榜 (Leaderboard)
     ========================================= */
     async renderLeaderboard() {
         const lbEl = document.getElementById('leaderboard-list');
@@ -925,13 +940,9 @@ const System = {
         
         try {
             const querySnapshot = await getDocs(collection(db, "players"));
-            
             let playersData = [];
-            querySnapshot.forEach((doc) => {
-                playersData.push(doc.data());
-            });
+            querySnapshot.forEach((doc) => { playersData.push(doc.data()); });
 
-            // 系統前端自帶高階排序算法
             playersData.sort((a, b) => {
                 if (b.lv !== a.lv) return b.lv - a.lv;
                 return b.exp - a.exp;
@@ -974,6 +985,150 @@ const System = {
     },
 
     /* =========================================
+       🤝 戰友系統 (Comrade Pact)
+    ========================================= */
+    async renderPartner() {
+        const pEl = document.getElementById('partner-status-area');
+        pEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">讀取靈魂連結...</div>`;
+        
+        try {
+            const mySnap = await getDoc(doc(db, "players", this.p.acc));
+            if(mySnap.exists()) this.p = mySnap.data();
+
+            let html = "";
+
+            if (this.p.partner) {
+                const partnerSnap = await getDoc(doc(db, "players", this.p.partner));
+                if(partnerSnap.exists()) {
+                    let pd = partnerSnap.data();
+                    let wp = pd.curWeapon ? `<span class="rank-${pd.curWeapon.rank}">${pd.curWeapon.name}</span>` : "徒手";
+                    html += `
+                    <div style="text-align:center; color:var(--comrade-green); font-weight:900; font-family:'Rajdhani'; letter-spacing:2px; margin-bottom:15px;">🔗 PACT ESTABLISHED</div>
+                    <div class="card partner-glow" style="flex-direction:column; padding:20px;">
+                        <h3 style="color:var(--comrade-green); margin:0 0 10px 0; font-family:'Rajdhani'; font-size:1.8rem; text-transform:uppercase;">${pd.acc}</h3>
+                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:5px; font-weight:900;">
+                            <span style="color:#aaa;">Level:</span> <span style="color:var(--purple); font-size:1.2rem;">${pd.lv}</span>
+                        </div>
+                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:5px;">
+                            <span style="color:#aaa; font-size:12px;">Title:</span> <span style="color:var(--gold); font-size:12px;">[ ${pd.curTitle} ]</span>
+                        </div>
+                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:15px;">
+                            <span style="color:#aaa; font-size:12px;">Weapon:</span> <span style="font-size:12px;">${wp}</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; width:100%; margin-bottom:15px; border-top:1px solid rgba(0,255,170,0.2); padding-top:10px;">
+                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">IQ</div><div style="font-weight:900;">${pd.iq}</div></div>
+                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">STR</div><div style="font-weight:900;">${pd.str}</div></div>
+                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">MP</div><div style="font-weight:900;">${pd.mp}</div></div>
+                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">DEX</div><div style="font-weight:900;">${pd.dex}</div></div>
+                        </div>
+                        <button class="btn-action" style="width:100%; background:var(--red-alert);" onclick="System.breakPact()">解除契約 (SEVER LINK)</button>
+                    </div>`;
+                } else {
+                    html += `<div style="text-align:center; padding:30px; color:red;">找不到戰友資料，可能已被系統抹除。</div>
+                             <button class="btn-action" onclick="System.breakPact()">強制解除異常連結</button>`;
+                }
+            } else {
+                html += `
+                <div class="admin-box" style="border-color:var(--comrade-green); background:rgba(0,255,170,0.05);">
+                    <h3 style="color:var(--comrade-green); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">⚔️ 締結契約</h3>
+                    <input type="text" id="inp-partner-req" class="admin-input" placeholder="輸入同學 ID 發送邀請..." style="border-color:rgba(0,255,170,0.4);">
+                    <button class="btn-action" style="width:100%; background:var(--comrade-green); color:#000;" onclick="System.sendPactReq()">發送邀請 (SEND REQUEST)</button>
+                </div>
+                <h3 class="section-title" style="font-size:14px; margin-top:20px;">PENDING REQUESTS (收到的邀請)</h3>`;
+
+                if (this.p.requests && this.p.requests.length > 0) {
+                    this.p.requests.forEach(reqAcc => {
+                        html += `
+                        <div class="card" style="border-left: 3px solid var(--comrade-green);">
+                            <div class="card-col">
+                                <strong style="color:#fff; font-size:1.1rem; font-family:'Rajdhani';">${reqAcc}</strong>
+                                <span style="color:#888; font-size:10px;">請求與你結成戰友</span>
+                            </div>
+                            <div style="display:flex; gap:5px;">
+                                <button class="btn-action" style="background:var(--comrade-green); color:#000;" onclick="System.acceptPact('${reqAcc}')">同意</button>
+                                <button class="btn-action" style="background:#444;" onclick="System.rejectPact('${reqAcc}')">拒絕</button>
+                            </div>
+                        </div>`;
+                    });
+                } else {
+                    html += `<div style="text-align:center; color:#555; padding:15px; font-size:12px;">目前沒有任何邀請</div>`;
+                }
+            }
+            pEl.innerHTML = html;
+        } catch (error) {
+            pEl.innerHTML = `<div style="text-align:center; padding:30px; color:red;">連線失敗</div>`;
+        }
+    },
+
+    async sendPactReq() {
+        const targetAcc = document.getElementById('inp-partner-req').value.trim();
+        if(!targetAcc) return alert("請輸入同學 ID！");
+        if(targetAcc === this.p.acc) return alert("不能跟自己結盟！");
+        try {
+            const targetRef = doc(db, "players", targetAcc);
+            const targetSnap = await getDoc(targetRef);
+            if(!targetSnap.exists()) return alert("❌ 找不到該獵人！");
+            let td = targetSnap.data();
+            if(td.partner) return alert("⚠️ 對方已經有戰友了！");
+            if(!td.requests) td.requests = [];
+            if(td.requests.includes(this.p.acc)) return alert("⚠️ 已經發送過邀請了，請耐心等待對方確認。");
+            
+            td.requests.push(this.p.acc);
+            await setDoc(targetRef, td);
+            alert(`✅ 邀請已發送給【${targetAcc}】！`);
+            document.getElementById('inp-partner-req').value = "";
+        } catch(e) { alert("發送失敗"); }
+    },
+
+    async acceptPact(targetAcc) {
+        try {
+            const targetRef = doc(db, "players", targetAcc);
+            const targetSnap = await getDoc(targetRef);
+            if(targetSnap.exists()) {
+                let td = targetSnap.data();
+                if(td.partner) {
+                    alert("⚠️ 晚了一步，對方已經跟別人結盟了！");
+                    this.p.requests = this.p.requests.filter(r => r !== targetAcc);
+                    await this.save();
+                    return this.renderPartner();
+                }
+                td.partner = this.p.acc;
+                await setDoc(targetRef, td);
+            }
+            this.p.partner = targetAcc;
+            this.p.requests = this.p.requests.filter(r => r !== targetAcc);
+            await this.save();
+            alert(`🔗 契約成立！你與【${targetAcc}】正式成為戰友！`);
+            this.renderPartner();
+        } catch(e) { alert("綁定失敗"); }
+    },
+
+    async rejectPact(targetAcc) {
+        this.p.requests = this.p.requests.filter(r => r !== targetAcc);
+        await this.save();
+        this.renderPartner();
+    },
+
+    async breakPact() {
+        if(!confirm("確定要解除戰友契約嗎？這將切斷你們的靈魂連結。")) return;
+        try {
+            if(this.p.partner) {
+                const targetRef = doc(db, "players", this.p.partner);
+                const targetSnap = await getDoc(targetRef);
+                if(targetSnap.exists()) {
+                    let td = targetSnap.data();
+                    td.partner = null;
+                    await setDoc(targetRef, td);
+                }
+            }
+            this.p.partner = null;
+            await this.save();
+            alert("💔 契約已解除。");
+            this.renderPartner();
+        } catch(e) { alert("解除失敗"); }
+    },
+
+    /* =========================================
        👑 終端 / 上帝模式 (GOD MODE)
     ========================================= */
     verifyAdmin() {
@@ -1007,7 +1162,6 @@ const System = {
 
     async adminSetStats() {
         let targetAcc = document.getElementById('adm-target').value.trim();
-        
         let lv = parseInt(document.getElementById('adm-lv').value) || 1;
         let coins = parseInt(document.getElementById('adm-coins').value) || 0;
         let sp = parseInt(document.getElementById('adm-sp').value) || 0;
@@ -1025,14 +1179,11 @@ const System = {
                 const targetRef = doc(db, "players", targetAcc);
                 const targetSnap = await getDoc(targetRef);
                 if(targetSnap.exists()) {
-                    let targetData = targetSnap.data();
-                    targetData.lv = lv; targetData.coins = coins; targetData.sp = sp; targetData.iq = iq; targetData.str = str; targetData.mp = mp; targetData.dex = dex; targetData.exp = exp;
-                    await setDoc(targetRef, targetData);
-                    alert(`✅ 已成功竄改同學【${targetAcc}】的數值！`);
-                } else {
-                    alert(`❌ 找不到同學帳號：【${targetAcc}】`);
-                }
-            } catch(e) { console.error(e); alert("竄改失敗，連線異常"); }
+                    let td = targetSnap.data();
+                    td.lv = lv; td.coins = coins; td.sp = sp; td.iq = iq; td.str = str; td.mp = mp; td.dex = dex; td.exp = exp;
+                    await setDoc(targetRef, td); alert(`✅ 已成功竄改同學【${targetAcc}】的數值！`);
+                } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+            } catch(e) { alert("竄改失敗，連線異常"); }
         }
     },
 
@@ -1047,13 +1198,10 @@ const System = {
             this.p.bag.swords.push(godItem); this.save(); alert(`🗡️ [上帝模式] 生成給自己：【${name}】`);
         } else {
             try {
-                const targetRef = doc(db, "players", targetAcc);
-                const targetSnap = await getDoc(targetRef);
+                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
                 if(targetSnap.exists()) {
-                    let targetData = targetSnap.data();
-                    targetData.bag.swords.push(godItem);
-                    await setDoc(targetRef, targetData);
-                    alert(`🗡️ [上帝模式] 已將【${name}】塞入同學【${targetAcc}】的背包！`);
+                    let td = targetSnap.data(); td.bag.swords.push(godItem);
+                    await setDoc(targetRef, td); alert(`🗡️ [上帝模式] 已將【${name}】塞入同學【${targetAcc}】的背包！`);
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
             } catch(e) { alert("生成失敗"); }
         }
@@ -1062,20 +1210,16 @@ const System = {
     async adminGiveTitle() {
         const title = document.getElementById('adm-sel-title').value; if(!title) return alert("請先選擇一個稱號");
         let targetAcc = document.getElementById('adm-target').value.trim();
-        
         if (!targetAcc || targetAcc === this.p.acc) {
             if(!this.p.titles.includes(title)) { this.p.titles.push(title); this.save(); alert(`📜 [上帝模式] 解鎖給自己：【${title}】`); } 
             else alert(`⚠️ 你已經擁有此稱號`);
         } else {
             try {
-                const targetRef = doc(db, "players", targetAcc);
-                const targetSnap = await getDoc(targetRef);
+                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
                 if(targetSnap.exists()) {
-                    let targetData = targetSnap.data();
-                    if(!targetData.titles.includes(title)) {
-                        targetData.titles.push(title);
-                        await setDoc(targetRef, targetData);
-                        alert(`📜 [上帝模式] 已將稱號【${title}】解鎖給同學【${targetAcc}】！`);
+                    let td = targetSnap.data();
+                    if(!td.titles.includes(title)) {
+                        td.titles.push(title); await setDoc(targetRef, td); alert(`📜 [上帝模式] 已將稱號解鎖給同學【${targetAcc}】！`);
                     } else alert(`⚠️ 該同學已擁有此稱號`);
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
             } catch(e) { alert("生成失敗"); }
@@ -1112,7 +1256,7 @@ const System = {
         }
     },
 
-    // 🔥 V21: 天罰系統 (Ban Hammer)
+    // 🔥 V23: 天罰升級 (強制斬斷作弊者戰友連結)
     async adminPunish() {
         let targetAcc = document.getElementById('adm-target').value.trim();
         if(!targetAcc) return alert("⚠️ 天罰必須指定目標帳號！請在上方輸入 ID。");
@@ -1123,6 +1267,18 @@ const System = {
             const targetSnap = await getDoc(targetRef);
             if(targetSnap.exists()) {
                 let d = targetSnap.data();
+                
+                // 若作弊者有戰友，同步把戰友那邊的連結切斷！
+                if (d.partner) {
+                    const pRef = doc(db, "players", d.partner);
+                    const pSnap = await getDoc(pRef);
+                    if (pSnap.exists()) {
+                        let pData = pSnap.data();
+                        pData.partner = null;
+                        await setDoc(pRef, pData);
+                    }
+                }
+
                 d.lv = 1; d.exp = 0; d.coins = 0; d.sp = 0;
                 d.iq = 1; d.str = 1; d.mp = 1; d.dex = 1;
                 d.curTitle = "🚫 卑鄙的作弊者";
@@ -1130,11 +1286,11 @@ const System = {
                 d.bag = {swords:[], potions:{}, mats:{logic:0, lang:0, mem:0}};
                 d.curWeapon = null;
                 d.activeQuests = [];
+                d.partner = null; // 切斷他的連結
+                d.requests = [];
                 await setDoc(targetRef, d);
-                alert(`🔨 天罰已降臨！同學【${targetAcc}】已被打回原形並刻上恥辱標記！`);
-            } else {
-                alert(`❌ 找不到同學帳號：【${targetAcc}】`);
-            }
+                alert(`🔨 天罰已降臨！同學【${targetAcc}】已被打回原形、眾叛親離並刻上恥辱標記！`);
+            } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
         } catch(e) { alert("裁決失敗，連線異常"); }
     }
 };
