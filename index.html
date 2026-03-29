@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Creator's World V25</title>
+    <title>Solo Leveling: Dynamic System V26</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -66,19 +66,13 @@
         .rank-C { color: var(--c-rank); font-weight: 900; }
         .rank-D { color: var(--d-rank); font-weight: 900; }
         .rank-E { color: var(--e-rank); font-weight: 900; }
-        .rank-UNKNOWN { color: var(--red-alert); text-shadow: 0 0 15px var(--red-alert), 0 0 30px var(--red-alert); font-weight: 900; }
-
-        .locked-title { opacity: 0.2; filter: grayscale(100%); pointer-events: none; }
-        .equipped { border: 1px solid var(--purple) !important; background: rgba(188, 19, 254, 0.1) !important; box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.2); }
+        .rank-UNKNOWN { color: var(--red-alert); font-weight: 900; }
+        .equipped { border: 1px solid var(--purple) !important; background: rgba(188, 19, 254, 0.1) !important; }
 
         #login-ui { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
         .login-box { width: 85%; max-width: 400px; padding: 40px; background: rgba(10, 15, 30, 0.95); border: 1px solid var(--purple); border-radius: 16px; text-align: center; box-shadow: 0 0 40px rgba(188, 19, 254, 0.2); }
         .login-input { width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 1rem; outline:none; font-family: 'Rajdhani', sans-serif;}
-        .login-input:focus { border-color: var(--purple); box-shadow: 0 0 10px rgba(188,19,254,0.3); }
-
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #0a0f1e; border: 1px solid var(--blue); border-radius: 16px; padding: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(0,212,255,0.2);}
-
+        
         #gacha-pop { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .gacha-glow { font-size: 3rem; font-family: 'Rajdhani', sans-serif; font-weight: 900; padding: 20px; animation: popGlow 1s infinite alternate; }
         @keyframes popGlow { from { transform: scale(1); text-shadow: 0 0 15px currentColor; } to { transform: scale(1.05); text-shadow: 0 0 30px currentColor, 0 0 50px currentColor; } }
@@ -88,17 +82,13 @@
         .mat-icon { display: inline-block; width: 20px; text-align: center; font-size: 14px; }
         
         .admin-input { width: 100%; padding: 10px; background: rgba(0,0,0,0.8); border: 1px solid #555; color: #fff; border-radius: 5px; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; font-weight:700; text-align:center; }
-        .admin-label { font-size: 11px; color: #aaa; margin-bottom: 5px; display: block; text-align:left; font-family:'Rajdhani', sans-serif;}
         .admin-box { background: rgba(255, 0, 85, 0.05); border: 1px solid rgba(255, 0, 85, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
 
         .rank-badge { width: 30px; height: 30px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; justify-content: center; align-items: center; font-weight: 900; font-family: 'Orbitron'; margin-right: 15px; font-size: 14px; box-shadow: 0 0 10px var(--purple); flex-shrink:0;}
         .rank-badge.top-1 { background: var(--gold); box-shadow: 0 0 15px var(--gold); color: #000; }
-        .rank-badge.top-2 { background: silver; box-shadow: 0 0 10px silver; color: #000; }
-        .rank-badge.top-3 { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; color: #fff; }
-
+        
         .cooldown-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; pointer-events: none; z-index: 5; }
         .cooldown-timer { font-size: 1.5rem; color: var(--red-alert); text-shadow: 0 0 10px var(--red-alert); letter-spacing: 2px;}
-        
         .partner-glow { box-shadow: 0 0 20px rgba(0, 255, 170, 0.3); border: 1px solid var(--comrade-green) !important; background: rgba(0, 255, 170, 0.05) !important; }
     </style>
 </head>
@@ -106,7 +96,7 @@
 
 <div id="login-ui">
     <div class="login-box">
-        <h1 style="font-family:'Rajdhani', sans-serif; color:var(--purple); margin: 0 0 25px 0; letter-spacing:10px; font-size:3rem; text-shadow:0 0 20px rgba(188,19,254,0.6);">ARISE</h1>
+        <h1 style="font-family:'Rajdhani', sans-serif; color:var(--purple); margin: 0 0 25px 0; letter-spacing:10px; font-size:3rem;">ARISE</h1>
         <input type="text" id="inp-acc" class="login-input" placeholder="HUNTER ID">
         <input type="password" id="inp-pwd" class="login-input" placeholder="ACCESS CODE">
         <button id="btn-login" onclick="System.login()" style="width:100%; padding:15px; background:var(--purple); border:none; color:#fff; border-radius:8px; font-weight:900; font-size:1.2rem; cursor:pointer; font-family:'Rajdhani', sans-serif; letter-spacing:2px; margin-top:10px;">INITIALIZE</button>
@@ -114,41 +104,23 @@
 </div>
 
 <div id="gacha-pop" onclick="this.style.display='none'">
-    <div style="color:var(--blue); font-family:'Rajdhani', sans-serif; font-size:16px; margin-bottom:10px; letter-spacing:3px; font-weight:700;">SYSTEM NOTIFICATION</div>
+    <div style="color:var(--blue); font-family:'Rajdhani', sans-serif; font-size:16px; margin-bottom:10px; font-weight:700;">SYSTEM NOTIFICATION</div>
     <div id="gacha-msg" style="color:#fff; font-size:1.2rem; font-weight:900;">恭喜獲得稱號</div>
     <div id="gacha-result" class="gacha-glow">S-RANK</div>
-    <div style="margin-top:40px; color:#666; font-size:12px; letter-spacing:1px; font-family:'Rajdhani', sans-serif;">TAP ANYWHERE TO CLOSE</div>
-</div>
-
-<div id="seven-clover-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h2 style="color:var(--purple); font-family:'Rajdhani', sans-serif; margin:0 0 15px 0; text-align:center; font-size:1.5rem; letter-spacing:2px;">選擇 A 級稱號</h2>
-        <div id="seven-clover-list" style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-right:5px;"></div>
-        <button class="btn-action" style="width:100%; margin-top:15px; background:#333;" onclick="document.getElementById('seven-clover-modal').style.display='none'">取消</button>
-    </div>
-</div>
-
-<div id="dungeon-modal" class="modal-overlay">
-    <div class="modal-content">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,212,255,0.3); padding-bottom:10px; margin-bottom:15px;">
-            <h2 id="dm-title" style="color:var(--blue); font-family:'Rajdhani', sans-serif; margin:0; font-size:1.5rem; letter-spacing:1px;">GATE</h2>
-            <button class="btn-action" style="background:transparent; border:1px solid #555; color:#aaa; padding:5px 10px;" onclick="document.getElementById('dungeon-modal').style.display='none'">返回</button>
-        </div>
-        <div id="dm-content"></div>
-    </div>
+    <div style="margin-top:40px; color:#666; font-size:12px; font-family:'Rajdhani', sans-serif;">TAP ANYWHERE TO CLOSE</div>
 </div>
 
 <div class="system-frame">
     <div class="inner-content">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; flex-shrink:0;">
             <div>
-                <div id="ui-name" style="font-family:'Rajdhani', sans-serif; font-weight:900; font-size:1.8rem; color:var(--blue); text-transform:uppercase; letter-spacing:1px;">PLAYER</div>
+                <div id="ui-name" style="font-family:'Rajdhani', sans-serif; font-weight:900; font-size:1.8rem; color:var(--blue); text-transform:uppercase;">PLAYER</div>
                 <div id="ui-title" style="font-size:11px; color:var(--gold); font-weight: 900; margin-top:2px;">[ 尚未覺醒 ]</div>
                 <div id="ui-weapon" style="font-size:11px; color:#aaa; font-weight: 900; margin-top:2px;">⚔️ 徒手</div>
             </div>
             <div style="text-align: right;">
                 <div id="ui-coins" style="color:var(--gold); font-weight:900; font-size: 1.4rem; font-family: 'Rajdhani', sans-serif;">💰 0</div>
-                <div id="ui-sp" style="font-size: 12px; color: var(--purple); font-weight: 900; margin-top: 2px; font-family:'Rajdhani', sans-serif;">剩餘點數: 0</div>
+                <div id="ui-sp" style="font-size: 12px; color: var(--purple); font-weight: 900; margin-top: 2px;">剩餘點數: 0</div>
             </div>
         </div>
 
@@ -157,10 +129,10 @@
         <div id="p-home" class="page active">
             <div style="text-align:center; margin-top: 5px;">
                 <div id="ui-rank" style="font-size:14px; letter-spacing:4px; font-family: 'Rajdhani', sans-serif; font-weight:900; color:#888;">E-RANK HUNTER</div>
-                <div id="ui-lv" style="font-size:7.5rem; font-weight:900; color:var(--purple); font-family:'Rajdhani', sans-serif; line-height: 1; text-shadow: 0 0 20px rgba(188, 19, 254, 0.5); margin: 5px 0;">1</div>
+                <div id="ui-lv" style="font-size:7.5rem; font-weight:900; color:var(--purple); font-family:'Rajdhani', sans-serif; line-height: 1;">1</div>
                 <div class="xp-wrapper">
                     <div class="xp-bar-container"><div id="ui-xp-fill" class="xp-bar-fill"></div></div>
-                    <div id="ui-xp-txt" style="font-size:12px; color:#aaa; font-family: 'Rajdhani', sans-serif; font-weight:900; letter-spacing:1px;">0 / 100 XP</div>
+                    <div id="ui-xp-txt" style="font-size:12px; color:#aaa; font-family: 'Rajdhani', sans-serif; font-weight:900;">0 / 100 XP</div>
                 </div>
             </div>
             <div class="stat-grid">
@@ -170,21 +142,21 @@
                 <div class="stat-item"><div class="stat-label">DEX (敏捷)</div><div id="v-dex" class="stat-val">1</div></div>
             </div>
             <div style="flex:1"></div>
-            <button class="btn-cyber" onclick="System.nav('p-dungeon')">攻略地下城</button>
+            <button class="btn-cyber" onclick="System.nav('p-dungeon')">進入地下城</button>
         </div>
 
         <div id="p-dungeon" class="page">
-            <h2 class="section-title">DUNGEON GATES</h2>
-            <div id="gate-categories" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:15px; flex-shrink:0;">
-                <div style="grid-column: span 4; text-align:center; color:#555; padding:20px; font-family:'Rajdhani', sans-serif;">載入雲端任務中...</div>
+            <h2 class="section-title">WORLD GATES (世界傳送門)</h2>
+            <div class="scroll-area" id="world-gates-list" style="max-height: 35vh; border-bottom:1px solid #333; margin-bottom:10px; flex-shrink:0;">
+                <div style="text-align:center; color:#555; padding:20px; font-family:'Rajdhani', sans-serif;">載入終端任務中...</div>
             </div>
-            <h2 class="section-title" style="color:var(--purple);">ACTIVE QUESTS</h2>
+            <h2 class="section-title" style="color:var(--purple);">ACTIVE QUESTS (進行中)</h2>
             <div class="scroll-area" id="active-quests-list"></div>
         </div>
 
         <div id="p-enhance" class="page">
             <h2 class="section-title" style="color:var(--purple);">STATUS UPGRADE</h2>
-            <div style="text-align:center; margin-bottom:15px; font-size:1.2rem; color:var(--purple); font-weight:900; font-family:'Rajdhani', sans-serif;">剩餘自由配點: <span id="up-sp-display" style="font-size:2rem; color:#fff; text-shadow:0 0 15px var(--purple);">0</span></div>
+            <div style="text-align:center; margin-bottom:15px; font-size:1.2rem; color:var(--purple); font-weight:900;">剩餘自由配點: <span id="up-sp-display" style="font-size:2rem; color:#fff;">0</span></div>
             <div id="upgrade-list" class="scroll-area"></div>
         </div>
 
@@ -196,10 +168,9 @@
         <div id="p-shop" class="page">
             <h2 class="section-title">DAILY SHOP <span id="shop-time" style="font-size:11px; color:#555; float:right; line-height:2.5;"></span></h2>
             <div style="display:flex; gap:8px; margin-bottom:10px; flex-shrink:0;">
-                <button class="btn-action" id="tab-sword" style="flex:1; font-size:14px;" onclick="System.renderShop('sword')">裝備</button>
-                <button class="btn-action" id="tab-potion" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderShop('potion')">藥水</button>
-                <button class="btn-action" id="tab-mat" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderShop('mat')">材料</button>
-                <button class="btn-action" id="tab-title" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderShop('title')">稱號</button>
+                <button class="btn-action" id="tab-sword" style="flex:1;" onclick="System.renderShop('sword')">裝備</button>
+                <button class="btn-action" id="tab-potion" style="flex:1; background:#222;" onclick="System.renderShop('potion')">藥水</button>
+                <button class="btn-action" id="tab-title" style="flex:1; background:#222;" onclick="System.renderShop('title')">稱號</button>
             </div>
             <div id="shop-list" class="scroll-area"></div>
         </div>
@@ -207,9 +178,9 @@
         <div id="p-inventory" class="page">
             <h2 class="section-title">INVENTORY</h2>
             <div style="display:flex; gap:8px; margin-bottom:10px; flex-shrink:0;">
-                <button class="btn-action" id="bag-tab-sword" style="flex:1; font-size:14px;" onclick="System.renderBag('sword')">裝備</button>
-                <button class="btn-action" id="bag-tab-potion" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderBag('potion')">藥水</button>
-                <button class="btn-action" id="bag-tab-mat" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderBag('mat')">材料</button>
+                <button class="btn-action" id="bag-tab-sword" style="flex:1;" onclick="System.renderBag('sword')">裝備</button>
+                <button class="btn-action" id="bag-tab-potion" style="flex:1; background:#222;" onclick="System.renderBag('potion')">藥水</button>
+                <button class="btn-action" id="bag-tab-mat" style="flex:1; background:#222;" onclick="System.renderBag('mat')">材料</button>
             </div>
             <div id="bag-list" class="scroll-area"></div>
         </div>
@@ -217,76 +188,61 @@
         <div id="p-forge" class="page">
             <h2 class="section-title" style="color:#ff8c00;">BLACKSMITH</h2>
             <div style="background:rgba(255,140,0,0.05); border:1px solid rgba(255,140,0,0.2); padding:12px; border-radius:10px; margin-bottom:15px; font-size:12px; color:#ccc;">
-                <span class="mat-icon">📐</span> 邏輯: <b id="forge-m-logic" style="color:var(--blue); font-family:'Rajdhani', sans-serif; font-size:14px;">0</b> | 
-                <span class="mat-icon">📖</span> 語文: <b id="forge-m-lang" style="color:var(--gold); font-family:'Rajdhani', sans-serif; font-size:14px;">0</b> | 
-                <span class="mat-icon">🧠</span> 記憶: <b id="forge-m-mem" style="color:var(--purple); font-family:'Rajdhani', sans-serif; font-size:14px;">0</b><br>
+                <span class="mat-icon">📐</span> 邏輯: <b id="forge-m-logic" style="color:var(--blue); font-size:14px;">0</b> | 
+                <span class="mat-icon">📖</span> 語文: <b id="forge-m-lang" style="color:var(--gold); font-size:14px;">0</b> | 
+                <span class="mat-icon">🧠</span> 記憶: <b id="forge-m-mem" style="color:var(--purple); font-size:14px;">0</b><br>
                 <small style="color:#666; display:block; margin-top:5px;">鍛造消耗碎片：S級(7) / A級(3) / B~E級(1)</small>
             </div>
             <div id="forge-list" class="scroll-area"></div>
         </div>
 
-        <div id="p-rank" class="page">
-            <h2 class="section-title" style="color:var(--gold);">GLOBAL RANKINGS</h2>
-            <div style="text-align:center; color:#aaa; font-size:11px; margin-bottom:10px; font-family:'Rajdhani', sans-serif;">DATA SYNCED VIA FIRESTORE CLOUD</div>
-            <div id="leaderboard-list" class="scroll-area">
-                <div style="text-align:center; padding:30px; color:#555;">載入中...</div>
-            </div>
+        <div id="p-partner" class="page">
+            <h2 class="section-title" style="color:var(--comrade-green);">HUNTER PACT (戰友)</h2>
+            <div id="partner-status-area" class="scroll-area"></div>
         </div>
 
-        <div id="p-partner" class="page">
-            <h2 class="section-title" style="color:var(--comrade-green);">HUNTER PACT (戰友契約)</h2>
-            <div id="partner-status-area" class="scroll-area">
-                <div style="text-align:center; padding:30px; color:#555;">載入中...</div>
-            </div>
+        <div id="p-rank" class="page">
+            <h2 class="section-title" style="color:var(--gold);">GLOBAL RANKINGS</h2>
+            <div id="leaderboard-list" class="scroll-area"></div>
         </div>
 
         <div id="p-code" class="page">
             <h2 class="section-title" style="color:var(--red-alert);">SYS.TERMINAL</h2>
-            
             <div id="admin-login" style="text-align:center; margin-top:20px;">
-                <div style="font-family:'Rajdhani', sans-serif; color:var(--red-alert); margin-bottom:10px; font-weight:900; letter-spacing:2px;">RESTRICTED AREA</div>
-                <input type="password" id="inp-admin-pwd" class="login-input" placeholder="OVERRIDE CODE" style="border-color:rgba(255,0,85,0.5);">
-                <button class="btn-action" style="width:100%; background:var(--red-alert); font-size:14px; padding:12px;" onclick="System.verifyAdmin()">ACCESS OVERRIDE</button>
+                <input type="password" id="inp-admin-pwd" class="login-input" placeholder="OVERRIDE CODE">
+                <button class="btn-action" style="width:100%; background:var(--red-alert);" onclick="System.verifyAdmin()">ACCESS OVERRIDE</button>
             </div>
-
+            
             <div id="admin-panel" class="scroll-area" style="display:none; flex-direction:column; padding-top:10px;">
-                <div class="admin-box" style="border-color:var(--purple); background:rgba(188,19,254,0.05);">
-                    <h3 style="color:var(--purple); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">🎯 TARGET ACQUISITION</h3>
-                    <span class="admin-label" style="color:#ddd;">要竄改/制裁誰的資料？(留空代表自己)</span>
-                    <input type="text" id="adm-target" class="admin-input" placeholder="輸入同學帳號...">
+                <div class="admin-box" style="border-color:var(--purple);">
+                    <h3 style="color:var(--purple); font-family:'Rajdhani', sans-serif; font-size:16px;">🎯 TARGET</h3>
+                    <input type="text" id="adm-target" class="admin-input" placeholder="目標 ID (留空改自己)">
                 </div>
 
                 <div class="admin-box">
-                    <h3 style="color:var(--blue); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">🎛️ STATS OVERRIDE</h3>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                        <div><span class="admin-label">Level</span><input type="number" id="adm-lv" class="admin-input"></div>
-                        <div><span class="admin-label">Coins</span><input type="number" id="adm-coins" class="admin-input"></div>
-                        <div><span class="admin-label">SP</span><input type="number" id="adm-sp" class="admin-input"></div>
-                        <div><span class="admin-label">IQ</span><input type="number" id="adm-iq" class="admin-input"></div>
-                        <div><span class="admin-label">STR</span><input type="number" id="adm-str" class="admin-input"></div>
-                        <div><span class="admin-label">MP</span><input type="number" id="adm-mp" class="admin-input"></div>
-                        <div style="grid-column: span 2;"><span class="admin-label">DEX</span><input type="number" id="adm-dex" class="admin-input"></div>
+                    <h3 style="color:var(--blue); font-family:'Rajdhani', sans-serif; font-size:16px;">🎛️ STATS OVERRIDE</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                        <input type="number" id="adm-lv" class="admin-input" placeholder="Level">
+                        <input type="number" id="adm-coins" class="admin-input" placeholder="Coins">
+                        <input type="number" id="adm-sp" class="admin-input" placeholder="SP">
                     </div>
-                    <button class="btn-action" style="width:100%; margin-top:10px;" onclick="System.adminSetStats()">APPLY TO TARGET</button>
+                    <button class="btn-action" style="width:100%; margin-top:10px;" onclick="System.adminSetStats()">APPLY STATS</button>
                 </div>
+                
                 <div class="admin-box">
-                    <h3 style="color:var(--gold); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">🗡️ WEAPON SPAWN</h3>
-                    <select id="adm-sel-sword" class="admin-input" style="text-align:left;"></select>
+                    <h3 style="color:var(--gold); font-family:'Rajdhani', sans-serif; font-size:16px;">🗡️ SPAWN WEAPON</h3>
+                    <select id="adm-sel-sword" class="admin-input"></select>
                     <button class="btn-action" style="width:100%; background:var(--gold); color:#000;" onclick="System.adminGiveSword()">SPAWN FOR TARGET</button>
                 </div>
+                
                 <div class="admin-box">
-                    <h3 style="color:var(--purple); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">📜 TITLE UNLOCK</h3>
-                    <select id="adm-sel-title" class="admin-input" style="text-align:left;"></select>
-                    <button class="btn-action" style="width:100%;" onclick="System.adminGiveTitle()">UNLOCK FOR TARGET</button>
-                </div>
-                <div class="admin-box">
-                    <h3 style="color:#00ff88; font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">📦 SUPPLIES</h3>
+                    <h3 style="color:#00ff88; font-family:'Rajdhani', sans-serif; font-size:16px;">📦 SUPPLIES</h3>
                     <button class="btn-action" style="width:100%; background:rgba(0,255,136,0.2); color:#00ff88; border:1px solid #00ff88; margin-bottom:10px;" onclick="System.adminGiveMats()">MATERIALS +100</button>
                     <button class="btn-action" style="width:100%; background:rgba(0,255,136,0.2); color:#00ff88; border:1px solid #00ff88;" onclick="System.adminGivePotions()">POTIONS +10</button>
                 </div>
+
                 <div class="admin-box" style="border-color:var(--red-alert); background:rgba(255,0,0,0.1);">
-                    <h3 style="color:var(--red-alert); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">⚖️ DIVINE JUDGEMENT (天罰)</h3>
-                    <p style="font-size:10px; color:#aaa; margin-bottom:10px;">強制重置目標所有數據，並賦予作弊者稱號。</p>
+                    <h3 style="color:var(--red-alert); font-family:'Rajdhani', sans-serif; font-size:16px;">⚖️ JUDGEMENT (天罰)</h3>
                     <button class="btn-action" style="width:100%; background:var(--red-alert);" onclick="System.adminPunish()">執行裁決 (RESET & SHAME)</button>
                 </div>
             </div>
@@ -300,8 +256,8 @@
             <div class="nav-link" onclick="System.nav('p-shop', event)">商店</div>
             <div class="nav-link" onclick="System.nav('p-inventory', event)">背包</div>
             <div class="nav-link" onclick="System.nav('p-forge', event)" style="color:#ff8c00;">打鐵</div>
-            <div class="nav-link" onclick="System.nav('p-rank', event)" style="color:var(--gold);">排行</div>
             <div class="nav-link" onclick="System.nav('p-partner', event)" style="color:var(--comrade-green);">戰友</div>
+            <div class="nav-link" onclick="System.nav('p-rank', event)" style="color:var(--gold);">排行</div>
             <div class="nav-link" onclick="System.nav('p-code', event)" style="color:var(--red-alert);">終端</div>
         </div>
     </div>
@@ -320,118 +276,90 @@ const firebaseConfig = {
   appId: "1:979607975137:web:70224f438280bafebf73a0",
   measurementId: "G-8E64C4CNSZ"
 };
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig); 
 const db = getFirestore(app);
 
-// 🔥 舊的 subjects 已徹底移除，改用 cloudDungeons
 const DB = {
     titles: {
-        S: ["創世神：萬象起源", "虛空之王：秩序崩壞者", "因果律：命運編織者", "永恆傳說：不朽之冠", "唯一神：降臨之光"],
-        A: ["位面守護者", "不滅戰神", "真理探求者", "弒龍大師", "諸神黃昏", "至高審判長", "永恆之光", "極暗深淵", "時空旅人", "萬物生靈主", "禁忌魔法師", "聖靈大先知", "絕對零度", "戰場的主宰", "混沌掌控者", "劍之頂峰", "傳奇奠基人", "天災化身", "銀河開拓者", "靈魂收割者", "帝國之牆", "神聖制裁者", "無極劍聖", "末日執行官", "破法領主"],
-        B: ["大地粉碎者", "蒼穹之眼", "暗夜主宰", "王國重臣", "災厄終結者", "巨龍獵人", "戰地指揮官", "聖殿執行官", "幻影遊俠", "秘法大師", "鋼鐵要塞", "風暴使徒", "斷罪之刃", "極限生存者", "審判官", "狂瀾追逐者", "守護神盾", "破曉之星", "血色紅蓮", "孤傲之狼", "聖域守門人", "虛空行者", "戰鬥藝術家", "王牌尖兵", "無懼勇者", "輝煌之刃", "元素主導者", "深淵監視者", "重力主宰", "鐵血領主"],
-        C: ["前線突擊手", "荒野獵手", "鋼鐵意志", "熟練冒險家", "戰術小隊長", "狂暴戰斧", "影之追蹤者", "銀翼先鋒", "疾風劍士", "元素感知者", "守望先驅", "烈焰行者", "重裝步兵", "沉默的暗殺員", "穿雲箭手", "黎明守護者", "符文操作員", "鋼鐵守望", "中堅力量", "碎石者", "極光使者", "戰場齒輪", "精銳士官", "秘法學徒", "獵魔小隊", "不屈之魂", "疾走之影", "狂想曲員", "寒冰操縱者", "堅盾守衛"],
-        D: ["村莊守望者", "鐵鏽新秀", "持劍平民", "冒險初學者", "見習騎士", "準時下班員", "小鎮地頭蛇", "森林清道夫", "略懂皮毛", "憤怒的小鳥", "正義路人", "銅級傭兵", "脫殼小龍", "剛學會走路", "基礎操縱者", "先遣部隊", "戰地記者", "幸運的生還者", "武器試用員", "略有小成", "粗糙的戰士", "模仿大師", "鐵打的龍套", "初級執行者", "民間高手(自稱)", "熱血少年", "頑強的甲蟲", "破舊皮甲魂", "基礎訓練生", "準準準冒險者"],
-        E: ["戰鬥力 0.5", "走路草", "實習砲灰", "裝備回收員", "迷路的羔羊", "萌新一號", "戰場觀光客", "史萊姆之友", "甚至不是人類", "呼吸也會累", "落地成盒", "走位靠賽", "後勤搬運工", "萬年候補生", "塵埃邊緣人", "訓練用假人", "尚未覺醒", "零戰力戰士", "掃地阿伯", "路人甲", "雜草魂", "無名小卒", "勇者預備軍", "體力廢材", "眼神死的菜鳥", "邊緣雜魚", "戰場背景板", "脆弱的靈魂", "純潔無垢", "剛下山的傻子", "🚫 卑鄙的作弊者"]
+        S: ["創世神：萬象起源", "虛空之王", "因果律", "永恆傳說", "唯一神"],
+        A: ["位面守護者", "不滅戰神", "真理探求者", "弒龍大師", "諸神黃昏"],
+        B: ["大地粉碎者", "蒼穹之眼", "暗夜主宰", "災厄終結者", "巨龍獵人"],
+        C: ["前線突擊手", "荒野獵手", "熟練冒險家", "影之追蹤者", "銀翼先鋒"],
+        D: ["村莊守望者", "冒險初學者", "見習騎士", "憤怒的小鳥", "脫殼小龍"],
+        E: ["戰鬥力 0.5", "走路草", "尚未覺醒", "🚫 卑鄙的作弊者"]
     },
     swords: {
-        UNKNOWN: [{name:"虛空之痕 · 零", desc:"數值顯示為 ???"}],
-        S: [{name:"天御·雷神切", desc:"攻擊附帶連鎖閃電"}, {name:"冥王·枯萎之鐮", desc:"擊中吸取 5% 生命值"}, {name:"時空·斷層", desc:"機率觸發「時間靜止」1 秒"}, {name:"聖光·大領主", desc:"對暗屬性雙倍傷害，自帶護盾"}],
-        A: ["龍脊長刀", "碎星者", "妖刀·村正", "極光細劍", "重力粉碎者", "寒冰之咬", "黑曜石巨劍", "風靈疾走"],
-        B: ["鋼鐵重刃", "影殺短刀", "獵人彎刀", "符文長劍", "烈焰直劍", "毒牙匕首", "騎士團佩劍", "破甲刺劍", "巨浪斬馬刀", "守望者長槍", "精準獵刀", "閃爍之刃", "荒野戰斧", "密林獵手", "沉重鐵鎚"],
-        C: ["老練長劍", "士兵佩刀", "強化鐵劍", "寬刃大刀", "輕量化匕首", "巡邏隊長之劍", "護衛手杖", "鋒利切肉刀", "雙手巨劍", "練習用長刀", "鐵製短劍", "守城衛士槍", "野外求生刀", "礦工十字鎬", "粗製大劍"],
-        D: ["生鏽鐵片", "磨損的砍刀", "舊式刺刀", "木柄短劍", "歪斜的匕首", "鈍掉的菜刀", "破損長槍", "重鑄的廢鐵", "路邊的小刀", "脆弱的竹劍", "農用鐮刀", "缺口的佩刀", "簡易長矛", "粗糙的斧頭", "採集用小鏟"],
-        E: ["傳說中的木棒", "削鉛筆刀", "斷掉的樹枝", "生鏽的圖釘", "破爛的鍋鏟", "紙紮的劍", "髒掉的抹布", "塑膠玩具刀", "爛掉的傘骨", "沒水的原子筆", "湯勺", "雞毛撣子", "缺了一角的小石塊", "過期的法棍麵包", "只有柄的劍"]
+        UNKNOWN: [{name:"虛空之痕 · 零", desc:"???"}],
+        S: [{name:"天御·雷神切", desc:"附帶閃電"}, {name:"冥王·枯萎之鐮", desc:"吸血 5%"}],
+        A: ["龍脊長刀", "碎星者", "妖刀·村正", "極光細劍"],
+        B: ["鋼鐵重刃", "影殺短刀", "獵人彎刀", "符文長劍"],
+        C: ["老練長劍", "士兵佩刀", "強化鐵劍", "寬刃大刀"],
+        D: ["生鏽鐵片", "磨損砍刀", "木柄短劍"],
+        E: ["傳說中的木棒", "削鉛筆刀", "爛掉的傘骨"]
     },
     potions: [
-        { id: "p_double", name: "🧪 雙倍經驗藥劑", price: 350, desc: "喝下後，下一場地下城任務 XP 變 2 倍" },
-        { id: "p_time", name: "⏳ 時光沙漏", price: 450, desc: "立刻重置商店所有物品與武器磨損度" },
-        { id: "p_luck", name: "🍀 幸運四葉草", price: 850, desc: "喝下後，下次升級抽稱號保底 B 級以上" },
-        { id: "p_seven", name: "✨ 七葉草藥水", price: 3500, desc: "喝下後可直接選擇並獲得一個 A 級稱號" }
+        { id: "p_double", name: "🧪 雙倍經驗藥劑", price: 350, desc: "雙倍 XP" },
+        { id: "p_time", name: "⏳ 時光沙漏", price: 450, desc: "刷新商店" },
+        { id: "p_luck", name: "🍀 幸運四葉草", price: 850, desc: "稱號保底 B 級" },
+        { id: "p_seven", name: "✨ 七葉草藥水", price: 3500, desc: "任選 A 級稱號" }
     ],
-    cloudDungeons: {} // 動態地下城資料庫
+    cloudGates: [] // 這裡存放從總監後台讀取到的世界任務
 };
 
 const StorageMgr = {
-    get(key) { 
-        try { return localStorage.getItem(key); } 
-        catch(e) { return window.tempStore ? window.tempStore[key] : null; } 
-    },
-    set(key, val) { 
-        try { localStorage.setItem(key, val); } 
-        catch(e) { window.tempStore = window.tempStore || {}; window.tempStore[key] = val; } 
-    }
+    get(key) { try { return localStorage.getItem(key); } catch(e) { return window.tempStore?window.tempStore[key]:null; } },
+    set(key, val) { try { localStorage.setItem(key, val); } catch(e) { window.tempStore=window.tempStore||{}; window.tempStore[key]=val; } }
 };
 
 const System = {
-    p: null, 
-    shopCache: null,
-    rankWeight: { 'UNKNOWN': 7, 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'E': 1 },
-    isAdminUnlocked: false,
-    timerIdx: null,
+    p: null, shopCache: null, timerIdx: null,
+    rankWeight: { 'UNKNOWN':7, 'S':6, 'A':5, 'B':4, 'C':3, 'D':2, 'E':1 },
 
     async login() {
         const acc = document.getElementById('inp-acc').value.trim();
         const pwd = document.getElementById('inp-pwd').value.trim();
-        const btn = document.getElementById('btn-login');
-
-        if (!acc) return alert("⚠️ 請輸入 HUNTER ID！");
-        if (!pwd) return alert("⚠️ 系統安全升級，請務必輸入密碼！");
-
-        btn.innerText = "CONNECTING...";
-        btn.disabled = true;
-
+        if (!acc || !pwd) return alert("請輸入 ID 與密碼！");
+        
+        document.getElementById('btn-login').innerText = "CONNECTING...";
         try {
-            const docRef = doc(db, "players", acc);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                let data = docSnap.data();
-                
-                if (data.pwd && data.pwd !== pwd) {
-                    alert("❌ 密碼錯誤！想盜號啊？門都沒有！");
-                    btn.innerText = "INITIALIZE";
-                    btn.disabled = false;
-                    return;
-                } else if (!data.pwd) {
-                    data.pwd = pwd;
-                    await setDoc(docRef, data);
-                    alert("🔒 舊帳號已成功綁定密碼！");
+            const docRef = doc(db, "players", acc); 
+            const snap = await getDoc(docRef);
+            
+            if (snap.exists()) {
+                let d = snap.data();
+                if (d.pwd && d.pwd !== pwd) { 
+                    document.getElementById('btn-login').innerText = "INITIALIZE"; 
+                    return alert("密碼錯誤！"); 
                 }
-
-                this.p = data;
-                if(!this.p.bag) this.p.bag = { swords: [], potions: {}, mats: { logic:0, lang:0, mem:0 } };
-                if(!this.p.buffs) this.p.buffs = { doubleXp: false, luck: false };
-                if(!this.p.curWeapon) this.p.curWeapon = null;
+                if (!d.pwd) { d.pwd = pwd; await setDoc(docRef, d); }
+                this.p = d;
+                // 確保舊帳號也有新的欄位
+                if(!this.p.bag) this.p.bag = {swords:[], potions:{}, mats:{logic:0, lang:0, mem:0}};
+                if(!this.p.buffs) this.p.buffs = {doubleXp:false, luck:false};
                 if(!this.p.activeQuests) this.p.activeQuests = [];
                 if(this.p.partner === undefined) this.p.partner = null;
                 if(!this.p.requests) this.p.requests = [];
-
             } else {
-                this.p = {
-                    acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0,
-                    iq: 1, str: 1, mp: 1, dex: 1,
-                    titles: ["尚未覺醒"], curTitle: "尚未覺醒",
-                    curWeapon: null,
-                    bag: { swords: [], potions: { p_double:0, p_time:0, p_luck:0, p_seven:0 }, mats: { logic:0, lang:0, mem:0 } },
-                    buffs: { doubleXp: false, luck: false },
-                    activeQuests: [],
-                    partner: null,
-                    requests: []
+                // 創建新帳號
+                this.p = { 
+                    acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0, iq: 1, str: 1, mp: 1, dex: 1, 
+                    titles: ["尚未覺醒"], curTitle: "尚未覺醒", curWeapon: null, 
+                    bag: { swords: [], potions: {}, mats: { logic:0, lang:0, mem:0 } }, 
+                    buffs: { doubleXp: false, luck: false }, 
+                    activeQuests: [], partner: null, requests: [] 
                 };
                 await setDoc(docRef, this.p);
             }
             
             document.getElementById('login-ui').style.display = 'none';
-            this.checkShopRefresh();
-            this.updateUI();
+            this.checkShopRefresh(); 
+            this.updateUI(); 
             this.startGlobalTimer(); 
-            this.fetchCloudDungeons(); // 🔥 登入後立即抓取雲端任務
-        } catch (e) {
-            console.error(e);
-            alert("伺服器連線失敗，請確認 Firebase 規則設定是否為 true。");
-            btn.innerText = "INITIALIZE";
-            btn.disabled = false;
+            this.fetchWorldGates(); // 登入後抓取任務
+            
+        } catch (e) { 
+            alert("連線失敗"); 
+            document.getElementById('btn-login').innerText = "INITIALIZE"; 
         }
     },
 
@@ -439,44 +367,26 @@ const System = {
         if(this.p) {
             try { 
                 const snap = await getDoc(doc(db, "players", this.p.acc));
-                if(snap.exists()) {
-                    let cloudData = snap.data();
-                    this.p.partner = cloudData.partner !== undefined ? cloudData.partner : this.p.partner;
-                    this.p.requests = cloudData.requests || [];
+                if(snap.exists()) { 
+                    this.p.partner = snap.data().partner !== undefined ? snap.data().partner : this.p.partner; 
+                    this.p.requests = snap.data().requests || []; 
                 }
                 await setDoc(doc(db, "players", this.p.acc), this.p); 
-            } catch(e) { console.error("雲端存檔失敗:", e); }
+            } catch(e) { console.error("存檔失敗", e); }
         }
-    },
-
-    // 🔥 從 Firebase 獲取造物主發布的任務
-    async fetchCloudDungeons() {
-        try {
-            const snap = await getDoc(doc(db, "system", "dungeons"));
-            if(snap.exists()) {
-                DB.cloudDungeons = snap.data();
-            } else {
-                DB.cloudDungeons = {};
-            }
-            // 如果玩家剛好停在任務頁面，立刻重新渲染按鈕
-            if (document.getElementById('p-dungeon').classList.contains('active')) {
-                this.renderGateCategories();
-            }
-        } catch(e) { console.error("讀取地下城失敗", e); }
     },
 
     nav(id, e) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(e) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            e.target.classList.add('active');
+        if(e) { 
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active')); 
+            e.target.classList.add('active'); 
         }
         
-        if(id === 'p-dungeon') {
-            this.fetchCloudDungeons(); // 每次點開任務頁面都去雲端抓最新資料
-            this.renderGateCategories();
-            this.renderQuests();
+        if(id === 'p-dungeon') { 
+            this.fetchWorldGates(); 
+            this.renderQuests(); 
         }
         if(id === 'p-enhance') this.renderUpgrades();
         if(id === 'p-titles') this.renderTitles();
@@ -488,11 +398,10 @@ const System = {
         if(id === 'p-code' && this.isAdminUnlocked) this.renderAdminPanel();
     },
 
-    getMaxExp(lv) {
-        if (lv <= 30) return 100 + (lv - 1) * 50;
-        return 100 + 29 * 50 + (lv - 30) * 100;
+    getMaxExp(lv) { 
+        return lv <= 30 ? 100 + (lv - 1) * 50 : 100 + 29 * 50 + (lv - 30) * 100; 
     },
-
+    
     getRank(lv) {
         if(lv >= 100) return { r: "國家級獵人", c: "rank-UNKNOWN" };
         if(lv >= 71) return { r: "S-RANK HUNTER", c: "rank-S" };
@@ -509,42 +418,35 @@ const System = {
         document.getElementById('ui-lv').innerText = this.p.lv;
         document.getElementById('ui-coins').innerText = `💰 ${Math.floor(this.p.coins).toLocaleString()}`;
         document.getElementById('ui-sp').innerText = `剩餘點數: ${this.p.sp}`;
-        document.getElementById('ui-title').innerText = this.p.curTitle ? `[ ${this.p.curTitle} ]` : "[ 尚未覺醒 ]";
-        
-        let weaponText = "⚔️ 徒手";
-        if(this.p.curWeapon) weaponText = `⚔️ ${this.p.curWeapon.name} [${this.p.curWeapon.rank}]`;
-        document.getElementById('ui-weapon').innerText = weaponText;
+        document.getElementById('ui-title').innerText = `[ ${this.p.curTitle} ]`;
+        document.getElementById('ui-weapon').innerText = this.p.curWeapon ? `⚔️ ${this.p.curWeapon.name} [${this.p.curWeapon.rank}]` : "⚔️ 徒手";
         
         const rankInfo = this.getRank(this.p.lv);
-        const rankEl = document.getElementById('ui-rank');
-        rankEl.innerText = rankInfo.r; rankEl.className = rankInfo.c;
+        document.getElementById('ui-rank').innerText = rankInfo.r; 
+        document.getElementById('ui-rank').className = rankInfo.c;
 
         const maxExp = this.getMaxExp(this.p.lv);
         document.getElementById('ui-xp-fill').style.width = `${Math.min((this.p.exp / maxExp) * 100, 100)}%`;
         document.getElementById('ui-xp-txt').innerText = `${Math.floor(this.p.exp)} / ${maxExp} XP`;
 
         let bonusStr = 0;
-        if(this.p.curWeapon) {
-            if(this.p.curWeapon.rank === 'B') bonusStr = 5;
-            if(this.p.curWeapon.rank === 'C') bonusStr = 3;
-            if(this.p.curWeapon.rank === 'D') bonusStr = 1;
+        if(this.p.curWeapon) { 
+            if(this.p.curWeapon.rank === 'B') bonusStr = 5; 
+            if(this.p.curWeapon.rank === 'C') bonusStr = 3; 
+            if(this.p.curWeapon.rank === 'D') bonusStr = 1; 
         }
-
         ['iq', 'str', 'mp', 'dex'].forEach(k => {
-            const el = document.getElementById(`v-${k}`);
-            if(el) {
-                let disp = this.p[k];
-                if(k === 'str' && bonusStr > 0) disp += `<span class="stat-bonus">+${bonusStr}</span>`;
-                el.innerHTML = disp;
-            }
+            let disp = this.p[k]; 
+            if(k === 'str' && bonusStr > 0) disp += `<span class="stat-bonus">+${bonusStr}</span>`;
+            document.getElementById(`v-${k}`).innerHTML = disp;
         });
 
         let buffHtml = "";
         if(this.p.buffs.doubleXp) buffHtml += `<span class="badge badge-buff">2x XP</span>`;
         if(this.p.buffs.luck) buffHtml += `<span class="badge badge-buff">幸運保底</span>`;
-        if(this.p.partner) buffHtml += `<span class="badge badge-buff" style="border-color:var(--comrade-green); color:var(--comrade-green);">戰友契約 +10% XP</span>`;
+        if(this.p.partner) buffHtml += `<span class="badge badge-buff" style="border-color:var(--comrade-green); color:var(--comrade-green);">戰友契約 +10%</span>`;
         document.getElementById('buff-zone').innerHTML = buffHtml;
-
+        
         this.save();
     },
 
@@ -563,80 +465,112 @@ const System = {
         else { if(r<0.5) rank='S'; else if(r<2.0) rank='A'; else if(r<20.0) rank='B'; else if(r<40.0) rank='C'; else if(r<65.0) rank='D'; }
         
         const t = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
-        if (!this.p.titles.includes(t)) { this.p.titles.push(t); document.getElementById('gacha-msg').innerText = "系統覺醒：恭喜獲得稱號"; } 
-        else { this.p.coins += 500; document.getElementById('gacha-msg').innerText = "獲得重複稱號 (轉化為 500 蓮幣)"; }
+        if (!this.p.titles.includes(t)) { 
+            this.p.titles.push(t); 
+            document.getElementById('gacha-msg').innerText = "系統覺醒：恭喜獲得稱號"; 
+        } else { 
+            this.p.coins += 500; 
+            document.getElementById('gacha-msg').innerText = "獲得重複稱號 (轉化為 500 蓮幣)"; 
+        }
         
-        const resEl = document.getElementById('gacha-result'); resEl.innerText = t; resEl.className = `gacha-glow rank-${rank}`;
-        document.getElementById('gacha-pop').style.display = 'flex'; this.updateUI();
+        document.getElementById('gacha-result').innerText = t; 
+        document.getElementById('gacha-result').className = `gacha-glow rank-${rank}`;
+        document.getElementById('gacha-pop').style.display = 'flex'; 
+        this.updateUI();
     },
 
-    // 🔥 動態生成科目的按鈕
-    renderGateCategories() {
-        const area = document.getElementById('gate-categories');
+    // 🔥 從 Firestore 讀取終端推播的世界任務
+    async fetchWorldGates() {
+        try {
+            const snap = await getDoc(doc(db, "system", "global_gates"));
+            if(snap.exists() && snap.data().active) {
+                DB.cloudGates = snap.data().active;
+            } else {
+                DB.cloudGates = [];
+            }
+            if (document.getElementById('p-dungeon').classList.contains('active')) {
+                this.renderWorldGates();
+            }
+        } catch(e) { console.error(e); }
+    },
+
+    renderWorldGates() {
+        const area = document.getElementById('world-gates-list');
         let html = "";
-        const subs = Object.keys(DB.cloudDungeons);
-        
-        if(subs.length === 0) {
-            area.innerHTML = "<div style='grid-column:span 4; text-align:center; color:#555; padding:20px; font-family:\"Rajdhani\", sans-serif;'>總監尚未發布任何任務</div>";
+        if(DB.cloudGates.length === 0) {
+            area.innerHTML = "<div style='text-align:center; color:#555; padding:20px;'>總監尚未發布任何任務。</div>"; 
             return;
         }
 
-        subs.forEach(sub => {
-            html += `<button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('${sub}')">${sub}</button>`;
-        });
-        area.innerHTML = html;
-    },
+        // 過濾掉玩家已經接取的任務 (避免重複接取)
+        const myActiveIds = this.p.activeQuests.map(q => q.globalId);
 
-    openDungeonModal(sub) {
-        const data = DB.cloudDungeons[sub]; 
-        if(!data || !data.items) return alert("任務讀取異常，請稍後再試。");
+        DB.cloudGates.forEach(g => {
+            if(myActiveIds.includes(g.id)) return; // 已經在打的就不顯示
 
-        document.getElementById('dm-title').innerText = `${sub} GATE`; let html = "";
-        Object.entries(data.items).forEach(([task, xp]) => {
-            html += `<div class="card" style="flex-direction:column; align-items:flex-start; background:rgba(0,212,255,0.05); border-color:rgba(0,212,255,0.2);">
-                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:10px;">
-                            <strong style="font-size:1.1rem; color:#fff;">${task}</strong><span style="color:var(--purple); font-weight:900;">${xp} XP</span>
+            let bonusTag = "";
+            if(g.bonus) {
+                if(g.bonus.type === 'title') bonusTag = ` <span class="badge" style="background:rgba(255,215,0,0.2); color:var(--gold); border:1px solid var(--gold);">🎁 隨機${g.bonus.rank}級稱號</span>`;
+                else if(g.bonus.type === 'potion') bonusTag = ` <span class="badge" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);">🎁 ${g.bonus.name}</span>`;
+                else if(g.bonus.type === 'mat') bonusTag = ` <span class="badge" style="background:rgba(188,19,254,0.2); color:var(--purple); border:1px solid var(--purple);">🎁 ${g.bonus.name} x${g.bonus.amount}</span>`;
+            }
+
+            html += `<div class="card" style="border-left: 3px solid var(--gold); background:rgba(255,215,0,0.05);">
+                        <div class="card-col">
+                            <strong style="color:var(--gold); font-size:1.1rem;">${g.sub} - ${g.task}</strong>
+                            <span style="font-size:11px; color:#ccc; margin-top:3px;">範圍/指定: ${g.range}</span>
+                            <div style="margin-top:5px;"><span style="color:var(--purple); font-weight:900;">${g.xp} XP</span> <span style="color:#888; font-size:10px;">(冷卻 ${g.time} 分)</span> ${bonusTag}</div>
                         </div>
-                        <div style="width:100%; display:flex; gap:10px;">`;
-            
-            // 下拉選單：如果是閱讀或單字通常用回數，這裡統一用 L 作為前綴
-            html += `<select id="sel-t-${task}" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none; font-family:'Rajdhani',sans-serif;">`;
-            const range = data.range || 10;
-            for(let i=1; i<=range; i++) html += `<option value="L${i}">L${i}</option>`;
-            html += `</select>`;
-            
-            html += `<button class="btn-action" style="background:var(--blue); color:#000;" onclick="System.acceptQuest('${sub}', '${task}', ${xp})">接取</button></div></div>`;
+                        <button class="btn-action" style="background:var(--gold); color:#000;" onclick="System.acceptWorldGate(${g.id})">接取</button>
+                     </div>`;
         });
-        document.getElementById('dm-content').innerHTML = html; document.getElementById('dungeon-modal').style.display = 'flex';
+        
+        area.innerHTML = html || "<div style='text-align:center; color:#555; padding:20px;'>所有任務皆已接取，請確認下方進行中清單。</div>";
     },
 
-    async acceptQuest(sub, task, xp) {
-        const rangeVal = document.getElementById(`sel-t-${task}`).value;
+    async acceptWorldGate(gateId) {
+        const gate = DB.cloudGates.find(g => g.id === gateId);
+        if(!gate) return;
         
-        // 讀取該科目的冷卻時間，如果沒有設定，預設為 15 分鐘
-        const waitMin = DB.cloudDungeons[sub].time || 15;
-        const readyAt = Date.now() + waitMin * 60 * 1000;
-
-        this.p.activeQuests.push({ id: Date.now(), sub, task, range: rangeVal, xp, readyAt });
-        await this.save(); document.getElementById('dungeon-modal').style.display = 'none'; this.renderQuests();
+        const readyAt = Date.now() + (gate.time * 60 * 1000);
+        
+        // 複製一份到自己的 activeQuests
+        this.p.activeQuests.push({
+            id: Date.now(), 
+            globalId: gate.id,
+            sub: gate.sub,
+            task: gate.task,
+            range: gate.range,
+            xp: gate.xp,
+            readyAt: readyAt,
+            bonus: gate.bonus
+        });
+        
+        await this.save(); 
+        this.renderWorldGates();
+        this.renderQuests();
     },
 
     renderQuests() {
         let html = "";
-        if(this.p.activeQuests.length === 0) html = `<div style="text-align:center; color:#555; padding:20px; font-family:'Rajdhani', sans-serif;">NO ACTIVE QUESTS</div>`;
+        if(this.p.activeQuests.length === 0) {
+            html = `<div style="text-align:center; color:#555; padding:20px; font-family:'Rajdhani', sans-serif;">NO ACTIVE QUESTS</div>`;
+        }
         
         const now = Date.now();
         this.p.activeQuests.forEach(q => {
             const isReady = !q.readyAt || now >= q.readyAt;
             
             let btnHtml = isReady 
-                ? `<button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id}, ${q.xp}, '${q.sub}')">結算</button>`
+                ? `<button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id})">結算</button>`
                 : `<button class="btn-action cooldown-timer" style="background:#222; color:var(--red-alert); border:1px solid #444;" disabled data-until="${q.readyAt}">00:00</button>`;
+
+            let bonusTag = q.bonus ? `<span style="font-size:10px; color:var(--gold);">[含特殊獎勵]</span>` : "";
 
             html += `<div class="card" style="border-left: 4px solid var(--blue);">
                         <div class="card-col">
                             <strong style="font-size:1.1rem; color:#fff;">${q.sub} - ${q.task}</strong>
-                            <span style="color:#888; font-size:11px; margin-top:3px;">範圍: ${q.range} | 基礎獎勵: ${q.xp} XP</span>
+                            <span style="color:#888; font-size:11px; margin-top:3px;">範圍: ${q.range} | ${q.xp} XP ${bonusTag}</span>
                         </div>
                         ${btnHtml}
                      </div>`;
@@ -651,10 +585,10 @@ const System = {
             document.querySelectorAll('.cooldown-timer').forEach(el => {
                 const until = parseInt(el.dataset.until);
                 const diff = until - Date.now();
-                if(diff <= 0) {
-                    needsRender = true;
+                if(diff <= 0) { 
+                    needsRender = true; 
                 } else {
-                    const m = Math.floor(diff/60000);
+                    const m = Math.floor(diff/60000); 
                     const s = Math.floor((diff%60000)/1000);
                     el.innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
                 }
@@ -663,56 +597,95 @@ const System = {
         }, 1000);
     },
 
-    async completeQuest(id, baseXP, sub) {
-        this.p.activeQuests = this.p.activeQuests.filter(q => q.id !== id);
-        let finalXP = baseXP, finalCoins = baseXP; 
+    async completeQuest(id) {
+        const qIndex = this.p.activeQuests.findIndex(q => q.id === id);
+        if(qIndex === -1) return;
+        const q = this.p.activeQuests[qIndex];
         
-        // 戰友 +10%
-        if(this.p.partner) {
-            finalXP = Math.floor(finalXP * 1.1);
-            finalCoins = Math.floor(finalCoins * 1.1);
-        }
+        // 移除任務
+        this.p.activeQuests.splice(qIndex, 1); 
 
-        if(this.p.buffs.doubleXp) { finalXP *= 2; this.p.buffs.doubleXp = false; alert("✨ 雙倍經驗藥劑生效！"); }
+        let finalXP = q.xp, finalCoins = q.xp; 
+        
+        // 戰友與藥水/武器 Buff 計算
+        if(this.p.partner) { 
+            finalXP = Math.floor(finalXP * 1.1); 
+            finalCoins = Math.floor(finalCoins * 1.1); 
+        }
+        if(this.p.buffs.doubleXp) { 
+            finalXP *= 2; 
+            this.p.buffs.doubleXp = false; 
+            alert("✨ 雙倍經驗藥劑生效！"); 
+        }
         if(this.p.curWeapon) {
-            if(this.p.curWeapon.rank === 'S') { finalXP = Math.floor(finalXP * 1.20); finalCoins = Math.floor(finalCoins * 1.50); }
-            else if(this.p.curWeapon.rank === 'A') { finalXP = Math.floor(finalXP * 1.10); finalCoins = Math.floor(finalCoins * 1.20); }
+            if(this.p.curWeapon.rank === 'S') { 
+                finalXP = Math.floor(finalXP * 1.20); 
+                finalCoins = Math.floor(finalCoins * 1.50); 
+            } else if(this.p.curWeapon.rank === 'A') { 
+                finalXP = Math.floor(finalXP * 1.10); 
+                finalCoins = Math.floor(finalCoins * 1.20); 
+            }
         }
 
-        this.p.exp += finalXP; this.p.coins += finalCoins;
+        this.p.exp += finalXP; 
+        this.p.coins += finalCoins;
         
-        // 隨機掉落素材 (為了遊戲性，就算拔掉死硬科目，素材還是隨機掉)
-        const rDrop = Math.random(); let dropMsg = "";
-        if(rDrop < 0.10) { this.p.bag.mats.logic++; dropMsg = "\n🧩 掉落：邏輯碎片 x1"; }
-        else if(rDrop < 0.20) { this.p.bag.mats.lang++; dropMsg = "\n📖 掉落：語文符文 x1"; }
-        else if(rDrop < 0.30) { this.p.bag.mats.mem++; dropMsg = "\n🧠 掉落：記憶結晶 x1"; }
+        let dropMsg = `獲得 ${Math.floor(finalXP)} XP 與 ${Math.floor(finalCoins)} 蓮幣`;
+        if(this.p.partner) dropMsg += ` (含戰友加成)`;
 
-        let alertMsg = `任務結算完成！\n獲得 ${Math.floor(finalXP)} XP 與 ${Math.floor(finalCoins)} 蓮幣${dropMsg}`;
-        if(this.p.partner) alertMsg += `\n(已包含戰友加成 +10%)`;
+        // 基礎掉落素材
+        const rDrop = Math.random();
+        if(rDrop < 0.10) { this.p.bag.mats.logic++; dropMsg += "\n🧩 掉落：邏輯碎片 x1"; }
+        else if(rDrop < 0.20) { this.p.bag.mats.lang++; dropMsg += "\n📖 掉落：語文符文 x1"; }
+        else if(rDrop < 0.30) { this.p.bag.mats.mem++; dropMsg += "\n🧠 掉落：記憶結晶 x1"; }
 
-        alert(alertMsg);
-        this.checkLevelUp(); this.updateUI(); this.renderQuests();
+        // 🔥 發放總監的特殊獎勵
+        if(q.bonus && q.bonus.type) {
+            if(q.bonus.type === 'title') {
+                const rank = q.bonus.rank;
+                const t = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
+                if(!this.p.titles.includes(t)) this.p.titles.push(t);
+                dropMsg += `\n✨ 總監賞賜稱號：[${t}]`;
+            } else if(q.bonus.type === 'potion') {
+                this.p.bag.potions[q.bonus.id] = (this.p.bag.potions[q.bonus.id] || 0) + 1;
+                dropMsg += `\n🧪 總監賞賜藥水：${q.bonus.name}`;
+            } else if(q.bonus.type === 'mat') {
+                this.p.bag.mats[q.bonus.id] += parseInt(q.bonus.amount);
+                dropMsg += `\n📦 總監賞賜素材：${q.bonus.name} x${q.bonus.amount}`;
+            }
+        }
+
+        alert(`任務結算完成！\n\n${dropMsg}`);
+        this.checkLevelUp(); 
+        this.updateUI(); 
+        this.renderWorldGates(); 
+        this.renderQuests();
     },
 
     renderUpgrades() {
         document.getElementById('up-sp-display').innerText = this.p.sp;
-        const stats = [{ id: 'iq', n: '智商 (IQ)' }, { id: 'str', n: '體力 (STR)' }, { id: 'mp', n: '魔力 (MP)' }, { id: 'dex', n: '準確度 (DEX)' }];
         let html = "";
-        stats.forEach(s => {
-            html += `<div class="card" style="border-left: 3px solid var(--purple); background: linear-gradient(90deg, rgba(188,19,254,0.08), transparent); padding: 12px 15px;">
+        [{ id: 'iq', n: 'IQ' }, { id: 'str', n: 'STR' }, { id: 'mp', n: 'MP' }, { id: 'dex', n: 'DEX' }].forEach(s => {
+            html += `<div class="card" style="border-left: 3px solid var(--purple); padding: 12px 15px;">
                         <div class="card-col">
-                            <strong style="color:var(--blue); font-size:1.1rem; letter-spacing: 1px; font-family:'Rajdhani', sans-serif;">${s.n}</strong>
-                            <span style="color:#fff; font-size:2rem; font-family:'Rajdhani', sans-serif; font-weight:900; text-shadow: 0 0 10px rgba(188,19,254,0.6);">${this.p[s.id]}</span>
+                            <strong style="color:var(--blue);">${s.n}</strong>
+                            <span style="color:#fff; font-size:2rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p[s.id]}</span>
                         </div>
-                        <button class="btn-action" style="font-size:1.6rem; width: 45px; height: 45px; display:flex; justify-content:center; align-items:center; border-radius: 10px; background: rgba(188,19,254,0.1); border: 1px solid var(--purple); color: #fff; box-shadow: inset 0 0 8px rgba(188,19,254,0.4);" onclick="System.addStat('${s.id}')">+</button>
+                        <button class="btn-action" style="font-size:1.6rem; width: 45px; height: 45px; background: rgba(188,19,254,0.1); border: 1px solid var(--purple); color: #fff;" onclick="System.addStat('${s.id}')">+</button>
                      </div>`;
         });
         document.getElementById('upgrade-list').innerHTML = html;
     },
-
-    addStat(id) {
-        if(this.p.sp > 0) { this.p[id]++; this.p.sp--; this.updateUI(); this.renderUpgrades(); }
-        else alert('配點不足，請攻略地下城升級');
+    
+    addStat(id) { 
+        if(this.p.sp > 0) { 
+            this.p[id]++; 
+            this.p.sp--; 
+            this.updateUI(); 
+            this.renderUpgrades(); 
+        } else {
+            alert('配點不足'); 
+        }
     },
 
     renderTitles() {
@@ -720,48 +693,63 @@ const System = {
         ['S','A','B','C','D','E'].forEach(r => {
             html += `<div class="section-title rank-${r}">${r}-RANK</div>`;
             DB.titles[r].forEach(t => {
-                const unlocked = this.p.titles.includes(t); const isEq = this.p.curTitle === t;
+                const unlocked = this.p.titles.includes(t); 
+                const isEq = this.p.curTitle === t;
                 if(unlocked) {
                     html += `<div class="card ${isEq ? 'equipped' : ''}" style="cursor:pointer;" onclick="System.equipTitle('${t}')">
-                                <div class="card-col">
-                                    <strong class="rank-${r}" style="font-size:1.1rem;">${t}</strong>
-                                    <span style="font-size:10px; color:#aaa; margin-top:5px;">${isEq ? '✨ 當前裝備中' : '點擊切換裝備'}</span>
-                                </div>
-                                ${isEq ? '<span style="color:var(--purple); font-weight:900; font-family:\'Rajdhani\', sans-serif; letter-spacing:1px;">EQUIPPED</span>' : ''}
+                                <strong><span class="rank-${r}">${t}</span></strong>
+                                ${isEq ? '<span style="color:var(--purple); font-size:10px;">裝備中</span>' : ''}
                              </div>`;
-                } else { html += `<div class="card locked-title"><strong class="rank-E">${r==='S'?'???':t}</strong><span style="font-size:10px;">未解鎖</span></div>`; }
+                } else {
+                    html += `<div class="card locked-title">
+                                <strong class="rank-E">${r==='S'?'???':t}</strong>
+                                <span style="font-size:10px;">未解鎖</span>
+                             </div>`;
+                }
             });
         });
         document.getElementById('titles-list').innerHTML = html;
     },
-
-    equipTitle(t) { this.p.curTitle = t; this.updateUI(); this.renderTitles(); },
+    
+    equipTitle(t) { 
+        this.p.curTitle = t; 
+        this.updateUI(); 
+        this.renderTitles(); 
+    },
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v25_cloud');
-        if(stored) {
-            const parsed = JSON.parse(stored);
-            if(parsed.date === today) {
-                this.shopCache = parsed.data; document.getElementById('shop-time').innerText = `Refreshed: ${today}`; return;
-            }
+        let stored = StorageMgr.get('sl_shop_v26_cloud');
+        if(stored) { 
+            const parsed = JSON.parse(stored); 
+            if(parsed.date === today) { 
+                this.shopCache = parsed.data; 
+                document.getElementById('shop-time').innerText = `Refreshed: ${today}`; 
+                return; 
+            } 
         }
         this.refreshShop(today, false);
     },
-
+    
     getWearRate(rank) {
         const r = Math.random();
-        if(rank === 'S') return (0.500 + r * 4.500).toFixed(3); if(rank === 'A') return (5.000 + r * 10.000).toFixed(3);
-        if(rank === 'B') return (20.000 + r * 5.000).toFixed(3); if(rank === 'C') return (30.000 + r * 10.000).toFixed(3);
-        if(rank === 'D') return (45.000 + r * 10.000).toFixed(3); return (70.000 + r * 20.000).toFixed(3);
+        if(rank === 'S') return (0.500 + r * 4.500).toFixed(3); 
+        if(rank === 'A') return (5.000 + r * 10.000).toFixed(3);
+        if(rank === 'B') return (20.000 + r * 5.000).toFixed(3); 
+        if(rank === 'C') return (30.000 + r * 10.000).toFixed(3);
+        if(rank === 'D') return (45.000 + r * 10.000).toFixed(3); 
+        return (70.000 + r * 20.000).toFixed(3);
     },
-
+    
     refreshShop(today, force = false) {
         let shop = { swords: [], titles: [] };
         Object.keys(DB.swords).forEach(rank => {
             DB.swords[rank].forEach(sw => {
-                let name = typeof sw === 'object' ? sw.name : sw; let desc = typeof sw === 'object' ? sw.desc : '';
-                let wear = rank === 'UNKNOWN' ? '???' : this.getWearRate(rank); let price = 999999;
+                let name = typeof sw === 'object' ? sw.name : sw; 
+                let desc = typeof sw === 'object' ? sw.desc : '';
+                let wear = rank === 'UNKNOWN' ? '???' : this.getWearRate(rank); 
+                let price = 999999;
+                
                 if(rank !== 'UNKNOWN') {
                     let wFloat = parseFloat(wear);
                     if(rank === 'S') price = Math.floor(10000 * (10 - wFloat));
@@ -775,177 +763,222 @@ const System = {
             });
         });
         shop.swords.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
-
+        
         for(let i=0; i<12; i++) {
-            const r = Math.random() * 100;
-            let rank = 'E'; if(r<1.5) rank='S'; else if(r<5) rank='A'; else if(r<25) rank='B'; else if(r<45) rank='C'; else if(r<65) rank='D';
+            const r = Math.random() * 100; let rank = 'E'; 
+            if(r<1.5) rank='S'; else if(r<5) rank='A'; else if(r<25) rank='B'; else if(r<45) rank='C'; else if(r<65) rank='D';
+            
             let name = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
             let price = rank==='S'?5000 : rank==='A'?2500 : rank==='B'?1000 : rank==='C'?500 : rank==='D'?200 : 100;
             shop.titles.push({ name, rank, price });
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
-
-        this.shopCache = shop; StorageMgr.set('sl_shop_v25_cloud', JSON.stringify({ date: today, data: this.shopCache }));
-        document.getElementById('shop-time').innerText = force ? `Refreshed (Hourglass)` : `Refreshed: ${today}`;
+        
+        this.shopCache = shop; 
+        StorageMgr.set('sl_shop_v26_cloud', JSON.stringify({ date: today, data: this.shopCache }));
+        document.getElementById('shop-time').innerText = force ? `Refreshed` : `Refreshed: ${today}`;
     },
 
     renderShop(tab) {
-        if(!this.shopCache) this.checkShopRefresh(); if(!this.shopCache) return; 
-
-        ['sword','potion','mat','title'].forEach(t => {
+        if(!this.shopCache) this.checkShopRefresh(); 
+        if(!this.shopCache) return; 
+        
+        ['sword','potion','title'].forEach(t => {
             const btn = document.getElementById(`tab-${t}`);
-            if(btn) { btn.style.background = t === tab ? 'var(--purple)' : '#222'; btn.style.color = t === tab ? '#fff' : '#888'; }
-        });
-
-        let html = "";
-        try {
-            if(tab === 'sword') {
-                this.shopCache.swords.forEach((sw, idx) => {
-                    let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055; background:linear-gradient(45deg,#220011,#000); box-shadow:0 0 15px rgba(255,0,85,0.3);' : (sw.rank === 'S' ? 'border:1px solid var(--gold); box-shadow:inset 0 0 15px rgba(255,215,0,0.1);' : '');
-                    let btnTxt = sw.rank === 'UNKNOWN' ? '非賣品' : `💰 ${sw.price.toLocaleString()}`; let disabled = sw.rank === 'UNKNOWN' ? 'disabled' : '';
-                    html += `<div class="card" style="${spec}">
-                                <div class="card-col">
-                                    <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
-                                    ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
-                                    <span style="color:#888; font-size:10px; margin-top:5px;">磨損度: ${sw.wear}%</span>
-                                </div>
-                                <button class="btn-action" ${disabled} onclick="System.buyShop('sword', ${idx})">${btnTxt}</button>
-                             </div>`;
-                });
-            } else if(tab === 'potion') {
-                DB.potions.forEach(pot => {
-                    html += `<div class="card">
-                                <div class="card-col">
-                                    <strong style="font-size:1.1rem; color:#fff;">${pot.name}</strong>
-                                    <span style="font-size:10px; color:#aaa; margin-top:5px;">${pot.desc}</span>
-                                </div>
-                                <button class="btn-action" onclick="System.buyPotion('${pot.id}', ${pot.price})">💰 ${pot.price}</button>
-                             </div>`;
-                });
-            } else if(tab === 'mat') { html = `<div style="text-align:center; padding:50px; color:#555; font-family:'Rajdhani', sans-serif;">MATERIALS ARE DROP-ONLY</div>`; } 
-            else if(tab === 'title') {
-                this.shopCache.titles.forEach((t, idx) => {
-                    const owned = this.p.titles.includes(t.name);
-                    html += `<div class="card">
-                                <div class="card-col">
-                                    <strong class="rank-${t.rank}" style="font-size:1.1rem;">${t.name}</strong>
-                                    <span style="color:#888; font-size:10px; margin-top:5px;">${t.rank}-RANK TITLE</span>
-                                </div>
-                                <button class="btn-action" ${owned?'disabled':''} onclick="System.buyShop('title', ${idx})">${owned ? '已解鎖' : '💰 ' + t.price.toLocaleString()}</button>
-                             </div>`;
-                });
+            if(btn) { 
+                btn.style.background = t === tab ? 'var(--purple)' : '#222'; 
+                btn.style.color = t === tab ? '#fff' : '#888'; 
             }
-        } catch(e) { html = `<div style="text-align:center; padding:50px; color:red;">資料讀取失敗。</div>`; }
+        });
+        
+        let html = "";
+        if(tab === 'sword') {
+            this.shopCache.swords.forEach((sw, idx) => {
+                let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055;' : (sw.rank === 'S' ? 'border:1px solid var(--gold);' : '');
+                let btnTxt = sw.rank === 'UNKNOWN' ? '非賣品' : `💰 ${sw.price}`; 
+                let disabled = sw.rank === 'UNKNOWN' ? 'disabled' : '';
+                
+                html += `<div class="card" style="${spec}">
+                            <div class="card-col">
+                                <strong class="rank-${sw.rank}">${sw.name}</strong>
+                                <span style="color:#888; font-size:10px;">磨損度: ${sw.wear}%</span>
+                            </div>
+                            <button class="btn-action" ${disabled} onclick="System.buyShop('sword', ${idx})">${btnTxt}</button>
+                         </div>`;
+            });
+        } else if(tab === 'potion') {
+            DB.potions.forEach(pot => { 
+                html += `<div class="card">
+                            <div class="card-col">
+                                <strong>${pot.name}</strong>
+                                <span style="font-size:10px; color:#aaa;">${pot.desc}</span>
+                            </div>
+                            <button class="btn-action" onclick="System.buyPotion('${pot.id}', ${pot.price})">💰 ${pot.price}</button>
+                         </div>`; 
+            });
+        } else if(tab === 'title') {
+            this.shopCache.titles.forEach((t, idx) => {
+                const owned = this.p.titles.includes(t.name);
+                html += `<div class="card">
+                            <div class="card-col">
+                                <strong class="rank-${t.rank}">${t.name}</strong>
+                            </div>
+                            <button class="btn-action" ${owned?'disabled':''} onclick="System.buyShop('title', ${idx})">${owned ? '已解鎖' : '💰 ' + t.price}</button>
+                         </div>`;
+            });
+        }
         document.getElementById('shop-list').innerHTML = html;
     },
 
     buyShop(type, idx) {
-        const item = this.shopCache[`${type}s`][idx]; if(!item) return;
+        const item = this.shopCache[`${type}s`][idx]; 
+        if(!item) return;
+        
         if(this.p.coins >= item.price) {
             if(type === 'title') {
-                if(this.p.titles.includes(item.name)) return alert("你已經擁有此稱號了！");
-                this.p.coins -= item.price; this.p.titles.push(item.name); alert(`✨ 成功解鎖稱號：${item.name}`);
-            } else {
-                this.p.coins -= item.price; item.id = Date.now() + Math.floor(Math.random()*1000); this.p.bag.swords.push(item); alert(`🗡️ 獲得裝備：${item.name}`);
+                if(this.p.titles.includes(item.name)) return alert("已有此稱號");
+                this.p.coins -= item.price; 
+                this.p.titles.push(item.name); 
+                alert(`解鎖稱號：${item.name}`);
+            } else { 
+                this.p.coins -= item.price; 
+                item.id = Date.now(); 
+                this.p.bag.swords.push(item); 
+                alert(`獲得裝備：${item.name}`); 
             }
-            this.updateUI(); this.renderShop(type);
-        } else alert(`❌ 蓮幣餘額不足！`);
+            this.updateUI(); 
+            this.renderShop(type);
+        } else {
+            alert(`餘額不足`);
+        }
     },
-
+    
     buyPotion(pid, price) {
-        if(this.p.coins >= price) { this.p.coins -= price; this.p.bag.potions[pid] = (this.p.bag.potions[pid] || 0) + 1; this.updateUI(); alert("成功購買藥水，請至背包使用"); } 
-        else alert('蓮幣餘額不足！');
+        if(this.p.coins >= price) { 
+            this.p.coins -= price; 
+            this.p.bag.potions[pid] = (this.p.bag.potions[pid] || 0) + 1; 
+            this.updateUI(); 
+            alert("購買成功"); 
+        } else {
+            alert('餘額不足');
+        }
     },
 
     renderBag(tab) {
         ['sword','potion','mat'].forEach(t => {
             const btn = document.getElementById(`bag-tab-${t}`);
-            if(btn) { btn.style.background = t === tab ? 'var(--purple)' : '#222'; btn.style.color = t === tab ? '#fff' : '#888'; }
+            if(btn) { 
+                btn.style.background = t === tab ? 'var(--purple)' : '#222'; 
+                btn.style.color = t === tab ? '#fff' : '#888'; 
+            }
         });
-
+        
         let html = "";
         if(tab === 'sword') {
-            if(this.p.bag.swords.length === 0) html += `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(尚未獲得任何武器)</div>`;
+            if(this.p.bag.swords.length === 0) {
+                html += `<div style="text-align:center; color:#555; padding:15px;">(空)</div>`;
+            }
             this.p.bag.swords.forEach(sw => {
                 let isEq = (this.p.curWeapon && this.p.curWeapon.id === sw.id);
-                let spec = isEq ? 'border:1px solid var(--purple); background:rgba(188,19,254,0.1);' : '';
-                html += `<div class="card" style="${spec}">
-                            <div class="card-col">
-                                <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
-                                ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
-                                <span style="font-size:10px; color:#aaa; margin-top:3px;">磨損: ${sw.wear}%</span>
+                html += `<div class="card ${isEq?'equipped':''}">
+                            <div>
+                                <strong class="rank-${sw.rank}">${sw.name}</strong><br>
+                                <small>磨損: ${sw.wear}%</small>
                             </div>
                             <button class="btn-action" style="${isEq ? 'background:#333;color:#888;' : ''}" onclick="System.equipWeapon(${sw.id})">${isEq ? '卸下' : '裝備'}</button>
                          </div>`;
             });
         } else if(tab === 'potion') {
-            let hasPotion = false;
+            let has = false;
             DB.potions.forEach(pot => {
                 let amt = this.p.bag.potions[pot.id] || 0;
-                if(amt > 0) {
-                    hasPotion = true;
+                if(amt > 0) { 
+                    has = true; 
                     html += `<div class="card">
-                                <div class="card-col">
-                                    <strong style="font-size:1.1rem; color:#fff;">${pot.name} <span style="color:var(--gold)">x${amt}</span></strong>
-                                    <span style="font-size:10px; color:#aaa; margin-top:5px;">${pot.desc}</span>
+                                <div>
+                                    <strong>${pot.name} <span style="color:var(--gold)">x${amt}</span></strong>
                                 </div>
                                 <button class="btn-action" onclick="System.usePotion('${pot.id}')">使用</button>
-                             </div>`;
+                             </div>`; 
                 }
             });
-            if(!hasPotion) html = `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
+            if(!has) html = `<div style="text-align:center; color:#555; padding:15px;">(空)</div>`;
         } else {
-            html += `<div class="card"><div class="card-col"><strong style="color:var(--blue)"><span class="mat-icon">📐</span> 邏輯碎片</strong><span style="font-size:10px; color:#888;">戰鬥掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.logic}</span></div>
-                     <div class="card"><div class="card-col"><strong style="color:var(--gold)"><span class="mat-icon">📖</span> 語文符文</strong><span style="font-size:10px; color:#888;">戰鬥掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.lang}</span></div>
-                     <div class="card"><div class="card-col"><strong style="color:var(--purple)"><span class="mat-icon">🧠</span> 記憶結晶</strong><span style="font-size:10px; color:#888;">戰鬥掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.mem}</span></div>`;
+            html += `<div class="card">
+                        <div class="card-col"><strong style="color:var(--blue)">邏輯碎片</strong></div>
+                        <span style="font-size:1.5rem; font-weight:900;">${this.p.bag.mats.logic}</span>
+                     </div>
+                     <div class="card">
+                        <div class="card-col"><strong style="color:var(--gold)">語文符文</strong></div>
+                        <span style="font-size:1.5rem; font-weight:900;">${this.p.bag.mats.lang}</span>
+                     </div>
+                     <div class="card">
+                        <div class="card-col"><strong style="color:var(--purple)">記憶結晶</strong></div>
+                        <span style="font-size:1.5rem; font-weight:900;">${this.p.bag.mats.mem}</span>
+                     </div>`;
         }
         document.getElementById('bag-list').innerHTML = html;
     },
-
+    
     equipWeapon(id) {
         if(this.p.curWeapon && this.p.curWeapon.id === id) this.p.curWeapon = null;
-        else this.p.curWeapon = this.p.bag.swords.find(w => w.id === id);
-        this.updateUI(); this.renderBag('sword');
+        else this.p.curWeapon = this.p.bag.swords.find(s => s.id === id);
+        this.updateUI(); 
+        this.renderBag('sword');
     },
-
+    
     usePotion(pid) {
-        if(this.p.bag.potions[pid] <= 0) return; this.p.bag.potions[pid]--;
-        if(pid === 'p_double') { this.p.buffs.doubleXp = true; alert("✨ 雙倍經驗藥劑已啟用！"); }
-        else if(pid === 'p_time') { this.refreshShop(new Date().toLocaleDateString(), true); alert("⏳ 商店已強制刷新！"); }
-        else if(pid === 'p_luck') { this.p.buffs.luck = true; alert("🍀 幸運四葉草生效！"); }
+        if(this.p.bag.potions[pid] <= 0) return; 
+        this.p.bag.potions[pid]--;
+        
+        if(pid === 'p_double') { this.p.buffs.doubleXp = true; alert("雙倍經驗生效！"); }
+        else if(pid === 'p_time') { this.refreshShop(new Date().toLocaleDateString(), true); alert("商店已刷新！"); }
+        else if(pid === 'p_luck') { this.p.buffs.luck = true; alert("幸運四葉草生效！"); }
         else if(pid === 'p_seven') this.openSevenCloverModal();
-        this.updateUI(); this.renderBag('potion');
+        
+        this.updateUI(); 
+        this.renderBag('potion');
     },
-
+    
     openSevenCloverModal() {
         let html = "";
         DB.titles['A'].forEach(t => {
             const owned = this.p.titles.includes(t);
             html += `<div class="card" style="margin-bottom:5px; padding:10px;">
                         <span class="rank-A">${t}</span>
-                        <button class="btn-action" style="padding:5px 10px;" ${owned?'disabled':''} onclick="System.pickATitle('${t}')">${owned?'擁有':'選擇'}</button>
+                        <button class="btn-action" ${owned?'disabled':''} onclick="System.pickATitle('${t}')">${owned?'擁有':'選擇'}</button>
                      </div>`;
         });
-        document.getElementById('seven-clover-list').innerHTML = html; document.getElementById('seven-clover-modal').style.display = 'flex';
+        document.getElementById('seven-clover-list').innerHTML = html; 
+        document.getElementById('seven-clover-modal').style.display = 'flex';
     },
-
+    
     pickATitle(t) {
-        this.p.titles.push(t); this.p.curTitle = t; document.getElementById('seven-clover-modal').style.display = 'none';
-        alert(`✨ 憑藉七葉草的魔力，你裝備了 A 級稱號：【${t}】`); this.updateUI();
+        this.p.titles.push(t); 
+        this.p.curTitle = t; 
+        document.getElementById('seven-clover-modal').style.display = 'none';
+        alert(`獲得稱號：【${t}】`); 
+        this.updateUI();
     },
 
     renderForge() {
         document.getElementById('forge-m-logic').innerText = this.p.bag.mats.logic;
         document.getElementById('forge-m-lang').innerText = this.p.bag.mats.lang;
         document.getElementById('forge-m-mem').innerText = this.p.bag.mats.mem;
+        
         let html = "";
-        if(this.p.bag.swords.length === 0) html = `<div style="text-align:center; color:#555; padding:20px;">背包無武器可鍛造。</div>`;
+        if(this.p.bag.swords.length === 0) {
+            html = `<div style="text-align:center; color:#555; padding:20px;">背包無武器可鍛造。</div>`;
+        }
+        
         this.p.bag.swords.forEach(sw => {
             let req = sw.rank === 'S' ? 7 : (sw.rank === 'A' ? 3 : 1);
             let canForge = (this.p.bag.mats.logic >= req && this.p.bag.mats.lang >= req && this.p.bag.mats.mem >= req);
+            
             html += `<div class="card" style="flex-direction:column; align-items:flex-start;">
                         <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <strong class="rank-${sw.rank}">${sw.name}</strong><span style="color:#aaa; font-size:12px;">磨損: ${sw.wear}%</span>
+                            <strong class="rank-${sw.rank}">${sw.name}</strong>
+                            <span style="color:#aaa; font-size:12px;">磨損: ${sw.wear}%</span>
                         </div>
                         <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
                             <span style="font-size:10px; color:#888;">消耗各碎片 x${req}</span>
@@ -958,212 +991,196 @@ const System = {
 
     forgeWeapon(id, rank, req) {
         if(this.p.bag.mats.logic < req || this.p.bag.mats.lang < req || this.p.bag.mats.mem < req) return;
-        this.p.bag.mats.logic -= req; this.p.bag.mats.lang -= req; this.p.bag.mats.mem -= req;
+        
+        this.p.bag.mats.logic -= req; 
+        this.p.bag.mats.lang -= req; 
+        this.p.bag.mats.mem -= req;
+        
         let sw = this.p.bag.swords.find(w => w.id === id);
         let reduction = rank === 'S' ? (1.000 + Math.random()*0.500) : (1.000 + Math.random()*2.000);
-        let oldWear = parseFloat(sw.wear); let newWear = oldWear - reduction; if(newWear < 0) newWear = 0; sw.wear = newWear.toFixed(3);
-        if(this.p.curWeapon && this.p.curWeapon.id === id) this.p.curWeapon.wear = sw.wear;
+        let oldWear = parseFloat(sw.wear); 
+        let newWear = oldWear - reduction; 
+        
+        if(newWear < 0) newWear = 0; 
+        sw.wear = newWear.toFixed(3);
+        
+        if(this.p.curWeapon && this.p.curWeapon.id === id) {
+            this.p.curWeapon.wear = sw.wear;
+        }
+        
         alert(`🔨 鍛造成功！${sw.name} 磨損度降低了 ${reduction.toFixed(3)}%`);
-        this.save(); this.renderForge();
+        this.save(); 
+        this.renderForge();
     },
 
-    /* =========================================
-       🌟 排行榜 (Leaderboard)
-    ========================================= */
     async renderLeaderboard() {
         const lbEl = document.getElementById('leaderboard-list');
-        lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa; font-family:'Rajdhani', sans-serif;">連線至雲端伺服器中...</div>`;
-        
+        lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">連線至雲端伺服器中...</div>`;
         try {
-            const querySnapshot = await getDocs(collection(db, "players"));
+            const snap = await getDocs(collection(db, "players")); 
             let playersData = [];
-            querySnapshot.forEach((doc) => { playersData.push(doc.data()); });
-
-            playersData.sort((a, b) => {
-                if (b.lv !== a.lv) return b.lv - a.lv;
-                return b.exp - a.exp;
+            snap.forEach((doc) => { playersData.push(doc.data()); });
+            
+            playersData.sort((a, b) => { 
+                if (b.lv !== a.lv) return b.lv - a.lv; 
+                return b.exp - a.exp; 
             });
-
+            
             let html = "";
-            let rank = 1;
-            
-            playersData.forEach((data) => {
-                let badgeClass = "rank-badge";
-                if(rank === 1) badgeClass += " top-1";
-                else if(rank === 2) badgeClass += " top-2";
-                else if(rank === 3) badgeClass += " top-3";
-
-                let weaponDisplay = "徒手";
-                if(data.curWeapon) weaponDisplay = `<span class="rank-${data.curWeapon.rank}">${data.curWeapon.name}</span>`;
-
-                html += `
-                <div class="card" style="margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,215,0,0.2);">
-                    <div class="${badgeClass}">${rank}</div>
-                    <div class="card-col">
-                        <div style="display:flex; justify-content:space-between; align-items:baseline;">
-                            <strong style="color:var(--blue); font-size:1.3rem; font-family:'Rajdhani', sans-serif;">${data.acc}</strong>
-                            <span style="color:var(--purple); font-weight:900; font-size:1.2rem; font-family:'Orbitron';">Lv.${data.lv}</span>
-                        </div>
-                        <div style="font-size:11px; color:var(--gold); margin-top:4px;">[ ${data.curTitle} ]</div>
-                        <div style="font-size:11px; color:#888; margin-top:4px;">⚔️ 裝備: ${weaponDisplay}</div>
-                    </div>
-                </div>`;
-                rank++;
+            playersData.forEach((data, idx) => {
+                let weaponDisplay = data.curWeapon ? `<span class="rank-${data.curWeapon.rank}">${data.curWeapon.name}</span>` : "徒手";
+                html += `<div class="card">
+                            <div class="rank-badge ${idx===0?'top-1':(idx===1?'top-2':(idx===2?'top-3':''))}">${idx+1}</div>
+                            <div class="card-col">
+                                <div style="display:flex; justify-content:space-between;">
+                                    <strong>${data.acc}</strong>
+                                    <span style="color:var(--purple); font-weight:900;">Lv.${data.lv}</span>
+                                </div>
+                                <div style="font-size:11px; color:var(--gold);">[ ${data.curTitle} ]</div>
+                                <div style="font-size:11px; color:#888;">⚔️ ${weaponDisplay}</div>
+                            </div>
+                         </div>`;
             });
-            
-            if(html === "") html = `<div style="text-align:center; padding:30px; color:#555;">目前沒有任何獵人資料</div>`;
             lbEl.innerHTML = html;
-            
-        } catch (error) {
-            console.error("讀取排行榜失敗:", error);
-            lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:red;">無法取得雲端資料，請確認防火牆規則是否設定為 true。</div>`;
+        } catch (e) { 
+            lbEl.innerHTML = `<div style="text-align:center; color:red;">連線失敗</div>`; 
         }
     },
 
-    /* =========================================
-       🤝 戰友系統 (Comrade Pact)
-    ========================================= */
     async renderPartner() {
         const pEl = document.getElementById('partner-status-area');
         pEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">讀取靈魂連結...</div>`;
-        
         try {
             const mySnap = await getDoc(doc(db, "players", this.p.acc));
             if(mySnap.exists()) this.p = mySnap.data();
-
+            
             let html = "";
-
             if (this.p.partner) {
                 const partnerSnap = await getDoc(doc(db, "players", this.p.partner));
                 if(partnerSnap.exists()) {
                     let pd = partnerSnap.data();
                     let wp = pd.curWeapon ? `<span class="rank-${pd.curWeapon.rank}">${pd.curWeapon.name}</span>` : "徒手";
-                    html += `
-                    <div style="text-align:center; color:var(--comrade-green); font-weight:900; font-family:'Rajdhani'; letter-spacing:2px; margin-bottom:15px;">🔗 PACT ESTABLISHED</div>
-                    <div class="card partner-glow" style="flex-direction:column; padding:20px;">
-                        <h3 style="color:var(--comrade-green); margin:0 0 10px 0; font-family:'Rajdhani'; font-size:1.8rem; text-transform:uppercase;">${pd.acc}</h3>
-                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:5px; font-weight:900;">
-                            <span style="color:#aaa;">Level:</span> <span style="color:var(--purple); font-size:1.2rem;">${pd.lv}</span>
-                        </div>
-                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <span style="color:#aaa; font-size:12px;">Title:</span> <span style="color:var(--gold); font-size:12px;">[ ${pd.curTitle} ]</span>
-                        </div>
-                        <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:15px;">
-                            <span style="color:#aaa; font-size:12px;">Weapon:</span> <span style="font-size:12px;">${wp}</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; width:100%; margin-bottom:15px; border-top:1px solid rgba(0,255,170,0.2); padding-top:10px;">
-                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">IQ</div><div style="font-weight:900;">${pd.iq}</div></div>
-                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">STR</div><div style="font-weight:900;">${pd.str}</div></div>
-                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">MP</div><div style="font-weight:900;">${pd.mp}</div></div>
-                            <div style="text-align:center;"><div style="font-size:9px; color:var(--blue);">DEX</div><div style="font-weight:900;">${pd.dex}</div></div>
-                        </div>
-                        <button class="btn-action" style="width:100%; background:var(--red-alert);" onclick="System.breakPact()">解除契約 (SEVER LINK)</button>
-                    </div>`;
-                } else {
-                    html += `<div style="text-align:center; padding:30px; color:red;">找不到戰友資料，可能已被系統抹除。</div>
-                             <button class="btn-action" onclick="System.breakPact()">強制解除異常連結</button>`;
+                    html += `<div style="text-align:center; color:var(--comrade-green); font-weight:900; margin-bottom:15px;">🔗 PACT ESTABLISHED</div>
+                             <div class="card partner-glow" style="flex-direction:column; padding:20px;">
+                                <h3 style="color:var(--comrade-green); margin:0 0 10px 0; font-size:1.8rem; text-transform:uppercase;">${pd.acc}</h3>
+                                <div style="width:100%; display:flex; justify-content:space-between; font-weight:900;">
+                                    <span>Level:</span> <span style="color:var(--purple);">${pd.lv}</span>
+                                </div>
+                                <div style="width:100%; display:flex; justify-content:space-between;">
+                                    <span>Title:</span> <span style="color:var(--gold); font-size:12px;">[ ${pd.curTitle} ]</span>
+                                </div>
+                                <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:15px;">
+                                    <span style="color:#aaa; font-size:12px;">Weapon:</span> <span style="font-size:12px;">${wp}</span>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; width:100%; text-align:center; border-top:1px solid rgba(0,255,170,0.2); padding-top:10px;">
+                                    <div><small style="color:var(--blue);">IQ</small><br><b>${pd.iq}</b></div>
+                                    <div><small style="color:var(--blue);">STR</small><br><b>${pd.str}</b></div>
+                                    <div><small style="color:var(--blue);">MP</small><br><b>${pd.mp}</b></div>
+                                    <div><small style="color:var(--blue);">DEX</small><br><b>${pd.dex}</b></div>
+                                </div>
+                                <button class="btn-action" style="width:100%; background:var(--red-alert); margin-top:20px;" onclick="System.breakPact()">解除契約</button>
+                             </div>`;
+                } else { 
+                    html += `<div style="text-align:center; padding:30px; color:red;">找不到戰友資料</div>
+                             <button class="btn-action" style="width:100%;" onclick="System.breakPact()">強制解除異常連結</button>`; 
                 }
             } else {
-                html += `
-                <div class="admin-box" style="border-color:var(--comrade-green); background:rgba(0,255,170,0.05);">
-                    <h3 style="color:var(--comrade-green); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">⚔️ 締結契約</h3>
-                    <input type="text" id="inp-partner-req" class="admin-input" placeholder="輸入同學 ID 發送邀請..." style="border-color:rgba(0,255,170,0.4);">
-                    <button class="btn-action" style="width:100%; background:var(--comrade-green); color:#000;" onclick="System.sendPactReq()">發送邀請 (SEND REQUEST)</button>
-                </div>
-                <h3 class="section-title" style="font-size:14px; margin-top:20px;">PENDING REQUESTS (收到的邀請)</h3>`;
-
+                html += `<div style="background:rgba(0,255,170,0.05); border:1px solid rgba(0,255,170,0.3); padding:15px; border-radius:10px;">
+                            <h3 style="color:var(--comrade-green); margin:0 0 10px 0; font-size:16px;">⚔️ 締結契約</h3>
+                            <input type="text" id="inp-partner-req" style="width:100%; padding:10px; background:#000; border:1px solid #555; color:#fff; border-radius:5px; margin-bottom:10px;" placeholder="輸入同學 ID...">
+                            <button class="btn-action" style="width:100%; background:var(--comrade-green); color:#000;" onclick="System.sendPactReq()">發送邀請</button>
+                         </div>
+                         <h3 class="section-title" style="font-size:14px; margin-top:20px;">收到邀請</h3>`;
+                         
                 if (this.p.requests && this.p.requests.length > 0) {
                     this.p.requests.forEach(reqAcc => {
-                        html += `
-                        <div class="card" style="border-left: 3px solid var(--comrade-green);">
-                            <div class="card-col">
-                                <strong style="color:#fff; font-size:1.1rem; font-family:'Rajdhani';">${reqAcc}</strong>
-                                <span style="color:#888; font-size:10px;">請求與你結成戰友</span>
-                            </div>
-                            <div style="display:flex; gap:5px;">
-                                <button class="btn-action" style="background:var(--comrade-green); color:#000;" onclick="System.acceptPact('${reqAcc}')">同意</button>
-                                <button class="btn-action" style="background:#444;" onclick="System.rejectPact('${reqAcc}')">拒絕</button>
-                            </div>
-                        </div>`;
+                        html += `<div class="card" style="border-left: 3px solid var(--comrade-green);">
+                                    <div class="card-col">
+                                        <strong style="color:#fff;">${reqAcc}</strong>
+                                    </div>
+                                    <div style="display:flex; gap:5px;">
+                                        <button class="btn-action" style="background:var(--comrade-green); color:#000;" onclick="System.acceptPact('${reqAcc}')">同意</button>
+                                        <button class="btn-action" style="background:#444;" onclick="System.rejectPact('${reqAcc}')">拒絕</button>
+                                    </div>
+                                 </div>`;
                     });
-                } else {
-                    html += `<div style="text-align:center; color:#555; padding:15px; font-size:12px;">目前沒有任何邀請</div>`;
+                } else { 
+                    html += `<div style="text-align:center; color:#555; padding:15px; font-size:12px;">無邀請</div>`; 
                 }
             }
             pEl.innerHTML = html;
-        } catch (error) {
-            pEl.innerHTML = `<div style="text-align:center; padding:30px; color:red;">連線失敗</div>`;
+        } catch (e) { 
+            pEl.innerHTML = `<div style="text-align:center; color:red;">連線失敗</div>`; 
         }
     },
 
     async sendPactReq() {
-        const targetAcc = document.getElementById('inp-partner-req').value.trim();
-        if(!targetAcc) return alert("請輸入同學 ID！");
-        if(targetAcc === this.p.acc) return alert("不能跟自己結盟！");
+        const target = document.getElementById('inp-partner-req').value.trim();
+        if(!target || target === this.p.acc) return alert("無效的 ID");
         try {
-            const targetRef = doc(db, "players", targetAcc);
-            const targetSnap = await getDoc(targetRef);
-            if(!targetSnap.exists()) return alert("❌ 找不到該獵人！");
-            let td = targetSnap.data();
-            if(td.partner) return alert("⚠️ 對方已經有戰友了！");
-            if(!td.requests) td.requests = [];
-            if(td.requests.includes(this.p.acc)) return alert("⚠️ 已經發送過邀請了，請耐心等待對方確認。");
+            const ref = doc(db, "players", target); 
+            const snap = await getDoc(ref);
+            if(!snap.exists()) return alert("找不到獵人");
             
-            td.requests.push(this.p.acc);
-            await setDoc(targetRef, td);
-            alert(`✅ 邀請已發送給【${targetAcc}】！`);
+            let td = snap.data(); 
+            if(td.partner) return alert("對方已有戰友");
+            if(!td.requests) td.requests = []; 
+            if(td.requests.includes(this.p.acc)) return alert("已發送過邀請");
+            
+            td.requests.push(this.p.acc); 
+            await setDoc(ref, td); 
+            alert("發送成功！");
             document.getElementById('inp-partner-req').value = "";
         } catch(e) { alert("發送失敗"); }
     },
-
-    async acceptPact(targetAcc) {
+    
+    async acceptPact(target) {
         try {
-            const targetRef = doc(db, "players", targetAcc);
-            const targetSnap = await getDoc(targetRef);
-            if(targetSnap.exists()) {
-                let td = targetSnap.data();
-                if(td.partner) {
-                    alert("⚠️ 晚了一步，對方已經跟別人結盟了！");
-                    this.p.requests = this.p.requests.filter(r => r !== targetAcc);
-                    await this.save();
-                    return this.renderPartner();
+            const ref = doc(db, "players", target); 
+            const snap = await getDoc(ref);
+            if(snap.exists()) {
+                let td = snap.data(); 
+                if(td.partner) { 
+                    alert("對方已跟別人結盟"); 
+                    this.rejectPact(target); 
+                    return; 
                 }
-                td.partner = this.p.acc;
-                await setDoc(targetRef, td);
+                td.partner = this.p.acc; 
+                await setDoc(ref, td);
             }
-            this.p.partner = targetAcc;
-            this.p.requests = this.p.requests.filter(r => r !== targetAcc);
-            await this.save();
-            alert(`🔗 契約成立！你與【${targetAcc}】正式成為戰友！`);
-            this.updateUI(); // 刷新 Buff 顯示
+            this.p.partner = target; 
+            this.p.requests = this.p.requests.filter(r => r !== target);
+            await this.save(); 
+            alert(`契約成立！`); 
+            this.updateUI(); 
             this.renderPartner();
-        } catch(e) { alert("綁定失敗"); }
+        } catch(e) {}
     },
-
-    async rejectPact(targetAcc) {
-        this.p.requests = this.p.requests.filter(r => r !== targetAcc);
-        await this.save();
-        this.renderPartner();
+    
+    async rejectPact(target) { 
+        this.p.requests = this.p.requests.filter(r => r !== target); 
+        await this.save(); 
+        this.renderPartner(); 
     },
-
+    
     async breakPact() {
-        if(!confirm("確定要解除戰友契約嗎？這將切斷你們的靈魂連結。")) return;
+        if(!confirm("確定解除契約嗎？")) return;
         try {
             if(this.p.partner) {
-                const targetRef = doc(db, "players", this.p.partner);
-                const targetSnap = await getDoc(targetRef);
-                if(targetSnap.exists()) {
-                    let td = targetSnap.data();
-                    td.partner = null;
-                    await setDoc(targetRef, td);
+                const ref = doc(db, "players", this.p.partner); 
+                const snap = await getDoc(ref);
+                if(snap.exists()) { 
+                    let td = snap.data(); 
+                    td.partner = null; 
+                    await setDoc(ref, td); 
                 }
             }
-            this.p.partner = null;
-            await this.save();
-            alert("💔 契約已解除。");
-            this.updateUI(); // 刷新 Buff 顯示
+            this.p.partner = null; 
+            await this.save(); 
+            alert("契約已解除"); 
+            this.updateUI(); 
             this.renderPartner();
-        } catch(e) { alert("解除失敗"); }
+        } catch(e) {}
     },
 
     /* =========================================
@@ -1171,20 +1188,31 @@ const System = {
     ========================================= */
     verifyAdmin() {
         if(document.getElementById('inp-admin-pwd').value === 'Ricky_0414') {
-            this.isAdminUnlocked = true; document.getElementById('admin-login').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'flex'; this.renderAdminPanel();
-        } else alert("ACCESS DENIED: 密碼錯誤");
+            this.isAdminUnlocked = true;
+            document.getElementById('admin-login').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            this.renderAdminPanel();
+        } else {
+            alert("密碼錯誤");
+        }
     },
-
+    
     renderAdminPanel() {
-        document.getElementById('adm-lv').value = this.p.lv; document.getElementById('adm-coins').value = Math.floor(this.p.coins);
-        document.getElementById('adm-sp').value = this.p.sp; document.getElementById('adm-iq').value = this.p.iq;
-        document.getElementById('adm-str').value = this.p.str; document.getElementById('adm-mp').value = this.p.mp; document.getElementById('adm-dex').value = this.p.dex;
+        document.getElementById('adm-lv').value = this.p.lv; 
+        document.getElementById('adm-coins').value = Math.floor(this.p.coins);
+        document.getElementById('adm-sp').value = this.p.sp; 
+        document.getElementById('adm-iq').value = this.p.iq;
+        document.getElementById('adm-str').value = this.p.str; 
+        document.getElementById('adm-mp').value = this.p.mp; 
+        document.getElementById('adm-dex').value = this.p.dex;
         
         let swordHtml = `<option value="">-- 選擇武器 --</option>`;
         Object.keys(DB.swords).forEach(rank => {
             let optGroup = `<optgroup label="${rank}-RANK">`;
-            DB.swords[rank].forEach(sw => { let name = typeof sw === 'object' ? sw.name : sw; optGroup += `<option value="${rank}|${name}">${name}</option>`; });
+            DB.swords[rank].forEach(sw => { 
+                let name = typeof sw === 'object' ? sw.name : sw; 
+                optGroup += `<option value="${rank}|${name}">${name}</option>`; 
+            });
             optGroup += `</optgroup>`; swordHtml += optGroup;
         });
         document.getElementById('adm-sel-sword').innerHTML = swordHtml;
@@ -1192,7 +1220,9 @@ const System = {
         let titleHtml = `<option value="">-- 選擇稱號 --</option>`;
         Object.keys(DB.titles).forEach(rank => {
             let optGroup = `<optgroup label="${rank}-RANK">`;
-            DB.titles[rank].forEach(t => { optGroup += `<option value="${t}">${t}</option>`; });
+            DB.titles[rank].forEach(t => { 
+                optGroup += `<option value="${t}">${t}</option>`; 
+            });
             optGroup += `</optgroup>`; titleHtml += optGroup;
         });
         document.getElementById('adm-sel-title').innerHTML = titleHtml;
@@ -1211,7 +1241,8 @@ const System = {
 
         if (!targetAcc || targetAcc === this.p.acc) {
             this.p.lv = lv; this.p.coins = coins; this.p.sp = sp; this.p.iq = iq; this.p.str = str; this.p.mp = mp; this.p.dex = dex; this.p.exp = exp;
-            this.updateUI(); alert("✅ 你已強制覆寫自己的數值！");
+            this.updateUI(); 
+            alert("✅ 你已強制覆寫自己的數值！");
         } else {
             try {
                 const targetRef = doc(db, "players", targetAcc);
@@ -1219,45 +1250,68 @@ const System = {
                 if(targetSnap.exists()) {
                     let td = targetSnap.data();
                     td.lv = lv; td.coins = coins; td.sp = sp; td.iq = iq; td.str = str; td.mp = mp; td.dex = dex; td.exp = exp;
-                    await setDoc(targetRef, td); alert(`✅ 已成功竄改同學【${targetAcc}】的數值！`);
-                } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
-            } catch(e) { console.error(e); alert("竄改失敗，連線異常"); }
+                    await setDoc(targetRef, td); 
+                    alert(`✅ 已成功竄改同學【${targetAcc}】的數值！`);
+                } else {
+                    alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+                }
+            } catch(e) { alert("竄改失敗，連線異常"); }
         }
     },
 
     async adminGiveSword() {
-        const val = document.getElementById('adm-sel-sword').value; if(!val) return alert("請選擇武器");
+        const val = document.getElementById('adm-sel-sword').value; 
+        if(!val) return alert("請選擇武器");
+        
         const parts = val.split('|'); const rank = parts[0]; const name = parts[1];
-        let desc = ""; let target = DB.swords[rank].find(s => (typeof s === 'object' ? s.name : s) === name); if(typeof target === 'object') desc = target.desc;
+        let desc = ""; 
+        let target = DB.swords[rank].find(s => (typeof s === 'object' ? s.name : s) === name); 
+        if(typeof target === 'object') desc = target.desc;
+        
         let godItem = { id: Date.now() + Math.floor(Math.random()*1000), name: name, rank: rank, wear: rank === 'UNKNOWN' ? '???' : '0.000', desc: desc, price: 0 };
         
         let targetAcc = document.getElementById('adm-target').value.trim();
         if (!targetAcc || targetAcc === this.p.acc) {
-            this.p.bag.swords.push(godItem); this.save(); alert(`🗡️ [上帝模式] 生成給自己：【${name}】`);
+            this.p.bag.swords.push(godItem); 
+            this.save(); 
+            alert(`🗡️ [上帝模式] 生成給自己：【${name}】`);
         } else {
             try {
-                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
+                const targetRef = doc(db, "players", targetAcc); 
+                const targetSnap = await getDoc(targetRef);
                 if(targetSnap.exists()) {
-                    let td = targetSnap.data(); td.bag.swords.push(godItem);
-                    await setDoc(targetRef, td); alert(`🗡️ [上帝模式] 已將【${name}】塞入同學【${targetAcc}】的背包！`);
+                    let td = targetSnap.data(); 
+                    td.bag.swords.push(godItem);
+                    await setDoc(targetRef, td); 
+                    alert(`🗡️ [上帝模式] 已將【${name}】塞入同學【${targetAcc}】的背包！`);
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
             } catch(e) { alert("生成失敗"); }
         }
     },
 
     async adminGiveTitle() {
-        const title = document.getElementById('adm-sel-title').value; if(!title) return alert("請先選擇一個稱號");
+        const title = document.getElementById('adm-sel-title').value; 
+        if(!title) return alert("請先選擇一個稱號");
+        
         let targetAcc = document.getElementById('adm-target').value.trim();
         if (!targetAcc || targetAcc === this.p.acc) {
-            if(!this.p.titles.includes(title)) { this.p.titles.push(title); this.save(); alert(`📜 [上帝模式] 解鎖給自己：【${title}】`); } 
-            else alert(`⚠️ 你已經擁有此稱號`);
+            if(!this.p.titles.includes(title)) { 
+                this.p.titles.push(title); 
+                this.save(); 
+                alert(`📜 [上帝模式] 解鎖給自己：【${title}】`); 
+            } else {
+                alert(`⚠️ 你已經擁有此稱號`);
+            }
         } else {
             try {
-                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
+                const targetRef = doc(db, "players", targetAcc); 
+                const targetSnap = await getDoc(targetRef);
                 if(targetSnap.exists()) {
                     let td = targetSnap.data();
                     if(!td.titles.includes(title)) {
-                        td.titles.push(title); await setDoc(targetRef, td); alert(`📜 [上帝模式] 已將稱號解鎖給同學【${targetAcc}】！`);
+                        td.titles.push(title); 
+                        await setDoc(targetRef, td); 
+                        alert(`📜 [上帝模式] 已將稱號解鎖給同學【${targetAcc}】！`);
                     } else alert(`⚠️ 該同學已擁有此稱號`);
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
             } catch(e) { alert("生成失敗"); }
@@ -1267,13 +1321,18 @@ const System = {
     async adminGiveMats() { 
         let targetAcc = document.getElementById('adm-target').value.trim();
         if (!targetAcc || targetAcc === this.p.acc) {
-            this.p.bag.mats.logic += 100; this.p.bag.mats.lang += 100; this.p.bag.mats.mem += 100; this.save(); alert("📦 素材各 +100 給自己！"); 
+            this.p.bag.mats.logic += 100; this.p.bag.mats.lang += 100; this.p.bag.mats.mem += 100; 
+            this.save(); 
+            alert("📦 素材各 +100 給自己！"); 
         } else {
             try {
-                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
+                const targetRef = doc(db, "players", targetAcc); 
+                const targetSnap = await getDoc(targetRef);
                 if(targetSnap.exists()) {
-                    let td = targetSnap.data(); td.bag.mats.logic += 100; td.bag.mats.lang += 100; td.bag.mats.mem += 100;
-                    await setDoc(targetRef, td); alert(`📦 已發放素材給同學【${targetAcc}】`);
+                    let td = targetSnap.data(); 
+                    td.bag.mats.logic += 100; td.bag.mats.lang += 100; td.bag.mats.mem += 100;
+                    await setDoc(targetRef, td); 
+                    alert(`📦 已發放素材給同學【${targetAcc}】`);
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
             } catch(e) {}
         }
@@ -1282,55 +1341,68 @@ const System = {
     async adminGivePotions() { 
         let targetAcc = document.getElementById('adm-target').value.trim();
         if (!targetAcc || targetAcc === this.p.acc) {
-            this.p.bag.potions.p_double += 10; this.p.bag.potions.p_time += 10; this.p.bag.potions.p_luck += 10; this.p.bag.potions.p_seven += 10; this.save(); alert("🧪 藥水各 +10 給自己！"); 
+            this.p.bag.potions.p_double += 10; this.p.bag.potions.p_time += 10; this.p.bag.potions.p_luck += 10; this.p.bag.potions.p_seven += 10; 
+            this.save(); 
+            alert("🧪 藥水各 +10 給自己！"); 
         } else {
             try {
-                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
+                const targetRef = doc(db, "players", targetAcc); 
+                const targetSnap = await getDoc(targetRef);
                 if(targetSnap.exists()) {
-                    let td = targetSnap.data(); td.bag.potions.p_double += 10; td.bag.potions.p_time += 10; td.bag.potions.p_luck += 10; td.bag.potions.p_seven += 10;
-                    await setDoc(targetRef, td); alert(`🧪 已發放藥水給同學【${targetAcc}】`);
+                    let td = targetSnap.data(); 
+                    td.bag.potions.p_double += 10; td.bag.potions.p_time += 10; td.bag.potions.p_luck += 10; td.bag.potions.p_seven += 10;
+                    await setDoc(targetRef, td); 
+                    alert(`🧪 已發放藥水給同學【${targetAcc}】`);
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
             } catch(e) {}
         }
     },
 
     async adminPunish() {
-        let targetAcc = document.getElementById('adm-target').value.trim();
-        if(!targetAcc) return alert("⚠️ 天罰必須指定目標帳號！請在上方輸入 ID。");
-        if(targetAcc === this.p.acc) return alert("⚠️ 你不能對自己降下天罰！");
-
+        const target = document.getElementById('adm-target').value.trim();
+        if(!target) return alert("請輸入 ID");
+        
         try {
-            const targetRef = doc(db, "players", targetAcc);
-            const targetSnap = await getDoc(targetRef);
-            if(targetSnap.exists()) {
-                let d = targetSnap.data();
-                if (d.partner) {
+            const ref = doc(db, "players", target);
+            const snap = await getDoc(ref);
+            if(snap.exists()) {
+                let d = snap.data();
+                
+                // 強制斬斷戰友連結
+                if(d.partner) {
                     const pRef = doc(db, "players", d.partner);
                     const pSnap = await getDoc(pRef);
-                    if (pSnap.exists()) {
-                        let pData = pSnap.data();
-                        pData.partner = null;
-                        await setDoc(pRef, pData);
+                    if(pSnap.exists()) { 
+                        let pd = pSnap.data(); 
+                        pd.partner = null; 
+                        await setDoc(pRef, pd); 
                     }
                 }
+                
+                // 洗白帳號
                 d.lv = 1; d.exp = 0; d.coins = 0; d.sp = 0;
                 d.iq = 1; d.str = 1; d.mp = 1; d.dex = 1;
-                d.curTitle = "🚫 卑鄙的作弊者";
-                d.titles = ["🚫 卑鄙的作弊者"];
-                d.bag = {swords:[], potions:{}, mats:{logic:0, lang:0, mem:0}};
+                d.curTitle = "🚫 卑鄙的作弊者"; 
+                d.titles = ["🚫 卑鄙的作弊者"]; 
+                d.bag = { swords:[], potions:{}, mats:{logic:0, lang:0, mem:0} };
                 d.curWeapon = null;
                 d.activeQuests = [];
-                d.partner = null; 
+                d.partner = null;
                 d.requests = [];
-                await setDoc(targetRef, d);
-                alert(`🔨 天罰已降臨！同學【${targetAcc}】已被打回原形、眾叛親離並刻上恥辱標記！`);
-            } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
-        } catch(e) { alert("裁決失敗，連線異常"); }
+                
+                await setDoc(ref, d); 
+                alert(`🔨 已對 ${target} 執行神罰！`);
+            } else {
+                alert("找不到該玩家");
+            }
+        } catch(e) {
+            alert("天罰執行失敗");
+        }
     }
 };
 
 window.System = System;
-document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+document.addEventListener('gesturestart', e => e.preventDefault());
 </script>
 </body>
 </html>
