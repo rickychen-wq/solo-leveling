@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Server Awakened V18 (Final Fix)</title>
+    <title>Solo Leveling: Server Awakened V19 (Security Patch)</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -54,7 +54,6 @@
         .scroll-area::-webkit-scrollbar { width: 3px; }
         .scroll-area::-webkit-scrollbar-thumb { background: var(--purple-dark); border-radius: 10px; }
 
-        /* 導航列 */
         .nav { display: flex; overflow-x: auto; padding: 10px 5px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(188, 19, 254, 0.2); background: #000; z-index: 100; flex-shrink: 0; margin: 0 -15px; border-radius: 0 0 20px 20px; scrollbar-width: none; }
         .nav::-webkit-scrollbar { display: none; }
         .nav-link { color: #555; font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.3s; flex-shrink: 0; text-align: center; padding: 5px 12px; white-space: nowrap; font-family: 'Rajdhani', 'Noto Sans TC', sans-serif;}
@@ -95,7 +94,6 @@
         .admin-label { font-size: 11px; color: #aaa; margin-bottom: 5px; display: block; text-align:left; font-family:'Rajdhani', sans-serif;}
         .admin-box { background: rgba(255, 0, 85, 0.05); border: 1px solid rgba(255, 0, 85, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
 
-        /* 排行榜卡片特製樣式 */
         .rank-badge { width: 30px; height: 30px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; justify-content: center; align-items: center; font-weight: 900; font-family: 'Orbitron'; margin-right: 15px; font-size: 14px; box-shadow: 0 0 10px var(--purple); flex-shrink:0;}
         .rank-badge.top-1 { background: var(--gold); box-shadow: 0 0 15px var(--gold); color: #000; }
         .rank-badge.top-2 { background: silver; box-shadow: 0 0 10px silver; color: #000; }
@@ -329,7 +327,7 @@ const DB = {
         A: ["位面守護者", "不滅戰神", "真理探求者", "弒龍大師", "諸神黃昏", "至高審判長", "永恆之光", "極暗深淵", "時空旅人", "萬物生靈主", "禁忌魔法師", "聖靈大先知", "絕對零度", "戰場的主宰", "混沌掌控者", "劍之頂峰", "傳奇奠基人", "天災化身", "銀河開拓者", "靈魂收割者", "帝國之牆", "神聖制裁者", "無極劍聖", "末日執行官", "破法領主"],
         B: ["大地粉碎者", "蒼穹之眼", "暗夜主宰", "王國重臣", "災厄終結者", "巨龍獵人", "戰地指揮官", "聖殿執行官", "幻影遊俠", "秘法大師", "鋼鐵要塞", "風暴使徒", "斷罪之刃", "極限生存者", "審判官", "狂瀾追逐者", "守護神盾", "破曉之星", "血色紅蓮", "孤傲之狼", "聖域守門人", "虛空行者", "戰鬥藝術家", "王牌尖兵", "無懼勇者", "輝煌之刃", "元素主導者", "深淵監視者", "重力主宰", "鐵血領主"],
         C: ["前線突擊手", "荒野獵手", "鋼鐵意志", "熟練冒險家", "戰術小隊長", "狂暴戰斧", "影之追蹤者", "銀翼先鋒", "疾風劍士", "元素感知者", "守望先驅", "烈焰行者", "重裝步兵", "沉默的暗殺員", "穿雲箭手", "黎明守護者", "符文操作員", "鋼鐵守望", "中堅力量", "碎石者", "極光使者", "戰場齒輪", "精銳士官", "秘法學徒", "獵魔小隊", "不屈之魂", "疾走之影", "狂想曲員", "寒冰操縱者", "堅盾守衛"],
-        D: ["村莊守望者", "鐵鏽新秀", "持劍平民", "冒險初學者", "見習騎士", "準時下班員", "小鎮地頭蛇", "森林清道夫", "略懂皮毛", "憤怒的小鳥", "正義路人", "銅級傭兵", "脫殼小龍", "剛學會走路", "基礎操縱者", "先遣部隊", "戰地記者", "幸運的生還者", "武器試用員", "略有小成", "粗糙的戰士", "模仿大師", "鐵打的龍套", "初級執行者", "民間高手(自稱)", "熱血少年", "頑強的甲蟲", "破舊皮甲魂", "基礎訓練生", "準準準冒險者"],
+        D: ["村莊守望者", "鐵鏽新秀", "持劍平民", "冒險初學者", "見習騎士", "準時下班員", "小鎮地頭蛇", "森林清道夫", "略懂皮毛", "憤怒的小鳥", "正義路人", "銅級傭兵", "脫殼小龍", "剛學會走路", "基礎操縱者", "先遣部隊", "戰地記者", "幸運的生還者", "武器試用員", "略有小成", "粗糙的戰士", "模仿大師", "鐵打的龍套", "初級執行者", "民間高手(自稱)", "熱血少年", "頑強的甲蟲", "破舊皮甲魂", "基礎訓練生", "準準冒險者"],
         E: ["戰鬥力 0.5", "走路草", "實習砲灰", "裝備回收員", "迷路的羔羊", "萌新一號", "戰場觀光客", "史萊姆之友", "甚至不是人類", "呼吸也會累", "落地成盒", "走位靠賽", "後勤搬運工", "萬年候補生", "塵埃邊緣人", "訓練用假人", "尚未覺醒", "零戰力戰士", "掃地阿伯", "路人甲", "雜草魂", "無名小卒", "勇者預備軍", "體力廢材", "眼神死的菜鳥", "邊緣雜魚", "戰場背景板", "脆弱的靈魂", "純潔無垢", "剛下山的傻子"]
     },
     swords: {
@@ -370,7 +368,7 @@ const StorageMgr = {
 };
 
 /* =========================================
-   雲端遊戲引擎核心
+   雲端遊戲引擎核心 (包含防盜號密碼補丁)
 ========================================= */
 const System = {
     p: null, 
@@ -378,9 +376,15 @@ const System = {
     rankWeight: { 'UNKNOWN': 7, 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'E': 1 },
     isAdminUnlocked: false,
 
+    // 🔥 V19: 加入防盜號密碼驗證系統
     async login() {
-        const acc = document.getElementById('inp-acc').value.trim() || "HUNTER";
+        const acc = document.getElementById('inp-acc').value.trim();
+        const pwd = document.getElementById('inp-pwd').value.trim();
         const btn = document.getElementById('btn-login');
+
+        if (!acc) return alert("⚠️ 請輸入 HUNTER ID！");
+        if (!pwd) return alert("⚠️ 系統安全升級，請務必輸入密碼！");
+
         btn.innerText = "CONNECTING...";
         btn.disabled = true;
 
@@ -389,13 +393,31 @@ const System = {
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                this.p = docSnap.data();
+                let data = docSnap.data();
+                
+                // 密碼驗證邏輯
+                if (data.pwd) {
+                    if (data.pwd !== pwd) {
+                        alert("❌ 密碼錯誤！想盜號啊？門都沒有！");
+                        btn.innerText = "INITIALIZE";
+                        btn.disabled = false;
+                        return;
+                    }
+                } else {
+                    // 舊帳號 (如 CHEN) 第一次綁定密碼
+                    data.pwd = pwd;
+                    await setDoc(docRef, data);
+                    alert("🔒 舊帳號已成功綁定密碼！");
+                }
+
+                this.p = data;
                 if(!this.p.bag) this.p.bag = { swords: [], potions: {}, mats: { logic:0, lang:0, mem:0 } };
                 if(!this.p.buffs) this.p.buffs = { doubleXp: false, luck: false };
                 if(!this.p.curWeapon) this.p.curWeapon = null;
             } else {
+                // 新玩家註冊，寫入帳號密碼
                 this.p = {
-                    acc, lv: 1, exp: 0, coins: 0, sp: 0,
+                    acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0,
                     iq: 1, str: 1, mp: 1, dex: 1,
                     titles: ["尚未覺醒"], curTitle: "尚未覺醒",
                     curWeapon: null,
@@ -411,7 +433,7 @@ const System = {
             this.updateUI();
         } catch (e) {
             console.error(e);
-            alert("伺服器連線失敗，請確認 Firebase 設定是否正確，或是否開啟了測試模式。");
+            alert("伺服器連線失敗，請確認 Firebase 規則設定是否為 true。");
             btn.innerText = "INITIALIZE";
             btn.disabled = false;
         }
@@ -632,7 +654,7 @@ const System = {
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v18_cloud');
+        let stored = StorageMgr.get('sl_shop_v19');
         if(stored) {
             const parsed = JSON.parse(stored);
             if(parsed.date === today) {
@@ -678,7 +700,7 @@ const System = {
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
 
-        this.shopCache = shop; StorageMgr.set('sl_shop_v18_cloud', JSON.stringify({ date: today, data: this.shopCache }));
+        this.shopCache = shop; StorageMgr.set('sl_shop_v19', JSON.stringify({ date: today, data: this.shopCache }));
         document.getElementById('shop-time').innerText = force ? `Refreshed (Hourglass)` : `Refreshed: ${today}`;
     },
 
@@ -861,14 +883,13 @@ const System = {
     },
 
     /* =========================================
-       🌟 排行榜 (Leaderboard) - 繞過索引限制版
+       🌟 排行榜 (Leaderboard) 繞過索引限制版
     ========================================= */
     async renderLeaderboard() {
         const lbEl = document.getElementById('leaderboard-list');
         lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa; font-family:'Rajdhani', sans-serif;">連線至雲端伺服器中...</div>`;
         
         try {
-            // 直接抓取全班資料，避開 Firestore 雙重排序限制
             const querySnapshot = await getDocs(collection(db, "players"));
             
             let playersData = [];
@@ -876,7 +897,7 @@ const System = {
                 playersData.push(doc.data());
             });
 
-            // 前端 JS 內存排序：先比等級(lv)，等級一樣再比經驗值(exp)
+            // 系統前端自帶高階排序算法
             playersData.sort((a, b) => {
                 if (b.lv !== a.lv) return b.lv - a.lv;
                 return b.exp - a.exp;
