@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Comrade Pact V23 (Sync Patch)</title>
+    <title>Solo Leveling: Creator's World V25</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -97,7 +97,7 @@
         .rank-badge.top-3 { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; color: #fff; }
 
         .cooldown-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: 'Rajdhani', sans-serif; font-weight: 900; pointer-events: none; z-index: 5; }
-        .cooldown-timer { font-size: 1.5rem; color: var(--red-alert); text-shadow: 0 0 10px var(--red-alert); }
+        .cooldown-timer { font-size: 1.5rem; color: var(--red-alert); text-shadow: 0 0 10px var(--red-alert); letter-spacing: 2px;}
         
         .partner-glow { box-shadow: 0 0 20px rgba(0, 255, 170, 0.3); border: 1px solid var(--comrade-green) !important; background: rgba(0, 255, 170, 0.05) !important; }
     </style>
@@ -131,7 +131,7 @@
 <div id="dungeon-modal" class="modal-overlay">
     <div class="modal-content">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,212,255,0.3); padding-bottom:10px; margin-bottom:15px;">
-            <h2 id="dm-title" style="color:var(--blue); font-family:'Rajdhani', sans-serif; margin:0; font-size:1.5rem; letter-spacing:1px;">SUBJECT</h2>
+            <h2 id="dm-title" style="color:var(--blue); font-family:'Rajdhani', sans-serif; margin:0; font-size:1.5rem; letter-spacing:1px;">GATE</h2>
             <button class="btn-action" style="background:transparent; border:1px solid #555; color:#aaa; padding:5px 10px;" onclick="document.getElementById('dungeon-modal').style.display='none'">返回</button>
         </div>
         <div id="dm-content"></div>
@@ -175,14 +175,8 @@
 
         <div id="p-dungeon" class="page">
             <h2 class="section-title">DUNGEON GATES</h2>
-            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:15px; flex-shrink:0;">
-                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('國文')">國文</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('英文')">英文</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('數學')">數學</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('物理')">物理</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('地科')">地科</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('公民')">公民</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('歷史')">歷史</button>
+            <div id="gate-categories" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:15px; flex-shrink:0;">
+                <div style="grid-column: span 4; text-align:center; color:#555; padding:20px; font-family:'Rajdhani', sans-serif;">載入雲端任務中...</div>
             </div>
             <h2 class="section-title" style="color:var(--purple);">ACTIVE QUESTS</h2>
             <div class="scroll-area" id="active-quests-list"></div>
@@ -330,6 +324,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// 🔥 舊的 subjects 已徹底移除，改用 cloudDungeons
 const DB = {
     titles: {
         S: ["創世神：萬象起源", "虛空之王：秩序崩壞者", "因果律：命運編織者", "永恆傳說：不朽之冠", "唯一神：降臨之光"],
@@ -354,15 +349,7 @@ const DB = {
         { id: "p_luck", name: "🍀 幸運四葉草", price: 850, desc: "喝下後，下次升級抽稱號保底 B 級以上" },
         { id: "p_seven", name: "✨ 七葉草藥水", price: 3500, desc: "喝下後可直接選擇並獲得一個 A 級稱號" }
     ],
-    subjects: {
-        '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, range: 12, time: 20 },
-        '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, range: 10, time: 15 },
-        '數學': { items: {'講義':600}, range: 10, time: 30 },
-        '物理': { items: {'講義':300}, range: 10, time: 25 },
-        '地科': { items: {'講義':350}, range: 6, time: 15 },
-        '公民': { items: {'課本':300, '講義':350}, range: 6, time: 10 },
-        '歷史': { items: {'課本':500}, range: 6, time: 10 }
-    }
+    cloudDungeons: {} // 動態地下城資料庫
 };
 
 const StorageMgr = {
@@ -439,6 +426,7 @@ const System = {
             this.checkShopRefresh();
             this.updateUI();
             this.startGlobalTimer(); 
+            this.fetchCloudDungeons(); // 🔥 登入後立即抓取雲端任務
         } catch (e) {
             console.error(e);
             alert("伺服器連線失敗，請確認 Firebase 規則設定是否為 true。");
@@ -447,7 +435,6 @@ const System = {
         }
     },
 
-    // 🔥 V23防護補丁：儲存前先同步社交資料，防覆蓋！
     async save() { 
         if(this.p) {
             try { 
@@ -462,6 +449,22 @@ const System = {
         }
     },
 
+    // 🔥 從 Firebase 獲取造物主發布的任務
+    async fetchCloudDungeons() {
+        try {
+            const snap = await getDoc(doc(db, "system", "dungeons"));
+            if(snap.exists()) {
+                DB.cloudDungeons = snap.data();
+            } else {
+                DB.cloudDungeons = {};
+            }
+            // 如果玩家剛好停在任務頁面，立刻重新渲染按鈕
+            if (document.getElementById('p-dungeon').classList.contains('active')) {
+                this.renderGateCategories();
+            }
+        } catch(e) { console.error("讀取地下城失敗", e); }
+    },
+
     nav(id, e) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -470,7 +473,11 @@ const System = {
             e.target.classList.add('active');
         }
         
-        if(id === 'p-dungeon') this.renderQuests();
+        if(id === 'p-dungeon') {
+            this.fetchCloudDungeons(); // 每次點開任務頁面都去雲端抓最新資料
+            this.renderGateCategories();
+            this.renderQuests();
+        }
         if(id === 'p-enhance') this.renderUpgrades();
         if(id === 'p-titles') this.renderTitles();
         if(id === 'p-inventory') this.renderBag('sword');
@@ -535,6 +542,7 @@ const System = {
         let buffHtml = "";
         if(this.p.buffs.doubleXp) buffHtml += `<span class="badge badge-buff">2x XP</span>`;
         if(this.p.buffs.luck) buffHtml += `<span class="badge badge-buff">幸運保底</span>`;
+        if(this.p.partner) buffHtml += `<span class="badge badge-buff" style="border-color:var(--comrade-green); color:var(--comrade-green);">戰友契約 +10% XP</span>`;
         document.getElementById('buff-zone').innerHTML = buffHtml;
 
         this.save();
@@ -562,35 +570,52 @@ const System = {
         document.getElementById('gacha-pop').style.display = 'flex'; this.updateUI();
     },
 
+    // 🔥 動態生成科目的按鈕
+    renderGateCategories() {
+        const area = document.getElementById('gate-categories');
+        let html = "";
+        const subs = Object.keys(DB.cloudDungeons);
+        
+        if(subs.length === 0) {
+            area.innerHTML = "<div style='grid-column:span 4; text-align:center; color:#555; padding:20px; font-family:\"Rajdhani\", sans-serif;'>總監尚未發布任何任務</div>";
+            return;
+        }
+
+        subs.forEach(sub => {
+            html += `<button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('${sub}')">${sub}</button>`;
+        });
+        area.innerHTML = html;
+    },
+
     openDungeonModal(sub) {
-        const data = DB.subjects[sub]; document.getElementById('dm-title').innerText = `${sub} 攻略設定`; let html = "";
+        const data = DB.cloudDungeons[sub]; 
+        if(!data || !data.items) return alert("任務讀取異常，請稍後再試。");
+
+        document.getElementById('dm-title').innerText = `${sub} GATE`; let html = "";
         Object.entries(data.items).forEach(([task, xp]) => {
             html += `<div class="card" style="flex-direction:column; align-items:flex-start; background:rgba(0,212,255,0.05); border-color:rgba(0,212,255,0.2);">
                         <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:10px;">
                             <strong style="font-size:1.1rem; color:#fff;">${task}</strong><span style="color:var(--purple); font-weight:900;">${xp} XP</span>
                         </div>
                         <div style="width:100%; display:flex; gap:10px;">`;
-            if(task === '單字本') { html += `<input type="number" id="inp-t-${task}" placeholder="回數" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none; font-family:'Rajdhani',sans-serif;">`; } 
-            else {
-                let range = (task === '雜誌') ? 12 : data.range; let prefix = (task === '雜誌') ? 'U' : 'L';
-                html += `<select id="sel-t-${task}" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none; font-family:'Rajdhani',sans-serif;">`;
-                for(let i=1; i<=range; i++) html += `<option value="${prefix}${i}">${prefix}${i}</option>`;
-                html += `</select>`;
-            }
+            
+            // 下拉選單：如果是閱讀或單字通常用回數，這裡統一用 L 作為前綴
+            html += `<select id="sel-t-${task}" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none; font-family:'Rajdhani',sans-serif;">`;
+            const range = data.range || 10;
+            for(let i=1; i<=range; i++) html += `<option value="L${i}">L${i}</option>`;
+            html += `</select>`;
+            
             html += `<button class="btn-action" style="background:var(--blue); color:#000;" onclick="System.acceptQuest('${sub}', '${task}', ${xp})">接取</button></div></div>`;
         });
         document.getElementById('dm-content').innerHTML = html; document.getElementById('dungeon-modal').style.display = 'flex';
     },
 
     async acceptQuest(sub, task, xp) {
-        let rangeVal = "";
-        if(task === '單字本') {
-            const el = document.getElementById(`inp-t-${task}`); if(!el.value) return alert('請輸入第幾回'); rangeVal = `第 ${el.value} 回`;
-        } else rangeVal = document.getElementById(`sel-t-${task}`).value;
+        const rangeVal = document.getElementById(`sel-t-${task}`).value;
         
-        let waitMin = DB.subjects[sub].time || 10;
-        if(task === '單字本' || task === '雜誌' || task === '語文練習') waitMin = 15;
-        let readyAt = Date.now() + waitMin * 60 * 1000;
+        // 讀取該科目的冷卻時間，如果沒有設定，預設為 15 分鐘
+        const waitMin = DB.cloudDungeons[sub].time || 15;
+        const readyAt = Date.now() + waitMin * 60 * 1000;
 
         this.p.activeQuests.push({ id: Date.now(), sub, task, range: rangeVal, xp, readyAt });
         await this.save(); document.getElementById('dungeon-modal').style.display = 'none'; this.renderQuests();
@@ -642,19 +667,30 @@ const System = {
         this.p.activeQuests = this.p.activeQuests.filter(q => q.id !== id);
         let finalXP = baseXP, finalCoins = baseXP; 
         
+        // 戰友 +10%
+        if(this.p.partner) {
+            finalXP = Math.floor(finalXP * 1.1);
+            finalCoins = Math.floor(finalCoins * 1.1);
+        }
+
         if(this.p.buffs.doubleXp) { finalXP *= 2; this.p.buffs.doubleXp = false; alert("✨ 雙倍經驗藥劑生效！"); }
         if(this.p.curWeapon) {
-            if(this.p.curWeapon.rank === 'S') { finalXP *= 1.20; finalCoins *= 1.50; }
-            else if(this.p.curWeapon.rank === 'A') { finalXP *= 1.10; finalCoins *= 1.20; }
+            if(this.p.curWeapon.rank === 'S') { finalXP = Math.floor(finalXP * 1.20); finalCoins = Math.floor(finalCoins * 1.50); }
+            else if(this.p.curWeapon.rank === 'A') { finalXP = Math.floor(finalXP * 1.10); finalCoins = Math.floor(finalCoins * 1.20); }
         }
 
         this.p.exp += finalXP; this.p.coins += finalCoins;
+        
+        // 隨機掉落素材 (為了遊戲性，就算拔掉死硬科目，素材還是隨機掉)
         const rDrop = Math.random(); let dropMsg = "";
-        if(sub === '數學' || sub === '物理') { if(rDrop < 0.10) { this.p.bag.mats.logic++; dropMsg = "\n🧩 掉落：邏輯碎片 x1"; } }
-        else if(sub === '國文' || sub === '英文') { if(rDrop < 0.15) { this.p.bag.mats.lang++; dropMsg = "\n📖 掉落：語文符文 x1"; } }
-        else { if(rDrop < 0.15) { this.p.bag.mats.mem++; dropMsg = "\n🧠 掉落：記憶結晶 x1"; } }
+        if(rDrop < 0.10) { this.p.bag.mats.logic++; dropMsg = "\n🧩 掉落：邏輯碎片 x1"; }
+        else if(rDrop < 0.20) { this.p.bag.mats.lang++; dropMsg = "\n📖 掉落：語文符文 x1"; }
+        else if(rDrop < 0.30) { this.p.bag.mats.mem++; dropMsg = "\n🧠 掉落：記憶結晶 x1"; }
 
-        alert(`任務結算完成！\n獲得 ${Math.floor(finalXP)} XP 與 ${Math.floor(finalCoins)} 蓮幣${dropMsg}`);
+        let alertMsg = `任務結算完成！\n獲得 ${Math.floor(finalXP)} XP 與 ${Math.floor(finalCoins)} 蓮幣${dropMsg}`;
+        if(this.p.partner) alertMsg += `\n(已包含戰友加成 +10%)`;
+
+        alert(alertMsg);
         this.checkLevelUp(); this.updateUI(); this.renderQuests();
     },
 
@@ -703,7 +739,7 @@ const System = {
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v23_cloud');
+        let stored = StorageMgr.get('sl_shop_v25_cloud');
         if(stored) {
             const parsed = JSON.parse(stored);
             if(parsed.date === today) {
@@ -749,7 +785,7 @@ const System = {
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
 
-        this.shopCache = shop; StorageMgr.set('sl_shop_v23_cloud', JSON.stringify({ date: today, data: this.shopCache }));
+        this.shopCache = shop; StorageMgr.set('sl_shop_v25_cloud', JSON.stringify({ date: today, data: this.shopCache }));
         document.getElementById('shop-time').innerText = force ? `Refreshed (Hourglass)` : `Refreshed: ${today}`;
     },
 
@@ -859,9 +895,9 @@ const System = {
             });
             if(!hasPotion) html = `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
         } else {
-            html += `<div class="card"><div class="card-col"><strong style="color:var(--blue)"><span class="mat-icon">📐</span> 邏輯碎片</strong><span style="font-size:10px; color:#888;">理科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.logic}</span></div>
-                     <div class="card"><div class="card-col"><strong style="color:var(--gold)"><span class="mat-icon">📖</span> 語文符文</strong><span style="font-size:10px; color:#888;">文科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.lang}</span></div>
-                     <div class="card"><div class="card-col"><strong style="color:var(--purple)"><span class="mat-icon">🧠</span> 記憶結晶</strong><span style="font-size:10px; color:#888;">背科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.mem}</span></div>`;
+            html += `<div class="card"><div class="card-col"><strong style="color:var(--blue)"><span class="mat-icon">📐</span> 邏輯碎片</strong><span style="font-size:10px; color:#888;">戰鬥掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.logic}</span></div>
+                     <div class="card"><div class="card-col"><strong style="color:var(--gold)"><span class="mat-icon">📖</span> 語文符文</strong><span style="font-size:10px; color:#888;">戰鬥掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.lang}</span></div>
+                     <div class="card"><div class="card-col"><strong style="color:var(--purple)"><span class="mat-icon">🧠</span> 記憶結晶</strong><span style="font-size:10px; color:#888;">戰鬥掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.mem}</span></div>`;
         }
         document.getElementById('bag-list').innerHTML = html;
     },
@@ -1099,6 +1135,7 @@ const System = {
             this.p.requests = this.p.requests.filter(r => r !== targetAcc);
             await this.save();
             alert(`🔗 契約成立！你與【${targetAcc}】正式成為戰友！`);
+            this.updateUI(); // 刷新 Buff 顯示
             this.renderPartner();
         } catch(e) { alert("綁定失敗"); }
     },
@@ -1124,6 +1161,7 @@ const System = {
             this.p.partner = null;
             await this.save();
             alert("💔 契約已解除。");
+            this.updateUI(); // 刷新 Buff 顯示
             this.renderPartner();
         } catch(e) { alert("解除失敗"); }
     },
@@ -1183,7 +1221,7 @@ const System = {
                     td.lv = lv; td.coins = coins; td.sp = sp; td.iq = iq; td.str = str; td.mp = mp; td.dex = dex; td.exp = exp;
                     await setDoc(targetRef, td); alert(`✅ 已成功竄改同學【${targetAcc}】的數值！`);
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
-            } catch(e) { alert("竄改失敗，連線異常"); }
+            } catch(e) { console.error(e); alert("竄改失敗，連線異常"); }
         }
     },
 
@@ -1256,7 +1294,6 @@ const System = {
         }
     },
 
-    // 🔥 V23: 天罰升級 (強制斬斷作弊者戰友連結)
     async adminPunish() {
         let targetAcc = document.getElementById('adm-target').value.trim();
         if(!targetAcc) return alert("⚠️ 天罰必須指定目標帳號！請在上方輸入 ID。");
@@ -1267,8 +1304,6 @@ const System = {
             const targetSnap = await getDoc(targetRef);
             if(targetSnap.exists()) {
                 let d = targetSnap.data();
-                
-                // 若作弊者有戰友，同步把戰友那邊的連結切斷！
                 if (d.partner) {
                     const pRef = doc(db, "players", d.partner);
                     const pSnap = await getDoc(pRef);
@@ -1278,7 +1313,6 @@ const System = {
                         await setDoc(pRef, pData);
                     }
                 }
-
                 d.lv = 1; d.exp = 0; d.coins = 0; d.sp = 0;
                 d.iq = 1; d.str = 1; d.mp = 1; d.dex = 1;
                 d.curTitle = "🚫 卑鄙的作弊者";
@@ -1286,7 +1320,7 @@ const System = {
                 d.bag = {swords:[], potions:{}, mats:{logic:0, lang:0, mem:0}};
                 d.curWeapon = null;
                 d.activeQuests = [];
-                d.partner = null; // 切斷他的連結
+                d.partner = null; 
                 d.requests = [];
                 await setDoc(targetRef, d);
                 alert(`🔨 天罰已降臨！同學【${targetAcc}】已被打回原形、眾叛親離並刻上恥辱標記！`);
