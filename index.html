@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Server Awakened V19 (Security Patch)</title>
+    <title>Solo Leveling: Shadow Enforcer V21 (Full Uncut)</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -40,15 +40,12 @@
         @keyframes cyberScan { 0% { left: -100%; } 100% { left: 200%; } }
         .btn-cyber:active { transform: scale(0.96); box-shadow: 0 0 30px rgba(188, 19, 254, 0.8), inset 0 0 30px rgba(188, 19, 254, 0.4); background: rgba(188, 19, 254, 0.25); border-color: #fff; }
 
-        .dg-btn { background: var(--glass-blue); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 12px; margin-bottom: 10px; color: var(--blue); font-weight: 900; font-size: 1.1rem; letter-spacing: 2px; cursor: pointer; transition: 0.2s; text-align: center; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.05); font-family: 'Rajdhani', sans-serif;}
-        .dg-btn:active { background: rgba(0, 212, 255, 0.3); transform: scale(0.98); }
-
         .section-title { font-family: 'Rajdhani', sans-serif; color: var(--blue); margin: 15px 0 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 900; font-size: 1.2rem; flex-shrink: 0; letter-spacing: 1px;}
         .card { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
         .card-col { display: flex; flex-direction: column; flex: 1; margin-right: 10px; }
         .btn-action { background: var(--purple); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 900; cursor: pointer; font-size: 12px; font-family: 'Rajdhani', sans-serif; transition: 0.2s; flex-shrink: 0; letter-spacing: 1px;}
         .btn-action:active { transform: scale(0.95); }
-        .btn-action:disabled { background: #333 !important; color: #666 !important; cursor: not-allowed; }
+        .btn-action:disabled { background: #333 !important; color: #666 !important; cursor: not-allowed; border:1px solid #444; }
 
         .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 20px; padding-right: 5px; }
         .scroll-area::-webkit-scrollbar { width: 3px; }
@@ -98,6 +95,9 @@
         .rank-badge.top-1 { background: var(--gold); box-shadow: 0 0 15px var(--gold); color: #000; }
         .rank-badge.top-2 { background: silver; box-shadow: 0 0 10px silver; color: #000; }
         .rank-badge.top-3 { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; color: #fff; }
+
+        /* 🔥 冷卻計時器樣式 */
+        .cooldown-timer { font-family: 'Rajdhani', sans-serif; font-weight: 900; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -156,20 +156,17 @@
             <div style="text-align:center; margin-top: 5px;">
                 <div id="ui-rank" style="font-size:14px; letter-spacing:4px; font-family: 'Rajdhani', sans-serif; font-weight:900; color:#888;">E-RANK HUNTER</div>
                 <div id="ui-lv" style="font-size:7.5rem; font-weight:900; color:var(--purple); font-family:'Rajdhani', sans-serif; line-height: 1; text-shadow: 0 0 20px rgba(188, 19, 254, 0.5); margin: 5px 0;">1</div>
-                
                 <div class="xp-wrapper">
                     <div class="xp-bar-container"><div id="ui-xp-fill" class="xp-bar-fill"></div></div>
                     <div id="ui-xp-txt" style="font-size:12px; color:#aaa; font-family: 'Rajdhani', sans-serif; font-weight:900; letter-spacing:1px;">0 / 100 XP</div>
                 </div>
             </div>
-
             <div class="stat-grid">
                 <div class="stat-item"><div class="stat-label">IQ (智力)</div><div id="v-iq" class="stat-val">1</div></div>
                 <div class="stat-item"><div class="stat-label">STR (力量)</div><div id="v-str" class="stat-val">1</div></div>
                 <div class="stat-item"><div class="stat-label">MP (魔力)</div><div id="v-mp" class="stat-val">1</div></div>
                 <div class="stat-item"><div class="stat-label">DEX (敏捷)</div><div id="v-dex" class="stat-val">1</div></div>
             </div>
-            
             <div style="flex:1"></div>
             <button class="btn-cyber" onclick="System.nav('p-dungeon')">攻略地下城</button>
         </div>
@@ -252,7 +249,7 @@
             <div id="admin-panel" class="scroll-area" style="display:none; flex-direction:column; padding-top:10px;">
                 <div class="admin-box" style="border-color:var(--purple); background:rgba(188,19,254,0.05);">
                     <h3 style="color:var(--purple); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">🎯 TARGET ACQUISITION</h3>
-                    <span class="admin-label" style="color:#ddd;">要竄改誰的資料？(留空代表自己)</span>
+                    <span class="admin-label" style="color:#ddd;">要竄改/制裁誰的資料？(留空代表自己)</span>
                     <input type="text" id="adm-target" class="admin-input" placeholder="輸入同學帳號...">
                 </div>
 
@@ -283,6 +280,11 @@
                     <h3 style="color:#00ff88; font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">📦 SUPPLIES</h3>
                     <button class="btn-action" style="width:100%; background:rgba(0,255,136,0.2); color:#00ff88; border:1px solid #00ff88; margin-bottom:10px;" onclick="System.adminGiveMats()">MATERIALS +100</button>
                     <button class="btn-action" style="width:100%; background:rgba(0,255,136,0.2); color:#00ff88; border:1px solid #00ff88;" onclick="System.adminGivePotions()">POTIONS +10</button>
+                </div>
+                <div class="admin-box" style="border-color:var(--red-alert); background:rgba(255,0,0,0.1);">
+                    <h3 style="color:var(--red-alert); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">⚖️ DIVINE JUDGEMENT (天罰)</h3>
+                    <p style="font-size:10px; color:#aaa; margin-bottom:10px;">強制重置目標所有數據，並賦予作弊者稱號。</p>
+                    <button class="btn-action" style="width:100%; background:var(--red-alert);" onclick="System.adminPunish()">執行裁決 (RESET & SHAME)</button>
                 </div>
             </div>
         </div>
@@ -319,7 +321,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /* =========================================
-   完整大數據庫
+   完整大數據庫 (含任務冷卻時間 time: 分鐘)
 ========================================= */
 const DB = {
     titles: {
@@ -327,8 +329,8 @@ const DB = {
         A: ["位面守護者", "不滅戰神", "真理探求者", "弒龍大師", "諸神黃昏", "至高審判長", "永恆之光", "極暗深淵", "時空旅人", "萬物生靈主", "禁忌魔法師", "聖靈大先知", "絕對零度", "戰場的主宰", "混沌掌控者", "劍之頂峰", "傳奇奠基人", "天災化身", "銀河開拓者", "靈魂收割者", "帝國之牆", "神聖制裁者", "無極劍聖", "末日執行官", "破法領主"],
         B: ["大地粉碎者", "蒼穹之眼", "暗夜主宰", "王國重臣", "災厄終結者", "巨龍獵人", "戰地指揮官", "聖殿執行官", "幻影遊俠", "秘法大師", "鋼鐵要塞", "風暴使徒", "斷罪之刃", "極限生存者", "審判官", "狂瀾追逐者", "守護神盾", "破曉之星", "血色紅蓮", "孤傲之狼", "聖域守門人", "虛空行者", "戰鬥藝術家", "王牌尖兵", "無懼勇者", "輝煌之刃", "元素主導者", "深淵監視者", "重力主宰", "鐵血領主"],
         C: ["前線突擊手", "荒野獵手", "鋼鐵意志", "熟練冒險家", "戰術小隊長", "狂暴戰斧", "影之追蹤者", "銀翼先鋒", "疾風劍士", "元素感知者", "守望先驅", "烈焰行者", "重裝步兵", "沉默的暗殺員", "穿雲箭手", "黎明守護者", "符文操作員", "鋼鐵守望", "中堅力量", "碎石者", "極光使者", "戰場齒輪", "精銳士官", "秘法學徒", "獵魔小隊", "不屈之魂", "疾走之影", "狂想曲員", "寒冰操縱者", "堅盾守衛"],
-        D: ["村莊守望者", "鐵鏽新秀", "持劍平民", "冒險初學者", "見習騎士", "準時下班員", "小鎮地頭蛇", "森林清道夫", "略懂皮毛", "憤怒的小鳥", "正義路人", "銅級傭兵", "脫殼小龍", "剛學會走路", "基礎操縱者", "先遣部隊", "戰地記者", "幸運的生還者", "武器試用員", "略有小成", "粗糙的戰士", "模仿大師", "鐵打的龍套", "初級執行者", "民間高手(自稱)", "熱血少年", "頑強的甲蟲", "破舊皮甲魂", "基礎訓練生", "準準冒險者"],
-        E: ["戰鬥力 0.5", "走路草", "實習砲灰", "裝備回收員", "迷路的羔羊", "萌新一號", "戰場觀光客", "史萊姆之友", "甚至不是人類", "呼吸也會累", "落地成盒", "走位靠賽", "後勤搬運工", "萬年候補生", "塵埃邊緣人", "訓練用假人", "尚未覺醒", "零戰力戰士", "掃地阿伯", "路人甲", "雜草魂", "無名小卒", "勇者預備軍", "體力廢材", "眼神死的菜鳥", "邊緣雜魚", "戰場背景板", "脆弱的靈魂", "純潔無垢", "剛下山的傻子"]
+        D: ["村莊守望者", "鐵鏽新秀", "持劍平民", "冒險初學者", "見習騎士", "準時下班員", "小鎮地頭蛇", "森林清道夫", "略懂皮毛", "憤怒的小鳥", "正義路人", "銅級傭兵", "脫殼小龍", "剛學會走路", "基礎操縱者", "先遣部隊", "戰地記者", "幸運的生還者", "武器試用員", "略有小成", "粗糙的戰士", "模仿大師", "鐵打的龍套", "初級執行者", "民間高手(自稱)", "熱血少年", "頑強的甲蟲", "破舊皮甲魂", "基礎訓練生", "準準準冒險者"],
+        E: ["戰鬥力 0.5", "走路草", "實習砲灰", "裝備回收員", "迷路的羔羊", "萌新一號", "戰場觀光客", "史萊姆之友", "甚至不是人類", "呼吸也會累", "落地成盒", "走位靠賽", "後勤搬運工", "萬年候補生", "塵埃邊緣人", "訓練用假人", "尚未覺醒", "零戰力戰士", "掃地阿伯", "路人甲", "雜草魂", "無名小卒", "勇者預備軍", "體力廢材", "眼神死的菜鳥", "邊緣雜魚", "戰場背景板", "脆弱的靈魂", "純潔無垢", "剛下山的傻子", "🚫 卑鄙的作弊者"]
     },
     swords: {
         UNKNOWN: [{name:"虛空之痕 · 零", desc:"數值顯示為 ???"}],
@@ -346,13 +348,13 @@ const DB = {
         { id: "p_seven", name: "✨ 七葉草藥水", price: 3500, desc: "喝下後可直接選擇並獲得一個 A 級稱號" }
     ],
     subjects: {
-        '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, range: 12 },
-        '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, range: 10 },
-        '數學': { items: {'講義':600}, range: 10 },
-        '物理': { items: {'講義':300}, range: 10 },
-        '地科': { items: {'講義':350}, range: 6 },
-        '公民': { items: {'課本':300, '講義':350}, range: 6 },
-        '歷史': { items: {'課本':500}, range: 6 }
+        '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, range: 12, time: 20 },
+        '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, range: 10, time: 15 },
+        '數學': { items: {'講義':600}, range: 10, time: 30 },
+        '物理': { items: {'講義':300}, range: 10, time: 25 },
+        '地科': { items: {'講義':350}, range: 6, time: 15 },
+        '公民': { items: {'課本':300, '講義':350}, range: 6, time: 10 },
+        '歷史': { items: {'課本':500}, range: 6, time: 10 }
     }
 };
 
@@ -368,15 +370,15 @@ const StorageMgr = {
 };
 
 /* =========================================
-   雲端遊戲引擎核心 (包含防盜號密碼補丁)
+   雲端遊戲引擎核心 (100% 完整版)
 ========================================= */
 const System = {
     p: null, 
     shopCache: null,
     rankWeight: { 'UNKNOWN': 7, 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'E': 1 },
     isAdminUnlocked: false,
+    timerIdx: null,
 
-    // 🔥 V19: 加入防盜號密碼驗證系統
     async login() {
         const acc = document.getElementById('inp-acc').value.trim();
         const pwd = document.getElementById('inp-pwd').value.trim();
@@ -395,16 +397,12 @@ const System = {
             if (docSnap.exists()) {
                 let data = docSnap.data();
                 
-                // 密碼驗證邏輯
-                if (data.pwd) {
-                    if (data.pwd !== pwd) {
-                        alert("❌ 密碼錯誤！想盜號啊？門都沒有！");
-                        btn.innerText = "INITIALIZE";
-                        btn.disabled = false;
-                        return;
-                    }
-                } else {
-                    // 舊帳號 (如 CHEN) 第一次綁定密碼
+                if (data.pwd && data.pwd !== pwd) {
+                    alert("❌ 密碼錯誤！想盜號啊？門都沒有！");
+                    btn.innerText = "INITIALIZE";
+                    btn.disabled = false;
+                    return;
+                } else if (!data.pwd) {
                     data.pwd = pwd;
                     await setDoc(docRef, data);
                     alert("🔒 舊帳號已成功綁定密碼！");
@@ -414,8 +412,8 @@ const System = {
                 if(!this.p.bag) this.p.bag = { swords: [], potions: {}, mats: { logic:0, lang:0, mem:0 } };
                 if(!this.p.buffs) this.p.buffs = { doubleXp: false, luck: false };
                 if(!this.p.curWeapon) this.p.curWeapon = null;
+                if(!this.p.activeQuests) this.p.activeQuests = [];
             } else {
-                // 新玩家註冊，寫入帳號密碼
                 this.p = {
                     acc, pwd, lv: 1, exp: 0, coins: 0, sp: 0,
                     iq: 1, str: 1, mp: 1, dex: 1,
@@ -431,6 +429,7 @@ const System = {
             document.getElementById('login-ui').style.display = 'none';
             this.checkShopRefresh();
             this.updateUI();
+            this.startGlobalTimer(); // 啟動全域冷卻計時器
         } catch (e) {
             console.error(e);
             alert("伺服器連線失敗，請確認 Firebase 規則設定是否為 true。");
@@ -565,31 +564,66 @@ const System = {
         document.getElementById('dm-content').innerHTML = html; document.getElementById('dungeon-modal').style.display = 'flex';
     },
 
-    acceptQuest(sub, task, xp) {
+    async acceptQuest(sub, task, xp) {
         let rangeVal = "";
         if(task === '單字本') {
             const el = document.getElementById(`inp-t-${task}`); if(!el.value) return alert('請輸入第幾回'); rangeVal = `第 ${el.value} 回`;
         } else rangeVal = document.getElementById(`sel-t-${task}`).value;
-        this.p.activeQuests.push({ id: Date.now(), sub, task, range: rangeVal, xp });
-        this.save(); document.getElementById('dungeon-modal').style.display = 'none'; this.renderQuests();
+        
+        // 🔥 設定冷卻時間
+        let waitMin = DB.subjects[sub].time || 10;
+        if(task === '單字本' || task === '雜誌' || task === '語文練習') waitMin = 15;
+        let readyAt = Date.now() + waitMin * 60 * 1000;
+
+        this.p.activeQuests.push({ id: Date.now(), sub, task, range: rangeVal, xp, readyAt });
+        await this.save(); document.getElementById('dungeon-modal').style.display = 'none'; this.renderQuests();
     },
 
     renderQuests() {
         let html = "";
         if(this.p.activeQuests.length === 0) html = `<div style="text-align:center; color:#555; padding:20px; font-family:'Rajdhani', sans-serif;">NO ACTIVE QUESTS</div>`;
+        
+        const now = Date.now();
         this.p.activeQuests.forEach(q => {
+            const isReady = !q.readyAt || now >= q.readyAt;
+            
+            // 🔥 根據冷卻狀態切換按鈕
+            let btnHtml = isReady 
+                ? `<button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id}, ${q.xp}, '${q.sub}')">結算</button>`
+                : `<button class="btn-action cooldown-timer" style="background:#222; color:var(--red-alert); border:1px solid #444;" disabled data-until="${q.readyAt}">00:00</button>`;
+
             html += `<div class="card" style="border-left: 4px solid var(--blue);">
                         <div class="card-col">
                             <strong style="font-size:1.1rem; color:#fff;">${q.sub} - ${q.task}</strong>
                             <span style="color:#888; font-size:11px; margin-top:3px;">範圍: ${q.range} | 基礎獎勵: ${q.xp} XP</span>
                         </div>
-                        <button class="btn-action" style="background:#00ff88; color:#000;" onclick="System.completeQuest(${q.id}, ${q.xp}, '${q.sub}')">結算</button>
+                        ${btnHtml}
                      </div>`;
         });
         document.getElementById('active-quests-list').innerHTML = html;
     },
 
-    completeQuest(id, baseXP, sub) {
+    // 🔥 全域計時器
+    startGlobalTimer() {
+        if(this.timerIdx) clearInterval(this.timerIdx);
+        this.timerIdx = setInterval(() => {
+            let needsRender = false;
+            document.querySelectorAll('.cooldown-timer').forEach(el => {
+                const until = parseInt(el.dataset.until);
+                const diff = until - Date.now();
+                if(diff <= 0) {
+                    needsRender = true; // 時間到了，觸發重新渲染按鈕
+                } else {
+                    const m = Math.floor(diff/60000);
+                    const s = Math.floor((diff%60000)/1000);
+                    el.innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                }
+            });
+            if(needsRender) this.renderQuests();
+        }, 1000);
+    },
+
+    async completeQuest(id, baseXP, sub) {
         this.p.activeQuests = this.p.activeQuests.filter(q => q.id !== id);
         let finalXP = baseXP, finalCoins = baseXP; 
         
@@ -654,7 +688,7 @@ const System = {
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v19');
+        let stored = StorageMgr.get('sl_shop_v21_cloud');
         if(stored) {
             const parsed = JSON.parse(stored);
             if(parsed.date === today) {
@@ -700,7 +734,7 @@ const System = {
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
 
-        this.shopCache = shop; StorageMgr.set('sl_shop_v19', JSON.stringify({ date: today, data: this.shopCache }));
+        this.shopCache = shop; StorageMgr.set('sl_shop_v21_cloud', JSON.stringify({ date: today, data: this.shopCache }));
         document.getElementById('shop-time').innerText = force ? `Refreshed (Hourglass)` : `Refreshed: ${today}`;
     },
 
@@ -1076,6 +1110,32 @@ const System = {
                 } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
             } catch(e) {}
         }
+    },
+
+    // 🔥 V21: 天罰系統 (Ban Hammer)
+    async adminPunish() {
+        let targetAcc = document.getElementById('adm-target').value.trim();
+        if(!targetAcc) return alert("⚠️ 天罰必須指定目標帳號！請在上方輸入 ID。");
+        if(targetAcc === this.p.acc) return alert("⚠️ 你不能對自己降下天罰！");
+
+        try {
+            const targetRef = doc(db, "players", targetAcc);
+            const targetSnap = await getDoc(targetRef);
+            if(targetSnap.exists()) {
+                let d = targetSnap.data();
+                d.lv = 1; d.exp = 0; d.coins = 0; d.sp = 0;
+                d.iq = 1; d.str = 1; d.mp = 1; d.dex = 1;
+                d.curTitle = "🚫 卑鄙的作弊者";
+                d.titles = ["🚫 卑鄙的作弊者"];
+                d.bag = {swords:[], potions:{}, mats:{logic:0, lang:0, mem:0}};
+                d.curWeapon = null;
+                d.activeQuests = [];
+                await setDoc(targetRef, d);
+                alert(`🔨 天罰已降臨！同學【${targetAcc}】已被打回原形並刻上恥辱標記！`);
+            } else {
+                alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+            }
+        } catch(e) { alert("裁決失敗，連線異常"); }
     }
 };
 
