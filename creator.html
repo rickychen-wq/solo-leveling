@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SYS.CREATOR - Gate Spawner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --purple: #bc13fe; --blue: #00d4ff; --gold: #ffd700; --bg: #030712; --red-alert: #ff0055; }
+        body { background: var(--bg); color: #fff; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100dvh; }
+        .admin-panel { width: 100%; max-width: 400px; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.3); padding: 25px; border-radius: 16px; box-shadow: 0 0 30px rgba(0,212,255,0.1); margin-top: 20px; }
+        .title { color: var(--blue); font-family: 'Rajdhani', sans-serif; font-size: 2rem; margin: 0 0 5px 0; text-align: center; font-weight: 900; letter-spacing: 2px; }
+        .subtitle { text-align:center; color:#888; font-size:12px; margin-bottom:20px; font-family:'Rajdhani', sans-serif; letter-spacing:1px; }
+        .input-group { margin-bottom: 15px; }
+        .label { display: block; font-size: 12px; color: #aaa; margin-bottom: 5px; font-family: 'Rajdhani', sans-serif; }
+        .inp { width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1rem; outline: none; box-sizing: border-box; }
+        .inp:focus { border-color: var(--blue); box-shadow: 0 0 10px rgba(0,212,255,0.3); }
+        .btn-action { width: 100%; padding: 12px; background: var(--blue); color: #000; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; transition: 0.2s; }
+        .btn-action:active { transform: scale(0.96); }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .section-divider { border-top: 1px dashed rgba(255,255,255,0.2); margin: 20px 0; padding-top: 15px; }
+        .section-title { color: var(--purple); font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-panel">
+    <h1 class="title">GATE CREATOR</h1>
+    <div class="subtitle">[ 總監專屬 · 地下城生成器 ]</div>
+    
+    <div class="input-group">
+        <span class="label">OVERRIDE CODE (總監密碼)</span>
+        <input type="password" id="inp-pwd" class="inp" placeholder="輸入密碼解鎖..." style="border-color:var(--red-alert); text-align:center;">
+    </div>
+
+    <div class="section-title">⚡ QUICK SPAWN (常駐地下城)</div>
+    <div class="btn-grid">
+        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('國文')">國文</button>
+        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('英文')">英文</button>
+        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('數學')">數學</button>
+        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('物理')">物理</button>
+        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('地科')">地科</button>
+        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('公民')">公民</button>
+        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('歷史')">歷史</button>
+        <button class="btn-action" style="background:var(--red-alert); color:#fff; grid-column: span 2;" onclick="clearAllGates()">🔥 關閉所有地下城</button>
+    </div>
+    <button class="btn-action" style="background:var(--gold); color:#000; font-size:1.2rem; padding:15px; box-shadow:0 0 15px rgba(255,215,0,0.4);" onclick="publishAllPreset()">🌟 全科一鍵發布</button>
+
+    <div class="section-divider"></div>
+
+    <div class="section-title">🛠️ CUSTOM GATE (自訂全新地下城)</div>
+    <div class="input-group">
+        <span class="label">SUBJECT (科目分類 / 例: 閱讀課)</span>
+        <input type="text" id="inp-sub" class="inp" placeholder="輸入科目名稱...">
+    </div>
+    <div class="input-group">
+        <span class="label">QUEST NAME (任務名稱 / 例: 寫摘要)</span>
+        <input type="text" id="inp-task" class="inp" placeholder="輸入任務名稱...">
+    </div>
+    <div style="display:flex; gap:10px;">
+        <div class="input-group" style="flex:1;">
+            <span class="label">REWARD XP</span>
+            <input type="number" id="inp-xp" class="inp" placeholder="經驗值">
+        </div>
+        <div class="input-group" style="flex:1;">
+            <span class="label">COOLDOWN</span>
+            <input type="number" id="inp-time" class="inp" placeholder="冷卻(分)">
+        </div>
+        <div class="input-group" style="flex:1;">
+            <span class="label">RANGE</span>
+            <input type="number" id="inp-range" class="inp" placeholder="最大回數" value="10">
+        </div>
+    </div>
+    <button class="btn-action" onclick="publishCustomGate()">SPAWN CUSTOM GATE</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDfaC7sWiz--IXnOQq9Qw0ICNDT8MpZE5o",
+  authDomain: "solo-leveling-server.firebaseapp.com",
+  projectId: "solo-leveling-server",
+  storageBucket: "solo-leveling-server.firebasestorage.app",
+  messagingSenderId: "979607975137",
+  appId: "1:979607975137:web:70224f438280bafebf73a0",
+  measurementId: "G-8E64C4CNSZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 封裝好的常駐地下城資料庫 (包含原本的經驗值、回數、冷卻時間)
+const PRESET_DB = {
+    '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, range: 12, time: 20 },
+    '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, range: 10, time: 15 },
+    '數學': { items: {'講義':600}, range: 10, time: 30 },
+    '物理': { items: {'講義':300}, range: 10, time: 25 },
+    '地科': { items: {'講義':350}, range: 6, time: 15 },
+    '公民': { items: {'課本':300, '講義':350}, range: 6, time: 10 },
+    '歷史': { items: {'課本':500}, range: 6, time: 10 }
+};
+
+function verify() {
+    if(document.getElementById('inp-pwd').value !== 'Ricky_0414') {
+        alert('❌ ACCESS DENIED: 密碼錯誤');
+        return false;
+    }
+    return true;
+}
+
+// 單科發布
+window.publishPreset = async function(sub) {
+    if(!verify()) return;
+    try {
+        const docRef = doc(db, "system", "dungeons");
+        const snap = await getDoc(docRef);
+        let dbData = snap.exists() ? snap.data() : {};
+
+        dbData[sub] = PRESET_DB[sub];
+        
+        await setDoc(docRef, dbData);
+        alert(`✅ 成功發布【${sub}】地下城！`);
+    } catch(e) { alert('發布失敗，連線異常。'); }
+};
+
+// 全科一鍵發布
+window.publishAllPreset = async function() {
+    if(!verify()) return;
+    try {
+        const docRef = doc(db, "system", "dungeons");
+        const snap = await getDoc(docRef);
+        let dbData = snap.exists() ? snap.data() : {};
+
+        Object.keys(PRESET_DB).forEach(sub => {
+            dbData[sub] = PRESET_DB[sub];
+        });
+        
+        await setDoc(docRef, dbData);
+        alert(`🌟 轟隆隆隆！全科常駐地下城已全面開啟！`);
+    } catch(e) { alert('發布失敗，連線異常。'); }
+};
+
+// 清空所有地下城 (大清洗)
+window.clearAllGates = async function() {
+    if(!verify()) return;
+    if(!confirm("確定要關閉所有地下城嗎？同學將無法接到任何新任務。")) return;
+    try {
+        await setDoc(doc(db, "system", "dungeons"), {});
+        alert(`🔥 所有傳送門已強制關閉！`);
+    } catch(e) { alert('操作失敗。'); }
+};
+
+// 自訂地下城發布
+window.publishCustomGate = async function() {
+    if(!verify()) return;
+    const sub = document.getElementById('inp-sub').value.trim();
+    const task = document.getElementById('inp-task').value.trim();
+    const xp = parseInt(document.getElementById('inp-xp').value);
+    const time = parseInt(document.getElementById('inp-time').value) || 15;
+    const range = parseInt(document.getElementById('inp-range').value) || 10;
+
+    if(!sub || !task || isNaN(xp)) return alert('請填寫完整地下城資訊！');
+
+    try {
+        const docRef = doc(db, "system", "dungeons");
+        const snap = await getDoc(docRef);
+        let dbData = snap.exists() ? snap.data() : {};
+
+        if(!dbData[sub]) dbData[sub] = { items: {}, range: range, time: time };
+        dbData[sub].items[task] = xp;
+        dbData[sub].range = range;
+        dbData[sub].time = time;
+
+        await setDoc(docRef, dbData);
+        alert(`✅ 成功發布自訂地下城【${sub} - ${task}】！`);
+        
+        document.getElementById('inp-task').value = '';
+        document.getElementById('inp-xp').value = '';
+    } catch(e) { alert('發布失敗，連線異常。'); }
+};
+</script>
+</body>
+</html>
