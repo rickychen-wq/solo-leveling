@@ -3,75 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SYS.CREATOR - Gate Spawner</title>
+    <title>SYS.TERMINAL - Dungeon Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --purple: #bc13fe; --blue: #00d4ff; --gold: #ffd700; --bg: #030712; --red-alert: #ff0055; }
-        body { background: var(--bg); color: #fff; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100dvh; }
-        .admin-panel { width: 100%; max-width: 400px; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.3); padding: 25px; border-radius: 16px; box-shadow: 0 0 30px rgba(0,212,255,0.1); margin-top: 20px; }
-        .title { color: var(--blue); font-family: 'Rajdhani', sans-serif; font-size: 2rem; margin: 0 0 5px 0; text-align: center; font-weight: 900; letter-spacing: 2px; }
-        .subtitle { text-align:center; color:#888; font-size:12px; margin-bottom:20px; font-family:'Rajdhani', sans-serif; letter-spacing:1px; }
-        .input-group { margin-bottom: 15px; }
-        .label { display: block; font-size: 12px; color: #aaa; margin-bottom: 5px; font-family: 'Rajdhani', sans-serif; }
-        .inp { width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1rem; outline: none; box-sizing: border-box; }
+        :root { --purple: #bc13fe; --blue: #00d4ff; --gold: #ffd700; --bg: #030712; --red-alert: #ff0055; --panel-bg: rgba(10, 15, 30, 0.95); }
+        * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; outline: none; user-select: none; }
+        body { background: var(--bg); color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100dvh; }
+        
+        /* 登入畫面 */
+        #login-ui { position: fixed; inset: 0; background: var(--bg); z-index: 100; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .login-box { width: 90%; max-width: 350px; background: var(--panel-bg); border: 1px solid var(--blue); padding: 30px; border-radius: 16px; box-shadow: 0 0 30px rgba(0,212,255,0.2); text-align: center; }
+        .inp { width: 100%; padding: 15px; background: rgba(0,0,0,0.6); border: 1px solid #444; color: #fff; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1rem; margin-bottom: 15px; text-align: center; transition: 0.3s; }
         .inp:focus { border-color: var(--blue); box-shadow: 0 0 10px rgba(0,212,255,0.3); }
-        .btn-action { width: 100%; padding: 12px; background: var(--blue); color: #000; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; transition: 0.2s; }
-        .btn-action:active { transform: scale(0.96); }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .section-divider { border-top: 1px dashed rgba(255,255,255,0.2); margin: 20px 0; padding-top: 15px; }
-        .section-title { color: var(--purple); font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; }
+        .btn { width: 100%; padding: 15px; background: var(--blue); color: #000; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px; transition: 0.2s; }
+        .btn:active { transform: scale(0.96); }
+
+        /* 主控台 */
+        #dashboard { display: none; width: 100%; max-width: 500px; background: var(--panel-bg); border: 1px solid rgba(188, 19, 254, 0.3); border-radius: 16px; padding: 20px; box-shadow: 0 0 40px rgba(188, 19, 254, 0.1); }
+        .header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .header h1 { margin: 0; color: var(--purple); font-family: 'Rajdhani', sans-serif; font-size: 2rem; letter-spacing: 2px; }
+        .header p { margin: 5px 0 0 0; color: #888; font-size: 12px; letter-spacing: 1px; font-family: 'Rajdhani', sans-serif;}
+        
+        .grid-subs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .btn-sub { background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.3); color: var(--blue); padding: 15px 5px; border-radius: 8px; font-weight: 900; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+        .btn-sub:active { background: rgba(0,212,255,0.2); transform: scale(0.95); }
+
+        /* 生成表單 */
+        #form-area { display: none; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 12px; border: 1px solid #333; }
+        .form-title { color: var(--gold); margin: 0 0 15px 0; font-size: 1.2rem; font-family: 'Rajdhani', sans-serif; text-align: center; }
+        .label { display: block; font-size: 12px; color: #aaa; margin-bottom: 5px; margin-top: 10px;}
+        .select-box { width: 100%; padding: 12px; background: #000; border: 1px solid #555; color: #fff; border-radius: 8px; font-size: 1rem; outline: none; }
+        
+        .bonus-area { background: rgba(255, 215, 0, 0.05); border: 1px dashed rgba(255, 215, 0, 0.3); padding: 15px; border-radius: 8px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<div class="admin-panel">
-    <h1 class="title">GATE CREATOR</h1>
-    <div class="subtitle">[ 總監專屬 · 地下城生成器 ]</div>
-    
-    <div class="input-group">
-        <span class="label">OVERRIDE CODE (總監密碼)</span>
-        <input type="password" id="inp-pwd" class="inp" placeholder="輸入密碼解鎖..." style="border-color:var(--red-alert); text-align:center;">
+<div id="login-ui">
+    <div class="login-box">
+        <h1 style="color:var(--blue); font-family:'Rajdhani', sans-serif; letter-spacing:3px; margin:0 0 20px 0;">SYS.TERMINAL</h1>
+        <input type="password" id="inp-pwd" class="inp" placeholder="請輸入管理員金鑰...">
+        <button class="btn" onclick="verifyLogin()">VERIFY ACCESS</button>
+    </div>
+</div>
+
+<div id="dashboard">
+    <div class="header">
+        <h1>GATE SPAWNER</h1>
+        <p>ACTIVE SYSTEM TERMINAL</p>
     </div>
 
-    <div class="section-title">⚡ QUICK SPAWN (常駐地下城)</div>
-    <div class="btn-grid">
-        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('國文')">國文</button>
-        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('英文')">英文</button>
-        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('數學')">數學</button>
-        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('物理')">物理</button>
-        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('地科')">地科</button>
-        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('公民')">公民</button>
-        <button class="btn-action" style="background:rgba(0,212,255,0.2); color:var(--blue); border:1px solid var(--blue);" onclick="publishPreset('歷史')">歷史</button>
-        <button class="btn-action" style="background:var(--red-alert); color:#fff; grid-column: span 2;" onclick="clearAllGates()">🔥 關閉所有地下城</button>
+    <div id="sub-list" class="grid-subs">
+        <button class="btn-sub" onclick="openForm('國文')">國文</button>
+        <button class="btn-sub" onclick="openForm('英文')">英文</button>
+        <button class="btn-sub" onclick="openForm('數學')">數學</button>
+        <button class="btn-sub" onclick="openForm('物理')">物理</button>
+        <button class="btn-sub" onclick="openForm('地科')">地科</button>
+        <button class="btn-sub" onclick="openForm('公民')">公民</button>
+        <button class="btn-sub" onclick="openForm('歷史')">歷史</button>
+        <button class="btn-sub" style="grid-column: span 2; background:rgba(255,0,85,0.1); border-color:var(--red-alert); color:var(--red-alert);" onclick="clearAllGates()">清除所有世界任務</button>
     </div>
-    <button class="btn-action" style="background:var(--gold); color:#000; font-size:1.2rem; padding:15px; box-shadow:0 0 15px rgba(255,215,0,0.4);" onclick="publishAllPreset()">🌟 全科一鍵發布</button>
 
-    <div class="section-divider"></div>
+    <div id="form-area">
+        <h2 id="f-title" class="form-title">SUBJECT</h2>
+        
+        <span class="label">選擇任務類型</span>
+        <select id="f-task" class="select-box" onchange="updateXp()"></select>
 
-    <div class="section-title">🛠️ CUSTOM GATE (自訂全新地下城)</div>
-    <div class="input-group">
-        <span class="label">SUBJECT (科目分類 / 例: 閱讀課)</span>
-        <input type="text" id="inp-sub" class="inp" placeholder="輸入科目名稱...">
-    </div>
-    <div class="input-group">
-        <span class="label">QUEST NAME (任務名稱 / 例: 寫摘要)</span>
-        <input type="text" id="inp-task" class="inp" placeholder="輸入任務名稱...">
-    </div>
-    <div style="display:flex; gap:10px;">
-        <div class="input-group" style="flex:1;">
-            <span class="label">REWARD XP</span>
-            <input type="number" id="inp-xp" class="inp" placeholder="經驗值">
+        <span class="label">任務範圍/細節 (例: L5, 第3回, P.10~20)</span>
+        <input type="text" id="f-range" class="inp" placeholder="輸入指定範圍...">
+
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <span class="label">預設經驗值 (可修改)</span>
+                <input type="number" id="f-xp" class="inp">
+            </div>
+            <div style="flex:1;">
+                <span class="label">冷卻時間 (分鐘)</span>
+                <input type="number" id="f-time" class="inp">
+            </div>
         </div>
-        <div class="input-group" style="flex:1;">
-            <span class="label">COOLDOWN</span>
-            <input type="number" id="inp-time" class="inp" placeholder="冷卻(分)">
+
+        <div class="bonus-area">
+            <span class="label" style="color:var(--gold); margin-top:0;">🎁 額外通關獎勵 (選填)</span>
+            <select id="f-bonus-type" class="select-box" onchange="toggleBonusOptions()">
+                <option value="none">無額外獎勵</option>
+                <option value="title">贈送隨機稱號</option>
+                <option value="potion">贈送特殊藥水</option>
+                <option value="mat">贈送素材包</option>
+            </select>
+
+            <div id="opt-title" style="display:none; margin-top:10px;">
+                <select id="f-bonus-title" class="select-box">
+                    <option value="S">S 級稱號 (隨機)</option>
+                    <option value="A">A 級稱號 (隨機)</option>
+                    <option value="B">B 級稱號 (隨機)</option>
+                </select>
+            </div>
+            
+            <div id="opt-potion" style="display:none; margin-top:10px;">
+                <select id="f-bonus-potion" class="select-box">
+                    <option value="p_double|雙倍經驗藥劑">雙倍經驗藥劑</option>
+                    <option value="p_time|時光沙漏">時光沙漏</option>
+                    <option value="p_luck|幸運四葉草">幸運四葉草</option>
+                    <option value="p_seven|七葉草藥水">七葉草藥水</option>
+                </select>
+            </div>
+
+            <div id="opt-mat" style="display:none; margin-top:10px; display:flex; gap:10px;">
+                <select id="f-bonus-mat-id" class="select-box" style="flex:2;">
+                    <option value="logic|邏輯碎片">邏輯碎片</option>
+                    <option value="lang|語文符文">語文符文</option>
+                    <option value="mem|記憶結晶">記憶結晶</option>
+                </select>
+                <input type="number" id="f-bonus-mat-amt" class="inp" style="flex:1; margin:0;" placeholder="數量" value="5">
+            </div>
         </div>
-        <div class="input-group" style="flex:1;">
-            <span class="label">RANGE</span>
-            <input type="number" id="inp-range" class="inp" placeholder="最大回數" value="10">
+
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn" style="background:#333; color:#aaa; flex:1;" onclick="closeForm()">取消返回</button>
+            <button id="btn-spawn" class="btn" style="background:var(--purple); color:#fff; flex:2;" onclick="spawnGate()">⚡ 生成地下城</button>
         </div>
     </div>
-    <button class="btn-action" onclick="publishCustomGate()">SPAWN CUSTOM GATE</button>
 </div>
 
 <script type="module">
@@ -91,94 +144,125 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 封裝好的常駐地下城資料庫 (包含原本的經驗值、回數、冷卻時間)
+// 系統預設任務資料庫
 const PRESET_DB = {
-    '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, range: 12, time: 20 },
-    '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, range: 10, time: 15 },
-    '數學': { items: {'講義':600}, range: 10, time: 30 },
-    '物理': { items: {'講義':300}, range: 10, time: 25 },
-    '地科': { items: {'講義':350}, range: 6, time: 15 },
-    '公民': { items: {'課本':300, '講義':350}, range: 6, time: 10 },
-    '歷史': { items: {'課本':500}, range: 6, time: 10 }
+    '國文': { items: {'複習講義':350, '閱讀越會':150, '語文練習':150}, time: 20 },
+    '英文': { items: {'雜誌':100, '單字本':300, 'All in One':300, '課本單字':200}, time: 15 },
+    '數學': { items: {'講義':600}, time: 30 },
+    '物理': { items: {'講義':300}, time: 25 },
+    '地科': { items: {'講義':350}, time: 15 },
+    '公民': { items: {'課本':300, '講義':350}, time: 10 },
+    '歷史': { items: {'課本':500}, time: 10 }
 };
 
-function verify() {
-    if(document.getElementById('inp-pwd').value !== 'Ricky_0414') {
-        alert('❌ ACCESS DENIED: 密碼錯誤');
-        return false;
+let currentSub = '';
+
+window.verifyLogin = function() {
+    if(document.getElementById('inp-pwd').value === 'Ricky_0414') {
+        document.getElementById('login-ui').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+    } else {
+        alert("密碼錯誤，拒絕存取。");
     }
-    return true;
-}
-
-// 單科發布
-window.publishPreset = async function(sub) {
-    if(!verify()) return;
-    try {
-        const docRef = doc(db, "system", "dungeons");
-        const snap = await getDoc(docRef);
-        let dbData = snap.exists() ? snap.data() : {};
-
-        dbData[sub] = PRESET_DB[sub];
-        
-        await setDoc(docRef, dbData);
-        alert(`✅ 成功發布【${sub}】地下城！`);
-    } catch(e) { alert('發布失敗，連線異常。'); }
 };
 
-// 全科一鍵發布
-window.publishAllPreset = async function() {
-    if(!verify()) return;
-    try {
-        const docRef = doc(db, "system", "dungeons");
-        const snap = await getDoc(docRef);
-        let dbData = snap.exists() ? snap.data() : {};
+window.openForm = function(sub) {
+    currentSub = sub;
+    document.getElementById('sub-list').style.display = 'none';
+    document.getElementById('form-area').style.display = 'block';
+    document.getElementById('f-title').innerText = `${sub} - 生成設定`;
+    
+    let taskHtml = "";
+    Object.keys(PRESET_DB[sub].items).forEach(task => {
+        taskHtml += `<option value="${task}">${task}</option>`;
+    });
+    document.getElementById('f-task').innerHTML = taskHtml;
+    document.getElementById('f-range').value = "";
+    document.getElementById('f-bonus-type').value = "none";
+    window.toggleBonusOptions();
+    window.updateXp();
+};
 
-        Object.keys(PRESET_DB).forEach(sub => {
-            dbData[sub] = PRESET_DB[sub];
+window.closeForm = function() {
+    document.getElementById('sub-list').style.display = 'grid';
+    document.getElementById('form-area').style.display = 'none';
+};
+
+window.updateXp = function() {
+    const task = document.getElementById('f-task').value;
+    document.getElementById('f-xp').value = PRESET_DB[currentSub].items[task];
+    document.getElementById('f-time').value = PRESET_DB[currentSub].time;
+};
+
+window.toggleBonusOptions = function() {
+    const type = document.getElementById('f-bonus-type').value;
+    document.getElementById('opt-title').style.display = type === 'title' ? 'block' : 'none';
+    document.getElementById('opt-potion').style.display = type === 'potion' ? 'block' : 'none';
+    document.getElementById('opt-mat').style.display = type === 'mat' ? 'flex' : 'none';
+};
+
+window.spawnGate = async function() {
+    const task = document.getElementById('f-task').value;
+    const range = document.getElementById('f-range').value.trim();
+    const xp = parseInt(document.getElementById('f-xp').value);
+    const time = parseInt(document.getElementById('f-time').value);
+
+    if(!range) return alert("⚠️ 請輸入任務範圍！(例如: 第3回)");
+    if(isNaN(xp) || isNaN(time)) return alert("數值異常");
+
+    const btn = document.getElementById('btn-spawn');
+    btn.innerText = "生成中..."; btn.disabled = true;
+
+    // 處理額外獎勵物件
+    const bType = document.getElementById('f-bonus-type').value;
+    let bonusObj = null;
+    if(bType !== 'none') {
+        bonusObj = { type: bType };
+        if(bType === 'title') {
+            bonusObj.rank = document.getElementById('f-bonus-title').value;
+            bonusObj.name = `${bonusObj.rank}級稱號箱`;
+        } else if(bType === 'potion') {
+            const p = document.getElementById('f-bonus-potion').value.split('|');
+            bonusObj.id = p[0]; bonusObj.name = p[1];
+        } else if(bType === 'mat') {
+            const m = document.getElementById('f-bonus-mat-id').value.split('|');
+            bonusObj.id = m[0]; bonusObj.name = m[1];
+            bonusObj.amount = parseInt(document.getElementById('f-bonus-mat-amt').value) || 1;
+        }
+    }
+
+    try {
+        const docRef = doc(db, "system", "global_gates");
+        const snap = await getDoc(docRef);
+        let gates = snap.exists() ? snap.data().active : [];
+        
+        // 寫入雲端世界任務清單
+        gates.push({
+            id: Date.now(),
+            sub: currentSub,
+            task: task,
+            range: range,
+            xp: xp,
+            time: time,
+            bonus: bonusObj
         });
-        
-        await setDoc(docRef, dbData);
-        alert(`🌟 轟隆隆隆！全科常駐地下城已全面開啟！`);
-    } catch(e) { alert('發布失敗，連線異常。'); }
+
+        await setDoc(docRef, { active: gates });
+        alert(`⚡ 地下城生成成功！全班已可見此任務。`);
+        closeForm();
+    } catch(e) {
+        console.error(e); alert("連線失敗");
+    } finally {
+        btn.innerText = "⚡ 生成地下城"; btn.disabled = false;
+    }
 };
 
-// 清空所有地下城 (大清洗)
 window.clearAllGates = async function() {
-    if(!verify()) return;
-    if(!confirm("確定要關閉所有地下城嗎？同學將無法接到任何新任務。")) return;
+    if(!confirm("確定要清除目前畫面上所有的世界任務嗎？(已接取的玩家不受影響)")) return;
     try {
-        await setDoc(doc(db, "system", "dungeons"), {});
-        alert(`🔥 所有傳送門已強制關閉！`);
-    } catch(e) { alert('操作失敗。'); }
-};
-
-// 自訂地下城發布
-window.publishCustomGate = async function() {
-    if(!verify()) return;
-    const sub = document.getElementById('inp-sub').value.trim();
-    const task = document.getElementById('inp-task').value.trim();
-    const xp = parseInt(document.getElementById('inp-xp').value);
-    const time = parseInt(document.getElementById('inp-time').value) || 15;
-    const range = parseInt(document.getElementById('inp-range').value) || 10;
-
-    if(!sub || !task || isNaN(xp)) return alert('請填寫完整地下城資訊！');
-
-    try {
-        const docRef = doc(db, "system", "dungeons");
-        const snap = await getDoc(docRef);
-        let dbData = snap.exists() ? snap.data() : {};
-
-        if(!dbData[sub]) dbData[sub] = { items: {}, range: range, time: time };
-        dbData[sub].items[task] = xp;
-        dbData[sub].range = range;
-        dbData[sub].time = time;
-
-        await setDoc(docRef, dbData);
-        alert(`✅ 成功發布自訂地下城【${sub} - ${task}】！`);
-        
-        document.getElementById('inp-task').value = '';
-        document.getElementById('inp-xp').value = '';
-    } catch(e) { alert('發布失敗，連線異常。'); }
+        await setDoc(doc(db, "system", "global_gates"), { active: [] });
+        alert("🧹 所有世界任務已清除！");
+    } catch(e) { alert("連線失敗"); }
 };
 </script>
 </body>
