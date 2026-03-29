@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Server Awakened V17 (Full)</title>
+    <title>Solo Leveling: Server Awakened V18 (Final Fix)</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -54,6 +54,7 @@
         .scroll-area::-webkit-scrollbar { width: 3px; }
         .scroll-area::-webkit-scrollbar-thumb { background: var(--purple-dark); border-radius: 10px; }
 
+        /* 導航列 */
         .nav { display: flex; overflow-x: auto; padding: 10px 5px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(188, 19, 254, 0.2); background: #000; z-index: 100; flex-shrink: 0; margin: 0 -15px; border-radius: 0 0 20px 20px; scrollbar-width: none; }
         .nav::-webkit-scrollbar { display: none; }
         .nav-link { color: #555; font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.3s; flex-shrink: 0; text-align: center; padding: 5px 12px; white-space: nowrap; font-family: 'Rajdhani', 'Noto Sans TC', sans-serif;}
@@ -94,6 +95,7 @@
         .admin-label { font-size: 11px; color: #aaa; margin-bottom: 5px; display: block; text-align:left; font-family:'Rajdhani', sans-serif;}
         .admin-box { background: rgba(255, 0, 85, 0.05); border: 1px solid rgba(255, 0, 85, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
 
+        /* 排行榜卡片特製樣式 */
         .rank-badge { width: 30px; height: 30px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; justify-content: center; align-items: center; font-weight: 900; font-family: 'Orbitron'; margin-right: 15px; font-size: 14px; box-shadow: 0 0 10px var(--purple); flex-shrink:0;}
         .rank-badge.top-1 { background: var(--gold); box-shadow: 0 0 15px var(--gold); color: #000; }
         .rank-badge.top-2 { background: silver; box-shadow: 0 0 10px silver; color: #000; }
@@ -303,7 +305,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDfaC7sWiz--IXnOQq9Qw0ICNDT8MpZE5o",
@@ -319,7 +321,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /* =========================================
-   完整大數據庫 (無刪減)
+   完整大數據庫
 ========================================= */
 const DB = {
     titles: {
@@ -368,7 +370,7 @@ const StorageMgr = {
 };
 
 /* =========================================
-   雲端遊戲引擎核心 (100% 完整版)
+   雲端遊戲引擎核心
 ========================================= */
 const System = {
     p: null, 
@@ -630,7 +632,7 @@ const System = {
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v17_cloud');
+        let stored = StorageMgr.get('sl_shop_v18_cloud');
         if(stored) {
             const parsed = JSON.parse(stored);
             if(parsed.date === today) {
@@ -676,7 +678,7 @@ const System = {
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
 
-        this.shopCache = shop; StorageMgr.set('sl_shop_v17_cloud', JSON.stringify({ date: today, data: this.shopCache }));
+        this.shopCache = shop; StorageMgr.set('sl_shop_v18_cloud', JSON.stringify({ date: today, data: this.shopCache }));
         document.getElementById('shop-time').innerText = force ? `Refreshed (Hourglass)` : `Refreshed: ${today}`;
     },
 
@@ -859,22 +861,31 @@ const System = {
     },
 
     /* =========================================
-       🌟 排行榜 (Leaderboard) - Firebase 讀取
+       🌟 排行榜 (Leaderboard) - 繞過索引限制版
     ========================================= */
     async renderLeaderboard() {
         const lbEl = document.getElementById('leaderboard-list');
-        lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">連線至雲端伺服器中...</div>`;
+        lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa; font-family:'Rajdhani', sans-serif;">連線至雲端伺服器中...</div>`;
         
         try {
-            const q = query(collection(db, "players"), orderBy("lv", "desc"), orderBy("exp", "desc"));
-            const querySnapshot = await getDocs(q);
+            // 直接抓取全班資料，避開 Firestore 雙重排序限制
+            const querySnapshot = await getDocs(collection(db, "players"));
             
+            let playersData = [];
+            querySnapshot.forEach((doc) => {
+                playersData.push(doc.data());
+            });
+
+            // 前端 JS 內存排序：先比等級(lv)，等級一樣再比經驗值(exp)
+            playersData.sort((a, b) => {
+                if (b.lv !== a.lv) return b.lv - a.lv;
+                return b.exp - a.exp;
+            });
+
             let html = "";
             let rank = 1;
             
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                
+            playersData.forEach((data) => {
                 let badgeClass = "rank-badge";
                 if(rank === 1) badgeClass += " top-1";
                 else if(rank === 2) badgeClass += " top-2";
@@ -903,7 +914,7 @@ const System = {
             
         } catch (error) {
             console.error("讀取排行榜失敗:", error);
-            lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:red;">無法取得雲端資料，請確認是否開啟了測試模式。</div>`;
+            lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:red;">無法取得雲端資料，請確認防火牆規則是否設定為 true。</div>`;
         }
     },
 
