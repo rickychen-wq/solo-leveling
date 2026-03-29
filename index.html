@@ -3,137 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Solo Leveling: Void Gate V15</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+    <title>Solo Leveling: Server Awakened V17 (Full)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --purple: #bc13fe; --purple-dark: #5a0b80; --gold: #ffd700; --blue: #00d4ff; --bg: #030712;
             --s-rank: #ff3e3e; --a-rank: #bc13fe; --b-rank: #00d4ff; --c-rank: #00ff88; --d-rank: #aaaaaa; --e-rank: #555555;
             --glass: rgba(10, 15, 30, 0.75); --glass-blue: rgba(0, 212, 255, 0.1);
             --red-alert: #ff0055;
-            --portal-blue: #0088ff;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Noto Sans TC', sans-serif; user-select: none; outline: none; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: #fff; overflow: hidden; touch-action: manipulation; }
 
-        .system-frame {
-            position: relative; width: 100vw; height: 100dvh; max-width: 500px; margin: 0 auto;
-            background: var(--bg); overflow: hidden; display: flex; flex-direction: column; z-index: 10;
-        }
-        @media (min-width: 501px) {
-            .system-frame { height: 96vh; margin: 2vh auto; border-radius: 24px; border: 1px solid rgba(188, 19, 254, 0.3); }
-        }
-        .system-frame::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent 70%, var(--purple) 100%);
-            animation: rotateLight 4s linear infinite; z-index: -1;
-        }
+        .system-frame { position: relative; width: 100vw; height: 100dvh; max-width: 500px; margin: 0 auto; background: var(--bg); overflow: hidden; display: flex; flex-direction: column; z-index: 10; }
+        @media (min-width: 501px) { .system-frame { height: 96vh; margin: 2vh auto; border-radius: 24px; border: 1px solid rgba(188, 19, 254, 0.3); } }
+        .system-frame::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent 70%, var(--purple) 100%); animation: rotateLight 4s linear infinite; z-index: -1; }
         @keyframes rotateLight { 100% { transform: rotate(360deg); } }
         
-        .inner-content {
-            position: absolute; inset: 4px; background: radial-gradient(circle at top, #130a24 0%, var(--bg) 80%);
-            border-radius: 20px; z-index: 2; padding: 20px 15px 0 15px; display: flex; flex-direction: column; overflow: hidden;
-        }
+        .inner-content { position: absolute; inset: 4px; background: radial-gradient(circle at top, #130a24 0%, var(--bg) 80%); border-radius: 20px; z-index: 2; padding: 15px 15px 0 15px; display: flex; flex-direction: column; overflow: hidden; }
 
-        .xp-wrapper { width: 100%; margin: 15px 0; }
-        .xp-bar-container { width: 100%; height: 24px; background: rgba(255,255,255,0.05); border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 0 15px #000; border: 1px solid rgba(188, 19, 254, 0.4); }
+        .xp-wrapper { width: 100%; margin: 10px 0; }
+        .xp-bar-container { width: 100%; height: 18px; background: rgba(255,255,255,0.05); border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 0 10px #000; border: 1px solid rgba(188, 19, 254, 0.4); }
         .xp-bar-fill { height: 100%; width: 0%; border-radius: 12px; background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 50%, var(--purple) 100%); box-shadow: 0 0 15px var(--purple); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; overflow: hidden; }
-        .xp-bar-fill::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 25%, transparent 30%), linear-gradient(245deg, transparent 40%, rgba(255,255,255,0.3) 45%, transparent 50%), linear-gradient(70deg, transparent 60%, rgba(255,255,255,0.5) 65%, transparent 70%); background-size: 30px 100%; opacity: 0.9; }
+        .xp-bar-fill::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 25%, transparent 30%), linear-gradient(70deg, transparent 60%, rgba(255,255,255,0.5) 65%, transparent 70%); background-size: 30px 100%; opacity: 0.9; }
 
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .stat-item {
-            background: linear-gradient(135deg, rgba(8,12,23,0.9), rgba(20,10,40,0.9));
-            border-radius: 15px; padding: 15px 10px; text-align: center;
-            border: 1px solid rgba(188, 19, 254, 0.4);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            position: relative; overflow: hidden;
-            animation: statPulse 2.5s infinite alternate ease-in-out;
-            transform: translateZ(0); 
-        }
-        @keyframes statPulse {
-            0% { box-shadow: 0 0 5px rgba(188, 19, 254, 0.1), inset 0 0 10px rgba(188, 19, 254, 0.1); border-color: rgba(188, 19, 254, 0.2); }
-            100% { box-shadow: 0 0 15px rgba(188, 19, 254, 0.5), inset 0 0 25px rgba(188, 19, 254, 0.3); border-color: rgba(188, 19, 254, 0.8); }
-        }
-        .stat-item::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.05) 50%, transparent 55%);
-            animation: sweepLight 4s linear infinite; pointer-events: none;
-        }
-        @keyframes sweepLight { 0% { transform: translate(-50%, -50%); } 100% { transform: translate(50%, 50%); } }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; margin-bottom: 10px; }
+        .stat-item { background: linear-gradient(135deg, rgba(8,12,23,0.9), rgba(20,10,40,0.9)); border-radius: 12px; padding: 12px 5px; text-align: center; border: 1px solid rgba(188, 19, 254, 0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; animation: statPulse 3s infinite alternate ease-in-out; transform: translateZ(0); }
+        @keyframes statPulse { 0% { box-shadow: 0 0 5px rgba(188, 19, 254, 0.1), inset 0 0 10px rgba(188, 19, 254, 0.1); border-color: rgba(188, 19, 254, 0.2); } 100% { box-shadow: 0 0 12px rgba(188, 19, 254, 0.4), inset 0 0 15px rgba(188, 19, 254, 0.2); border-color: rgba(188, 19, 254, 0.6); } }
+        .stat-label { font-size: 10px; color: var(--blue); font-family: 'Rajdhani', sans-serif; font-weight: 900; z-index: 3; position: relative; margin-bottom: 2px; letter-spacing: 1px;}
+        .stat-val { font-size: 2.2rem; font-weight: 900; font-family: 'Rajdhani', sans-serif; color: #fff; text-shadow: 0 0 12px rgba(188, 19, 254, 0.6); z-index: 3; position: relative; line-height: 1; }
+        .stat-bonus { font-size: 14px; color: var(--c-rank); font-weight: 900; margin-left: 5px; text-shadow: none; vertical-align: middle;}
 
-        .stat-label { font-size: 11px; color: var(--blue); font-family: 'Orbitron'; font-weight: 900; z-index: 3; position: relative; margin-bottom: 5px; letter-spacing: 1px;}
-        .stat-val { font-size: 2rem; font-weight: 900; font-family: 'Orbitron'; color: #fff; text-shadow: 0 0 15px rgba(188, 19, 254, 0.8); z-index: 3; position: relative; line-height: 1; }
-        .stat-bonus { font-size: 12px; color: var(--c-rank); font-weight: 900; margin-left: 5px; text-shadow: none; vertical-align: middle;}
+        .btn-cyber { width: 100%; padding: 16px; margin-bottom: 12px; background: rgba(10, 15, 30, 0.85); border: 1px solid var(--purple); border-radius: 10px; color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 900; font-size: 1.3rem; letter-spacing: 4px; cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 0 15px rgba(188, 19, 254, 0.3), inset 0 0 20px rgba(188, 19, 254, 0.1); transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 1; text-transform: uppercase; }
+        .btn-cyber::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(188, 19, 254, 0.6), transparent); animation: cyberScan 2.5s linear infinite; z-index: -1; transform: skewX(-25deg); }
+        @keyframes cyberScan { 0% { left: -100%; } 100% { left: 200%; } }
+        .btn-cyber:active { transform: scale(0.96); box-shadow: 0 0 30px rgba(188, 19, 254, 0.8), inset 0 0 30px rgba(188, 19, 254, 0.4); background: rgba(188, 19, 254, 0.25); border-color: #fff; }
 
-        /* 🔥 【二次覺醒 - 最終美學】地下城專屬按鈕：虛空傳送門 Portal Style */
-        .btn-portal {
-            width: 100%; padding: 22px; margin-bottom: 15px;
-            /* 底色為深邃的圓形漸層，像一個黑洞 */
-            background: radial-gradient(circle at center, #001a33 0%, #00050a 70%);
-            border: none; border-radius: 12px;
-            color: #fff; font-family: 'Orbitron'; font-weight: 900; font-size: 1.3rem; letter-spacing: 3px;
-            cursor: pointer; position: relative; overflow: hidden;
-            /* 霓虹藍色呼吸外光暈 */
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.6), 0 8px 0 #000;
-            transition: all 0.1s ease; z-index: 1;
-            animation: portalNeonPulse 2s infinite alternate ease-in-out;
-            transform: translateZ(0);
-        }
-        @keyframes portalNeonPulse {
-            0% { box-shadow: 0 0 10px rgba(0, 136, 255, 0.5), 0 8px 0 #000; }
-            100% { box-shadow: 0 0 25px rgba(0, 136, 255, 0.9), 0 8px 0 #000, inset 0 0 15px rgba(0, 136, 255, 0.3); }
-        }
-
-        /* 漩渦特效層 1 (順時針) */
-        .btn-portal::before {
-            content: ''; position: absolute; inset: -50%;
-            background: radial-gradient(circle at center, transparent 30%, rgba(0, 136, 255, 0.1) 40%, transparent 60%);
-            background-size: 50% 50%;
-            background-image: repeating-conic-gradient(from 0deg, transparent 0deg 20deg, rgba(0, 136, 255, 0.1) 25deg 35deg, transparent 40deg);
-            animation: portalRotate 6s linear infinite;
-            z-index: -2; opacity: 0.8;
-        }
-        /* 漩渦特效層 2 (反時針，增加層次感) */
-        .btn-portal::after {
-            content: ''; position: absolute; inset: -70%;
-            background-image: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, rgba(0, 212, 255, 0.08) 20deg 30deg, transparent 35deg);
-            animation: portalRotate 4s linear infinite reverse;
-            z-index: -1; opacity: 0.6; filter: blur(1px);
-        }
-        @keyframes portalRotate { 100% { transform: rotate(360deg); } }
-
-        /* 點擊時的手感：往下沉 */
-        .btn-portal:active {
-            transform: translateY(8px);
-            box-shadow: 0 0px 0 #000, 0 5px 15px rgba(0, 136, 255, 0.7);
-        }
-        /* 點擊時漩渦加速 */
-        .btn-portal:active::before { animation-duration: 2s; }
-        .btn-portal:active::after { animation-duration: 1s; }
-
-
-        .dg-btn { background: var(--glass-blue); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 12px; margin-bottom: 10px; color: var(--blue); font-weight: 900; font-size: 1.1rem; letter-spacing: 2px; cursor: pointer; transition: 0.2s; text-align: center; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.05); }
+        .dg-btn { background: var(--glass-blue); border: 1px solid rgba(0, 212, 255, 0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 12px; margin-bottom: 10px; color: var(--blue); font-weight: 900; font-size: 1.1rem; letter-spacing: 2px; cursor: pointer; transition: 0.2s; text-align: center; box-shadow: 0 4px 15px rgba(0, 212, 255, 0.05); font-family: 'Rajdhani', sans-serif;}
         .dg-btn:active { background: rgba(0, 212, 255, 0.3); transform: scale(0.98); }
 
-        .section-title { font-family: 'Orbitron'; color: var(--blue); margin: 20px 0 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 900; flex-shrink: 0; }
-        .card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 15px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .section-title { font-family: 'Rajdhani', sans-serif; color: var(--blue); margin: 15px 0 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 900; font-size: 1.2rem; flex-shrink: 0; letter-spacing: 1px;}
+        .card { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
         .card-col { display: flex; flex-direction: column; flex: 1; margin-right: 10px; }
-        .btn-action { background: var(--purple); color: #fff; border: none; padding: 10px 15px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 12px; font-family: 'Orbitron'; transition: 0.2s; flex-shrink: 0; }
+        .btn-action { background: var(--purple); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 900; cursor: pointer; font-size: 12px; font-family: 'Rajdhani', sans-serif; transition: 0.2s; flex-shrink: 0; letter-spacing: 1px;}
         .btn-action:active { transform: scale(0.95); }
-        .btn-action:disabled { background: #333; color: #666; cursor: not-allowed; }
+        .btn-action:disabled { background: #333 !important; color: #666 !important; cursor: not-allowed; }
 
         .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 20px; padding-right: 5px; }
-        .scroll-area::-webkit-scrollbar { width: 4px; }
+        .scroll-area::-webkit-scrollbar { width: 3px; }
         .scroll-area::-webkit-scrollbar-thumb { background: var(--purple-dark); border-radius: 10px; }
 
-        .nav { display: flex; overflow-x: auto; padding: 12px 5px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(188, 19, 254, 0.2); background: #000; z-index: 100; flex-shrink: 0; margin: 0 -15px; border-radius: 0 0 20px 20px; scrollbar-width: none; }
+        .nav { display: flex; overflow-x: auto; padding: 10px 5px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(188, 19, 254, 0.2); background: #000; z-index: 100; flex-shrink: 0; margin: 0 -15px; border-radius: 0 0 20px 20px; scrollbar-width: none; }
         .nav::-webkit-scrollbar { display: none; }
-        .nav-link { color: #555; font-size: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; flex-shrink: 0; text-align: center; padding: 5px 12px; white-space: nowrap; }
+        .nav-link { color: #555; font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.3s; flex-shrink: 0; text-align: center; padding: 5px 12px; white-space: nowrap; font-family: 'Rajdhani', 'Noto Sans TC', sans-serif;}
         .nav-link.active { color: var(--purple); text-shadow: 0 0 15px var(--purple); border-bottom: 2px solid var(--purple); }
 
         .page { display: none; flex: 1; flex-direction: column; overflow: hidden; }
-        .page.active { display: flex; animation: fadeIn 0.3s ease; }
+        .page.active { display: flex; animation: fadeIn 0.2s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
         .rank-S { color: var(--gold); text-shadow: 0 0 10px var(--gold); font-weight: 900; }
@@ -145,47 +72,56 @@
         .rank-UNKNOWN { color: var(--red-alert); text-shadow: 0 0 15px var(--red-alert), 0 0 30px var(--red-alert); font-weight: 900; }
 
         .locked-title { opacity: 0.2; filter: grayscale(100%); pointer-events: none; }
-        .equipped { border: 1px solid var(--purple); background: rgba(188, 19, 254, 0.1); box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.2); }
+        .equipped { border: 1px solid var(--purple) !important; background: rgba(188, 19, 254, 0.1) !important; box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.2); }
 
         #login-ui { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        .login-box { width: 85%; max-width: 400px; padding: 40px; background: var(--glass); border: 2px solid var(--purple); border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(188, 19, 254, 0.3); }
-        .login-input { width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--purple-dark); color: #fff; border-radius: 10px; margin-bottom: 15px; text-align: center; font-size: 1rem; outline:none;}
-        .login-input:focus { border-color: var(--purple); box-shadow: 0 0 10px var(--purple); }
+        .login-box { width: 85%; max-width: 400px; padding: 40px; background: rgba(10, 15, 30, 0.95); border: 1px solid var(--purple); border-radius: 16px; text-align: center; box-shadow: 0 0 40px rgba(188, 19, 254, 0.2); }
+        .login-input { width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 1rem; outline:none; font-family: 'Rajdhani', sans-serif;}
+        .login-input:focus { border-color: var(--purple); box-shadow: 0 0 10px rgba(188,19,254,0.3); }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #0a0f1e; border: 1px solid var(--blue); border-radius: 20px; padding: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
+        .modal-content { background: #0a0f1e; border: 1px solid var(--blue); border-radius: 16px; padding: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(0,212,255,0.2);}
 
         #gacha-pop { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .gacha-glow { font-size: 2.5rem; font-family: 'Orbitron'; font-weight: 900; padding: 20px; animation: popGlow 1.5s infinite alternate; }
-        @keyframes popGlow { from { transform: scale(1); text-shadow: 0 0 10px currentColor; } to { transform: scale(1.05); text-shadow: 0 0 30px currentColor, 0 0 60px currentColor; } }
+        .gacha-glow { font-size: 3rem; font-family: 'Rajdhani', sans-serif; font-weight: 900; padding: 20px; animation: popGlow 1s infinite alternate; }
+        @keyframes popGlow { from { transform: scale(1); text-shadow: 0 0 15px currentColor; } to { transform: scale(1.05); text-shadow: 0 0 30px currentColor, 0 0 50px currentColor; } }
 
-        .admin-input { width: 100%; padding: 10px; background: rgba(0,0,0,0.8); border: 1px solid #555; color: #fff; border-radius: 5px; margin-bottom: 10px; font-family: 'Orbitron'; text-align:center; }
-        .admin-label { font-size: 10px; color: #aaa; margin-bottom: 5px; display: block; text-align:left; }
+        .badge { display: inline-block; padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 900; margin-left: 5px; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px;}
+        .badge-buff { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid #00ff88; }
+        .mat-icon { display: inline-block; width: 20px; text-align: center; font-size: 14px; }
+        
+        .admin-input { width: 100%; padding: 10px; background: rgba(0,0,0,0.8); border: 1px solid #555; color: #fff; border-radius: 5px; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; font-weight:700; text-align:center; }
+        .admin-label { font-size: 11px; color: #aaa; margin-bottom: 5px; display: block; text-align:left; font-family:'Rajdhani', sans-serif;}
         .admin-box { background: rgba(255, 0, 85, 0.05); border: 1px solid rgba(255, 0, 85, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+
+        .rank-badge { width: 30px; height: 30px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; justify-content: center; align-items: center; font-weight: 900; font-family: 'Orbitron'; margin-right: 15px; font-size: 14px; box-shadow: 0 0 10px var(--purple); flex-shrink:0;}
+        .rank-badge.top-1 { background: var(--gold); box-shadow: 0 0 15px var(--gold); color: #000; }
+        .rank-badge.top-2 { background: silver; box-shadow: 0 0 10px silver; color: #000; }
+        .rank-badge.top-3 { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; color: #fff; }
     </style>
 </head>
 <body>
 
 <div id="login-ui">
     <div class="login-box">
-        <h1 style="font-family:'Orbitron'; color:var(--purple); margin: 0 0 30px 0; letter-spacing:8px; font-size:2.5rem; text-shadow:0 0 20px var(--purple);">ARISE</h1>
-        <input type="text" id="inp-acc" class="login-input" placeholder="HUNTER ACCOUNT">
+        <h1 style="font-family:'Rajdhani', sans-serif; color:var(--purple); margin: 0 0 25px 0; letter-spacing:10px; font-size:3rem; text-shadow:0 0 20px rgba(188,19,254,0.6);">ARISE</h1>
+        <input type="text" id="inp-acc" class="login-input" placeholder="HUNTER ID">
         <input type="password" id="inp-pwd" class="login-input" placeholder="ACCESS CODE">
-        <button onclick="System.login()" style="width:100%; padding:18px; background:var(--purple); border:none; color:#fff; border-radius:10px; font-weight:900; font-size:1.1rem; cursor:pointer; font-family:'Orbitron'; margin-top:10px; box-shadow:0 0 15px var(--purple-dark);">SYSTEM INITIALIZE</button>
+        <button id="btn-login" onclick="System.login()" style="width:100%; padding:15px; background:var(--purple); border:none; color:#fff; border-radius:8px; font-weight:900; font-size:1.2rem; cursor:pointer; font-family:'Rajdhani', sans-serif; letter-spacing:2px; margin-top:10px;">INITIALIZE</button>
     </div>
 </div>
 
 <div id="gacha-pop" onclick="this.style.display='none'">
-    <div style="color:var(--blue); font-family:'Orbitron'; font-size:14px; margin-bottom:10px; letter-spacing:2px;">SYSTEM NOTIFICATION</div>
+    <div style="color:var(--blue); font-family:'Rajdhani', sans-serif; font-size:16px; margin-bottom:10px; letter-spacing:3px; font-weight:700;">SYSTEM NOTIFICATION</div>
     <div id="gacha-msg" style="color:#fff; font-size:1.2rem; font-weight:900;">恭喜獲得稱號</div>
     <div id="gacha-result" class="gacha-glow">S-RANK</div>
-    <div style="margin-top:40px; color:#666; font-size:12px; letter-spacing:1px;">TAP ANYWHERE TO CLOSE</div>
+    <div style="margin-top:40px; color:#666; font-size:12px; letter-spacing:1px; font-family:'Rajdhani', sans-serif;">TAP ANYWHERE TO CLOSE</div>
 </div>
 
 <div id="seven-clover-modal" class="modal-overlay">
     <div class="modal-content">
-        <h2 style="color:var(--purple); font-family:'Orbitron'; margin:0 0 15px 0; text-align:center;">選擇 A 級稱號</h2>
-        <div id="seven-clover-list" style="display:flex; flex-direction:column; gap:10px; max-height:vh; overflow-y:auto; padding-right:5px;"></div>
+        <h2 style="color:var(--purple); font-family:'Rajdhani', sans-serif; margin:0 0 15px 0; text-align:center; font-size:1.5rem; letter-spacing:2px;">選擇 A 級稱號</h2>
+        <div id="seven-clover-list" style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-right:5px;"></div>
         <button class="btn-action" style="width:100%; margin-top:15px; background:#333;" onclick="document.getElementById('seven-clover-modal').style.display='none'">取消</button>
     </div>
 </div>
@@ -193,7 +129,7 @@
 <div id="dungeon-modal" class="modal-overlay">
     <div class="modal-content">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,212,255,0.3); padding-bottom:10px; margin-bottom:15px;">
-            <h2 id="dm-title" style="color:var(--blue); font-family:'Orbitron'; margin:0;">SUBJECT</h2>
+            <h2 id="dm-title" style="color:var(--blue); font-family:'Rajdhani', sans-serif; margin:0; font-size:1.5rem; letter-spacing:1px;">SUBJECT</h2>
             <button class="btn-action" style="background:transparent; border:1px solid #555; color:#aaa; padding:5px 10px;" onclick="document.getElementById('dungeon-modal').style.display='none'">返回</button>
         </div>
         <div id="dm-content"></div>
@@ -202,28 +138,28 @@
 
 <div class="system-frame">
     <div class="inner-content">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; flex-shrink:0;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; flex-shrink:0;">
             <div>
-                <div id="ui-name" style="font-family:'Orbitron'; font-weight:900; font-size:1.5rem; color:var(--blue); text-transform:uppercase;">PLAYER</div>
+                <div id="ui-name" style="font-family:'Rajdhani', sans-serif; font-weight:900; font-size:1.8rem; color:var(--blue); text-transform:uppercase; letter-spacing:1px;">PLAYER</div>
                 <div id="ui-title" style="font-size:11px; color:var(--gold); font-weight: 900; margin-top:2px;">[ 尚未覺醒 ]</div>
                 <div id="ui-weapon" style="font-size:11px; color:#aaa; font-weight: 900; margin-top:2px;">⚔️ 徒手</div>
             </div>
             <div style="text-align: right;">
-                <div id="ui-coins" style="color:var(--gold); font-weight:900; font-size: 1.2rem; font-family: 'Orbitron';">💰 0</div>
-                <div id="ui-sp" style="font-size: 11px; color: var(--purple); font-weight: 900; margin-top: 3px;">剩餘點數: 0</div>
+                <div id="ui-coins" style="color:var(--gold); font-weight:900; font-size: 1.4rem; font-family: 'Rajdhani', sans-serif;">💰 0</div>
+                <div id="ui-sp" style="font-size: 12px; color: var(--purple); font-weight: 900; margin-top: 2px; font-family:'Rajdhani', sans-serif;">剩餘點數: 0</div>
             </div>
         </div>
 
-        <div id="buff-zone" style="display:flex; gap:5px; margin-bottom:10px; min-height: 20px;"></div>
+        <div id="buff-zone" style="display:flex; gap:5px; margin-bottom:5px; min-height: 20px;"></div>
 
         <div id="p-home" class="page active">
-            <div style="text-align:center; margin-top: 10px;">
-                <div id="ui-rank" style="font-size:13px; letter-spacing:3px; font-family: 'Orbitron'; font-weight:900; color:#888;">E-RANK HUNTER</div>
-                <div id="ui-lv" style="font-size:6.5rem; font-weight:900; color:var(--purple); font-family:'Orbitron'; line-height: 1.1; text-shadow: 0 0 30px rgba(188, 19, 254, 0.6);">1</div>
+            <div style="text-align:center; margin-top: 5px;">
+                <div id="ui-rank" style="font-size:14px; letter-spacing:4px; font-family: 'Rajdhani', sans-serif; font-weight:900; color:#888;">E-RANK HUNTER</div>
+                <div id="ui-lv" style="font-size:7.5rem; font-weight:900; color:var(--purple); font-family:'Rajdhani', sans-serif; line-height: 1; text-shadow: 0 0 20px rgba(188, 19, 254, 0.5); margin: 5px 0;">1</div>
                 
                 <div class="xp-wrapper">
                     <div class="xp-bar-container"><div id="ui-xp-fill" class="xp-bar-fill"></div></div>
-                    <div id="ui-xp-txt" style="font-size:11px; color:#aaa; font-family: 'Orbitron'; font-weight:900;">0 / 100 XP</div>
+                    <div id="ui-xp-txt" style="font-size:12px; color:#aaa; font-family: 'Rajdhani', sans-serif; font-weight:900; letter-spacing:1px;">0 / 100 XP</div>
                 </div>
             </div>
 
@@ -235,28 +171,27 @@
             </div>
             
             <div style="flex:1"></div>
-            <button class="btn-portal" onclick="System.nav('p-dungeon')">攻略地下城 (ENTER)</button>
+            <button class="btn-cyber" onclick="System.nav('p-dungeon')">攻略地下城</button>
         </div>
 
         <div id="p-dungeon" class="page">
             <h2 class="section-title">DUNGEON GATES</h2>
             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:15px; flex-shrink:0;">
-                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('國文')">國文</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('英文')">英文</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('數學')">數學</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('物理')">物理</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('地科')">地科</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('公民')">公民</button>
-                <button class="btn-action" style="background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--blue);" onclick="System.openDungeonModal('歷史')">歷史</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('國文')">國文</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('英文')">英文</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('數學')">數學</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('物理')">物理</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('地科')">地科</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('公民')">公民</button>
+                <button class="btn-action" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.3); color:var(--blue); font-size:14px; padding:12px 5px;" onclick="System.openDungeonModal('歷史')">歷史</button>
             </div>
-            
             <h2 class="section-title" style="color:var(--purple);">ACTIVE QUESTS</h2>
             <div class="scroll-area" id="active-quests-list"></div>
         </div>
 
         <div id="p-enhance" class="page">
             <h2 class="section-title" style="color:var(--purple);">STATUS UPGRADE</h2>
-            <div style="text-align:center; margin-bottom:20px; font-size:1.1rem; color:var(--purple); font-weight:900;">剩餘自由配點: <span id="up-sp-display" style="font-family:'Orbitron'; font-size:1.8rem; color:#fff; text-shadow:0 0 10px var(--purple);">0</span></div>
+            <div style="text-align:center; margin-bottom:15px; font-size:1.2rem; color:var(--purple); font-weight:900; font-family:'Rajdhani', sans-serif;">剩餘自由配點: <span id="up-sp-display" style="font-size:2rem; color:#fff; text-shadow:0 0 15px var(--purple);">0</span></div>
             <div id="upgrade-list" class="scroll-area"></div>
         </div>
 
@@ -266,12 +201,12 @@
         </div>
 
         <div id="p-shop" class="page">
-            <h2 class="section-title">DAILY SHOP <span id="shop-time" style="font-size:10px; color:#555; float:right; line-height:2.5; font-family:'Orbitron';"></span></h2>
-            <div style="display:flex; gap:8px; margin-bottom:15px; flex-shrink:0;">
-                <button class="btn-action" id="tab-sword" style="flex:1;" onclick="System.renderShop('sword')">刀具</button>
-                <button class="btn-action" id="tab-potion" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('potion')">藥水</button>
-                <button class="btn-action" id="tab-mat" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('mat')">材料</button>
-                <button class="btn-action" id="tab-title" style="flex:1; background:#222; color:#888;" onclick="System.renderShop('title')">稱號</button>
+            <h2 class="section-title">DAILY SHOP <span id="shop-time" style="font-size:11px; color:#555; float:right; line-height:2.5;"></span></h2>
+            <div style="display:flex; gap:8px; margin-bottom:10px; flex-shrink:0;">
+                <button class="btn-action" id="tab-sword" style="flex:1; font-size:14px;" onclick="System.renderShop('sword')">裝備</button>
+                <button class="btn-action" id="tab-potion" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderShop('potion')">藥水</button>
+                <button class="btn-action" id="tab-mat" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderShop('mat')">材料</button>
+                <button class="btn-action" id="tab-title" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderShop('title')">稱號</button>
             </div>
             <div id="shop-list" class="scroll-area"></div>
         </div>
@@ -279,83 +214,112 @@
         <div id="p-inventory" class="page">
             <h2 class="section-title">INVENTORY</h2>
             <div style="display:flex; gap:8px; margin-bottom:10px; flex-shrink:0;">
-                <button class="btn-action" id="bag-tab-sword" style="flex:1;" onclick="System.renderBag('sword')">刀具</button>
-                <button class="btn-action" id="bag-tab-potion" style="flex:1; background:#222; color:#888;" onclick="System.renderBag('potion')">藥水</button>
-                <button class="btn-action" id="bag-tab-mat" style="flex:1; background:#222; color:#888;" onclick="System.renderBag('mat')">材料</button>
+                <button class="btn-action" id="bag-tab-sword" style="flex:1; font-size:14px;" onclick="System.renderBag('sword')">裝備</button>
+                <button class="btn-action" id="bag-tab-potion" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderBag('potion')">藥水</button>
+                <button class="btn-action" id="bag-tab-mat" style="flex:1; background:#222; color:#888; font-size:14px;" onclick="System.renderBag('mat')">材料</button>
             </div>
             <div id="bag-list" class="scroll-area"></div>
         </div>
 
         <div id="p-forge" class="page">
-            <h2 class="section-title" style="color:#ff8c00;">BLACKSMITH (打鐵舖)</h2>
-            <div style="background:rgba(255,140,0,0.1); border:1px solid rgba(255,140,0,0.3); padding:10px; border-radius:10px; margin-bottom:15px; font-size:11px; color:#ddd;">
-                <span class="mat-icon">📐</span> 邏輯碎片: <b id="forge-m-logic" style="color:var(--blue)">0</b> | 
-                <span class="mat-icon">📖</span> 語文符文: <b id="forge-m-lang" style="color:var(--gold)">0</b> | 
-                <span class="mat-icon">🧠</span> 記憶結晶: <b id="forge-m-mem" style="color:var(--purple)">0</b><br>
-                <small style="color:#888; display:block; margin-top:5px;">消耗對應數量的碎片可修復武器磨損度，S級需7套/A級需3套/B~E級需1套。</small>
+            <h2 class="section-title" style="color:#ff8c00;">BLACKSMITH</h2>
+            <div style="background:rgba(255,140,0,0.05); border:1px solid rgba(255,140,0,0.2); padding:12px; border-radius:10px; margin-bottom:15px; font-size:12px; color:#ccc;">
+                <span class="mat-icon">📐</span> 邏輯: <b id="forge-m-logic" style="color:var(--blue); font-family:'Rajdhani', sans-serif; font-size:14px;">0</b> | 
+                <span class="mat-icon">📖</span> 語文: <b id="forge-m-lang" style="color:var(--gold); font-family:'Rajdhani', sans-serif; font-size:14px;">0</b> | 
+                <span class="mat-icon">🧠</span> 記憶: <b id="forge-m-mem" style="color:var(--purple); font-family:'Rajdhani', sans-serif; font-size:14px;">0</b><br>
+                <small style="color:#666; display:block; margin-top:5px;">鍛造消耗碎片：S級(7) / A級(3) / B~E級(1)</small>
             </div>
             <div id="forge-list" class="scroll-area"></div>
         </div>
 
+        <div id="p-rank" class="page">
+            <h2 class="section-title" style="color:var(--gold);">GLOBAL RANKINGS</h2>
+            <div style="text-align:center; color:#aaa; font-size:11px; margin-bottom:10px; font-family:'Rajdhani', sans-serif;">DATA SYNCED VIA FIRESTORE CLOUD</div>
+            <div id="leaderboard-list" class="scroll-area">
+                <div style="text-align:center; padding:30px; color:#555;">載入中...</div>
+            </div>
+        </div>
+
         <div id="p-code" class="page">
-            <h2 class="section-title" style="color:var(--red-alert);">DEVELOPER TERMINAL</h2>
+            <h2 class="section-title" style="color:var(--red-alert);">SYS.TERMINAL</h2>
             
             <div id="admin-login" style="text-align:center; margin-top:20px;">
-                <div style="font-family:'Orbitron'; color:var(--red-alert); margin-bottom:10px; font-weight:900;">RESTRICTED AREA</div>
-                <input type="password" id="inp-admin-pwd" class="login-input" placeholder="OVERRIDE CODE" style="border-color:var(--red-alert);">
-                <button class="btn-action" style="width:100%; background:var(--red-alert);" onclick="System.verifyAdmin()">ACCESS OVERRIDE</button>
+                <div style="font-family:'Rajdhani', sans-serif; color:var(--red-alert); margin-bottom:10px; font-weight:900; letter-spacing:2px;">RESTRICTED AREA</div>
+                <input type="password" id="inp-admin-pwd" class="login-input" placeholder="OVERRIDE CODE" style="border-color:rgba(255,0,85,0.5);">
+                <button class="btn-action" style="width:100%; background:var(--red-alert); font-size:14px; padding:12px;" onclick="System.verifyAdmin()">ACCESS OVERRIDE</button>
             </div>
 
             <div id="admin-panel" class="scroll-area" style="display:none; flex-direction:column; padding-top:10px;">
+                <div class="admin-box" style="border-color:var(--purple); background:rgba(188,19,254,0.05);">
+                    <h3 style="color:var(--purple); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">🎯 TARGET ACQUISITION</h3>
+                    <span class="admin-label" style="color:#ddd;">要竄改誰的資料？(留空代表自己)</span>
+                    <input type="text" id="adm-target" class="admin-input" placeholder="輸入同學帳號...">
+                </div>
+
                 <div class="admin-box">
-                    <h3 style="color:var(--blue); font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">🎛️ 數值竄改器 (STATS)</h3>
+                    <h3 style="color:var(--blue); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">🎛️ STATS OVERRIDE</h3>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                        <div><span class="admin-label">等級 (Level)</span><input type="number" id="adm-lv" class="admin-input"></div>
-                        <div><span class="admin-label">蓮幣 (Coins)</span><input type="number" id="adm-coins" class="admin-input"></div>
-                        <div><span class="admin-label">剩餘點數 (SP)</span><input type="number" id="adm-sp" class="admin-input"></div>
-                        <div><span class="admin-label">智力 (IQ)</span><input type="number" id="adm-iq" class="admin-input"></div>
-                        <div><span class="admin-label">力量 (STR)</span><input type="number" id="adm-str" class="admin-input"></div>
-                        <div><span class="admin-label">魔力 (MP)</span><input type="number" id="adm-mp" class="admin-input"></div>
-                        <div style="grid-column: span 2;"><span class="admin-label">敏捷 (DEX)</span><input type="number" id="adm-dex" class="admin-input"></div>
+                        <div><span class="admin-label">Level</span><input type="number" id="adm-lv" class="admin-input"></div>
+                        <div><span class="admin-label">Coins</span><input type="number" id="adm-coins" class="admin-input"></div>
+                        <div><span class="admin-label">SP</span><input type="number" id="adm-sp" class="admin-input"></div>
+                        <div><span class="admin-label">IQ</span><input type="number" id="adm-iq" class="admin-input"></div>
+                        <div><span class="admin-label">STR</span><input type="number" id="adm-str" class="admin-input"></div>
+                        <div><span class="admin-label">MP</span><input type="number" id="adm-mp" class="admin-input"></div>
+                        <div style="grid-column: span 2;"><span class="admin-label">DEX</span><input type="number" id="adm-dex" class="admin-input"></div>
                     </div>
-                    <button class="btn-action" style="width:100%; margin-top:10px;" onclick="System.adminSetStats()">強制寫入數值 (APPLY)</button>
+                    <button class="btn-action" style="width:100%; margin-top:10px;" onclick="System.adminSetStats()">APPLY TO TARGET</button>
                 </div>
                 <div class="admin-box">
-                    <h3 style="color:var(--gold); font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">🗡️ 神兵印表機 (SPAWN SWORD)</h3>
-                    <span class="admin-label">強制生成磨損度為 0.000% 的完美武器</span>
+                    <h3 style="color:var(--gold); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">🗡️ WEAPON SPAWN</h3>
                     <select id="adm-sel-sword" class="admin-input" style="text-align:left;"></select>
-                    <button class="btn-action" style="width:100%; background:var(--gold); color:#000;" onclick="System.adminGiveSword()">生成至背包 (SPAWN)</button>
+                    <button class="btn-action" style="width:100%; background:var(--gold); color:#000;" onclick="System.adminGiveSword()">SPAWN FOR TARGET</button>
                 </div>
                 <div class="admin-box">
-                    <h3 style="color:var(--purple); font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">📜 稱號提款機 (SPAWN TITLE)</h3>
-                    <span class="admin-label">直接解鎖系統內任意稱號</span>
+                    <h3 style="color:var(--purple); font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">📜 TITLE UNLOCK</h3>
                     <select id="adm-sel-title" class="admin-input" style="text-align:left;"></select>
-                    <button class="btn-action" style="width:100%;" onclick="System.adminGiveTitle()">解鎖稱號 (UNLOCK)</button>
+                    <button class="btn-action" style="width:100%;" onclick="System.adminGiveTitle()">UNLOCK FOR TARGET</button>
                 </div>
                 <div class="admin-box">
-                    <h3 style="color:#00ff88; font-family:'Orbitron'; margin:0 0 10px 0; font-size:14px;">📦 素材與藥水派發 (SUPPLIES)</h3>
-                    <button class="btn-action" style="width:100%; background:#00ff88; color:#000; margin-bottom:10px;" onclick="System.adminGiveMats()">所有材料 +100</button>
-                    <button class="btn-action" style="width:100%; background:#00ff88; color:#000;" onclick="System.adminGivePotions()">所有藥水 +10</button>
+                    <h3 style="color:#00ff88; font-family:'Rajdhani', sans-serif; margin:0 0 10px 0; font-size:16px;">📦 SUPPLIES</h3>
+                    <button class="btn-action" style="width:100%; background:rgba(0,255,136,0.2); color:#00ff88; border:1px solid #00ff88; margin-bottom:10px;" onclick="System.adminGiveMats()">MATERIALS +100</button>
+                    <button class="btn-action" style="width:100%; background:rgba(0,255,136,0.2); color:#00ff88; border:1px solid #00ff88;" onclick="System.adminGivePotions()">POTIONS +10</button>
                 </div>
             </div>
         </div>
 
         <div class="nav">
-            <div class="nav-link active" onclick="System.nav('p-home', event)">主畫面</div>
-            <div class="nav-link" onclick="System.nav('p-dungeon', event)">地下城</div>
-            <div class="nav-link" onclick="System.nav('p-enhance', event)">提升</div>
+            <div class="nav-link active" onclick="System.nav('p-home', event)">主頁</div>
+            <div class="nav-link" onclick="System.nav('p-dungeon', event)">任務</div>
+            <div class="nav-link" onclick="System.nav('p-enhance', event)">升級</div>
             <div class="nav-link" onclick="System.nav('p-titles', event)">圖鑑</div>
             <div class="nav-link" onclick="System.nav('p-shop', event)">商店</div>
             <div class="nav-link" onclick="System.nav('p-inventory', event)">背包</div>
-            <div class="nav-link" onclick="System.nav('p-forge', event)" style="color:#ff8c00;">打鐵舖</div>
+            <div class="nav-link" onclick="System.nav('p-forge', event)" style="color:#ff8c00;">打鐵</div>
+            <div class="nav-link" onclick="System.nav('p-rank', event)" style="color:var(--gold);">排行</div>
             <div class="nav-link" onclick="System.nav('p-code', event)" style="color:var(--red-alert);">終端</div>
         </div>
     </div>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDfaC7sWiz--IXnOQq9Qw0ICNDT8MpZE5o",
+  authDomain: "solo-leveling-server.firebaseapp.com",
+  projectId: "solo-leveling-server",
+  storageBucket: "solo-leveling-server.firebasestorage.app",
+  messagingSenderId: "979607975137",
+  appId: "1:979607975137:web:70224f438280bafebf73a0",
+  measurementId: "G-8E64C4CNSZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 /* =========================================
-   完整大數據庫
+   完整大數據庫 (無刪減)
 ========================================= */
 const DB = {
     titles: {
@@ -403,41 +367,59 @@ const StorageMgr = {
     }
 };
 
+/* =========================================
+   雲端遊戲引擎核心 (100% 完整版)
+========================================= */
 const System = {
     p: null, 
     shopCache: null,
     rankWeight: { 'UNKNOWN': 7, 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'E': 1 },
     isAdminUnlocked: false,
 
-    login() {
+    async login() {
         const acc = document.getElementById('inp-acc').value.trim() || "HUNTER";
-        const key = `sl_v14_godmode_${acc}`;
-        
-        let saved = StorageMgr.get(key);
-        
-        if(saved) {
-            this.p = JSON.parse(saved);
-            if(!this.p.bag) this.p.bag = { swords: [], potions: {}, mats: { logic:0, lang:0, mem:0 } };
-            if(!this.p.buffs) this.p.buffs = { doubleXp: false, luck: false };
-            if(!this.p.curWeapon) this.p.curWeapon = null;
-        } else {
-            this.p = {
-                acc, lv: 1, exp: 0, coins: 0, sp: 0,
-                iq: 1, str: 1, mp: 1, dex: 1,
-                titles: ["尚未覺醒"], curTitle: "尚未覺醒",
-                curWeapon: null,
-                bag: { swords: [], potions: { p_double:0, p_time:0, p_luck:0, p_seven:0 }, mats: { logic:0, lang:0, mem:0 } },
-                buffs: { doubleXp: false, luck: false },
-                activeQuests: []
-            };
+        const btn = document.getElementById('btn-login');
+        btn.innerText = "CONNECTING...";
+        btn.disabled = true;
+
+        try {
+            const docRef = doc(db, "players", acc);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                this.p = docSnap.data();
+                if(!this.p.bag) this.p.bag = { swords: [], potions: {}, mats: { logic:0, lang:0, mem:0 } };
+                if(!this.p.buffs) this.p.buffs = { doubleXp: false, luck: false };
+                if(!this.p.curWeapon) this.p.curWeapon = null;
+            } else {
+                this.p = {
+                    acc, lv: 1, exp: 0, coins: 0, sp: 0,
+                    iq: 1, str: 1, mp: 1, dex: 1,
+                    titles: ["尚未覺醒"], curTitle: "尚未覺醒",
+                    curWeapon: null,
+                    bag: { swords: [], potions: { p_double:0, p_time:0, p_luck:0, p_seven:0 }, mats: { logic:0, lang:0, mem:0 } },
+                    buffs: { doubleXp: false, luck: false },
+                    activeQuests: []
+                };
+                await setDoc(docRef, this.p);
+            }
+            
+            document.getElementById('login-ui').style.display = 'none';
+            this.checkShopRefresh();
+            this.updateUI();
+        } catch (e) {
+            console.error(e);
+            alert("伺服器連線失敗，請確認 Firebase 設定是否正確，或是否開啟了測試模式。");
+            btn.innerText = "INITIALIZE";
+            btn.disabled = false;
         }
-        document.getElementById('login-ui').style.display = 'none';
-        this.checkShopRefresh();
-        this.updateUI();
     },
 
-    save() { 
-        if(this.p) StorageMgr.set(`sl_v14_godmode_${this.p.acc}`, JSON.stringify(this.p)); 
+    async save() { 
+        if(this.p) {
+            try { await setDoc(doc(db, "players", this.p.acc), this.p); } 
+            catch(e) { console.error("雲端存檔失敗:", e); }
+        }
     },
 
     nav(id, e) {
@@ -453,13 +435,9 @@ const System = {
         if(id === 'p-titles') this.renderTitles();
         if(id === 'p-inventory') this.renderBag('sword');
         if(id === 'p-forge') this.renderForge();
-        if(id === 'p-shop') {
-            if(!this.shopCache) this.checkShopRefresh();
-            this.renderShop('sword');
-        }
-        if(id === 'p-code' && this.isAdminUnlocked) {
-            this.renderAdminPanel();
-        }
+        if(id === 'p-shop') { if(!this.shopCache) this.checkShopRefresh(); this.renderShop('sword'); }
+        if(id === 'p-rank') this.renderLeaderboard();
+        if(id === 'p-code' && this.isAdminUnlocked) this.renderAdminPanel();
     },
 
     getMaxExp(lv) {
@@ -524,88 +502,57 @@ const System = {
     checkLevelUp() {
         let max = this.getMaxExp(this.p.lv);
         while (this.p.exp >= max) {
-            this.p.exp -= max;
-            this.p.lv++;
-            this.p.sp += 3;
-            this.p.iq++; this.p.str++; this.p.mp++; this.p.dex++;
+            this.p.exp -= max; this.p.lv++; this.p.sp += 3; this.p.iq++; this.p.str++; this.p.mp++; this.p.dex++;
             if (this.p.lv <= 50 && this.p.lv % 2 === 0) this.drawTitle();
             max = this.getMaxExp(this.p.lv);
         }
     },
 
     drawTitle() {
-        const r = Math.random() * 100;
-        let rank = 'E'; 
-        
-        if(this.p.buffs.luck) {
-            if(r < 5) rank = 'S'; else if(r < 25) rank = 'A'; else rank = 'B';
-            this.p.buffs.luck = false; 
-        } else {
-            if(r<0.5) rank='S'; else if(r<2.0) rank='A'; else if(r<20.0) rank='B'; else if(r<40.0) rank='C'; else if(r<65.0) rank='D';
-        }
+        const r = Math.random() * 100; let rank = 'E'; 
+        if(this.p.buffs.luck) { if(r < 5) rank = 'S'; else if(r < 25) rank = 'A'; else rank = 'B'; this.p.buffs.luck = false; } 
+        else { if(r<0.5) rank='S'; else if(r<2.0) rank='A'; else if(r<20.0) rank='B'; else if(r<40.0) rank='C'; else if(r<65.0) rank='D'; }
         
         const t = DB.titles[rank][Math.floor(Math.random() * DB.titles[rank].length)];
+        if (!this.p.titles.includes(t)) { this.p.titles.push(t); document.getElementById('gacha-msg').innerText = "系統覺醒：恭喜獲得稱號"; } 
+        else { this.p.coins += 500; document.getElementById('gacha-msg').innerText = "獲得重複稱號 (轉化為 500 蓮幣)"; }
         
-        if (!this.p.titles.includes(t)) {
-            this.p.titles.push(t);
-            document.getElementById('gacha-msg').innerText = "系統覺醒：恭喜獲得稱號";
-        } else {
-            this.p.coins += 500;
-            document.getElementById('gacha-msg').innerText = "獲得重複稱號 (轉化為 500 蓮幣)";
-        }
-        const resEl = document.getElementById('gacha-result');
-        resEl.innerText = t; resEl.className = `gacha-glow rank-${rank}`;
-        document.getElementById('gacha-pop').style.display = 'flex';
-        this.updateUI();
+        const resEl = document.getElementById('gacha-result'); resEl.innerText = t; resEl.className = `gacha-glow rank-${rank}`;
+        document.getElementById('gacha-pop').style.display = 'flex'; this.updateUI();
     },
 
     openDungeonModal(sub) {
-        const data = DB.subjects[sub];
-        document.getElementById('dm-title').innerText = `${sub} 攻略設定`;
-        let html = "";
-        
+        const data = DB.subjects[sub]; document.getElementById('dm-title').innerText = `${sub} 攻略設定`; let html = "";
         Object.entries(data.items).forEach(([task, xp]) => {
             html += `<div class="card" style="flex-direction:column; align-items:flex-start; background:rgba(0,212,255,0.05); border-color:rgba(0,212,255,0.2);">
                         <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:10px;">
-                            <strong style="font-size:1.1rem; color:#fff;">${task}</strong>
-                            <span style="color:var(--purple); font-weight:900;">${xp} XP</span>
+                            <strong style="font-size:1.1rem; color:#fff;">${task}</strong><span style="color:var(--purple); font-weight:900;">${xp} XP</span>
                         </div>
                         <div style="width:100%; display:flex; gap:10px;">`;
-            
-            if(task === '單字本') {
-                html += `<input type="number" id="inp-t-${task}" placeholder="輸入回數" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none;">`;
-            } else {
-                let range = (task === '雜誌') ? 12 : data.range;
-                let prefix = (task === '雜誌') ? 'U' : 'L';
-                html += `<select id="sel-t-${task}" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none;">`;
+            if(task === '單字本') { html += `<input type="number" id="inp-t-${task}" placeholder="回數" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none; font-family:'Rajdhani',sans-serif;">`; } 
+            else {
+                let range = (task === '雜誌') ? 12 : data.range; let prefix = (task === '雜誌') ? 'U' : 'L';
+                html += `<select id="sel-t-${task}" style="flex:1; padding:8px; background:#000; border:1px solid #444; color:#fff; border-radius:5px; outline:none; font-family:'Rajdhani',sans-serif;">`;
                 for(let i=1; i<=range; i++) html += `<option value="${prefix}${i}">${prefix}${i}</option>`;
                 html += `</select>`;
             }
-            html += `<button class="btn-action" style="background:var(--blue); color:#000;" onclick="System.acceptQuest('${sub}', '${task}', ${xp})">接取</button>
-                     </div></div>`;
+            html += `<button class="btn-action" style="background:var(--blue); color:#000;" onclick="System.acceptQuest('${sub}', '${task}', ${xp})">接取</button></div></div>`;
         });
-        document.getElementById('dm-content').innerHTML = html;
-        document.getElementById('dungeon-modal').style.display = 'flex';
+        document.getElementById('dm-content').innerHTML = html; document.getElementById('dungeon-modal').style.display = 'flex';
     },
 
     acceptQuest(sub, task, xp) {
         let rangeVal = "";
         if(task === '單字本') {
-            const el = document.getElementById(`inp-t-${task}`);
-            if(!el.value) return alert('請輸入第幾回');
-            rangeVal = `第 ${el.value} 回`;
-        } else {
-            rangeVal = document.getElementById(`sel-t-${task}`).value;
-        }
+            const el = document.getElementById(`inp-t-${task}`); if(!el.value) return alert('請輸入第幾回'); rangeVal = `第 ${el.value} 回`;
+        } else rangeVal = document.getElementById(`sel-t-${task}`).value;
         this.p.activeQuests.push({ id: Date.now(), sub, task, range: rangeVal, xp });
-        this.save();
-        document.getElementById('dungeon-modal').style.display = 'none';
-        this.renderQuests();
+        this.save(); document.getElementById('dungeon-modal').style.display = 'none'; this.renderQuests();
     },
 
     renderQuests() {
         let html = "";
-        if(this.p.activeQuests.length === 0) html = `<div style="text-align:center; color:#555; padding:20px; font-family:'Orbitron';">NO ACTIVE QUESTS</div>`;
+        if(this.p.activeQuests.length === 0) html = `<div style="text-align:center; color:#555; padding:20px; font-family:'Rajdhani', sans-serif;">NO ACTIVE QUESTS</div>`;
         this.p.activeQuests.forEach(q => {
             html += `<div class="card" style="border-left: 4px solid var(--blue);">
                         <div class="card-col">
@@ -620,39 +567,22 @@ const System = {
 
     completeQuest(id, baseXP, sub) {
         this.p.activeQuests = this.p.activeQuests.filter(q => q.id !== id);
+        let finalXP = baseXP, finalCoins = baseXP; 
         
-        let finalXP = baseXP;
-        let finalCoins = baseXP; 
-        
-        if(this.p.buffs.doubleXp) {
-            finalXP *= 2;
-            this.p.buffs.doubleXp = false;
-            alert("✨ 雙倍經驗藥劑生效！");
-        }
-
+        if(this.p.buffs.doubleXp) { finalXP *= 2; this.p.buffs.doubleXp = false; alert("✨ 雙倍經驗藥劑生效！"); }
         if(this.p.curWeapon) {
             if(this.p.curWeapon.rank === 'S') { finalXP *= 1.20; finalCoins *= 1.50; }
             else if(this.p.curWeapon.rank === 'A') { finalXP *= 1.10; finalCoins *= 1.20; }
         }
 
-        this.p.exp += finalXP;
-        this.p.coins += finalCoins;
-
-        const rDrop = Math.random();
-        let dropMsg = "";
-        if(sub === '數學' || sub === '物理') {
-            if(rDrop < 0.10) { this.p.bag.mats.logic++; dropMsg = "\n🧩 掉落：邏輯碎片 x1"; }
-        } else if(sub === '國文' || sub === '英文') {
-            if(rDrop < 0.15) { this.p.bag.mats.lang++; dropMsg = "\n📖 掉落：語文符文 x1"; }
-        } else {
-            if(rDrop < 0.15) { this.p.bag.mats.mem++; dropMsg = "\n🧠 掉落：記憶結晶 x1"; }
-        }
+        this.p.exp += finalXP; this.p.coins += finalCoins;
+        const rDrop = Math.random(); let dropMsg = "";
+        if(sub === '數學' || sub === '物理') { if(rDrop < 0.10) { this.p.bag.mats.logic++; dropMsg = "\n🧩 掉落：邏輯碎片 x1"; } }
+        else if(sub === '國文' || sub === '英文') { if(rDrop < 0.15) { this.p.bag.mats.lang++; dropMsg = "\n📖 掉落：語文符文 x1"; } }
+        else { if(rDrop < 0.15) { this.p.bag.mats.mem++; dropMsg = "\n🧠 掉落：記憶結晶 x1"; } }
 
         alert(`任務結算完成！\n獲得 ${Math.floor(finalXP)} XP 與 ${Math.floor(finalCoins)} 蓮幣${dropMsg}`);
-        
-        this.checkLevelUp();
-        this.updateUI();
-        this.renderQuests();
+        this.checkLevelUp(); this.updateUI(); this.renderQuests();
     },
 
     renderUpgrades() {
@@ -660,24 +590,20 @@ const System = {
         const stats = [{ id: 'iq', n: '智商 (IQ)' }, { id: 'str', n: '體力 (STR)' }, { id: 'mp', n: '魔力 (MP)' }, { id: 'dex', n: '準確度 (DEX)' }];
         let html = "";
         stats.forEach(s => {
-            html += `<div class="card" style="border-left: 4px solid var(--purple); background: linear-gradient(90deg, rgba(188,19,254,0.05), transparent); position: relative; overflow:hidden;">
+            html += `<div class="card" style="border-left: 3px solid var(--purple); background: linear-gradient(90deg, rgba(188,19,254,0.08), transparent); padding: 12px 15px;">
                         <div class="card-col">
-                            <strong style="color:var(--blue); font-size:1.2rem; letter-spacing: 1px; font-family:'Orbitron';">${s.n}</strong>
-                            <span style="color:#fff; font-size:2.2rem; font-family:'Orbitron'; font-weight:900; text-shadow: 0 0 10px var(--purple);">${this.p[s.id]}</span>
+                            <strong style="color:var(--blue); font-size:1.1rem; letter-spacing: 1px; font-family:'Rajdhani', sans-serif;">${s.n}</strong>
+                            <span style="color:#fff; font-size:2rem; font-family:'Rajdhani', sans-serif; font-weight:900; text-shadow: 0 0 10px rgba(188,19,254,0.6);">${this.p[s.id]}</span>
                         </div>
-                        <button class="btn-action" style="font-size:2rem; width: 50px; height: 50px; display:flex; justify-content:center; align-items:center; border-radius: 12px; background: transparent; border: 2px solid var(--purple); color: var(--purple); box-shadow: inset 0 0 10px rgba(188,19,254,0.5);" onclick="System.addStat('${s.id}')">+</button>
+                        <button class="btn-action" style="font-size:1.6rem; width: 45px; height: 45px; display:flex; justify-content:center; align-items:center; border-radius: 10px; background: rgba(188,19,254,0.1); border: 1px solid var(--purple); color: #fff; box-shadow: inset 0 0 8px rgba(188,19,254,0.4);" onclick="System.addStat('${s.id}')">+</button>
                      </div>`;
         });
         document.getElementById('upgrade-list').innerHTML = html;
     },
 
     addStat(id) {
-        if(this.p.sp > 0) {
-            this.p[id]++;
-            this.p.sp--;
-            this.updateUI();
-            this.renderUpgrades();
-        } else alert('配點不足，請攻略地下城升級');
+        if(this.p.sp > 0) { this.p[id]++; this.p.sp--; this.updateUI(); this.renderUpgrades(); }
+        else alert('配點不足，請攻略地下城升級');
     },
 
     renderTitles() {
@@ -685,39 +611,30 @@ const System = {
         ['S','A','B','C','D','E'].forEach(r => {
             html += `<div class="section-title rank-${r}">${r}-RANK</div>`;
             DB.titles[r].forEach(t => {
-                const unlocked = this.p.titles.includes(t);
-                const isEq = this.p.curTitle === t;
+                const unlocked = this.p.titles.includes(t); const isEq = this.p.curTitle === t;
                 if(unlocked) {
                     html += `<div class="card ${isEq ? 'equipped' : ''}" style="cursor:pointer;" onclick="System.equipTitle('${t}')">
                                 <div class="card-col">
                                     <strong class="rank-${r}" style="font-size:1.1rem;">${t}</strong>
                                     <span style="font-size:10px; color:#aaa; margin-top:5px;">${isEq ? '✨ 當前裝備中' : '點擊切換裝備'}</span>
                                 </div>
-                                ${isEq ? '<span style="color:var(--purple); font-weight:900; font-family:\'Orbitron\';">EQUIPPED</span>' : ''}
+                                ${isEq ? '<span style="color:var(--purple); font-weight:900; font-family:\'Rajdhani\', sans-serif; letter-spacing:1px;">EQUIPPED</span>' : ''}
                              </div>`;
-                } else {
-                    html += `<div class="card locked-title"><strong class="rank-E">${r==='S'?'???':t}</strong><span style="font-size:10px;">未解鎖</span></div>`;
-                }
+                } else { html += `<div class="card locked-title"><strong class="rank-E">${r==='S'?'???':t}</strong><span style="font-size:10px;">未解鎖</span></div>`; }
             });
         });
         document.getElementById('titles-list').innerHTML = html;
     },
 
-    equipTitle(t) {
-        this.p.curTitle = t;
-        this.updateUI();
-        this.renderTitles();
-    },
+    equipTitle(t) { this.p.curTitle = t; this.updateUI(); this.renderTitles(); },
 
     checkShopRefresh() {
         const today = new Date().toLocaleDateString();
-        let stored = StorageMgr.get('sl_shop_v14');
+        let stored = StorageMgr.get('sl_shop_v17_cloud');
         if(stored) {
             const parsed = JSON.parse(stored);
             if(parsed.date === today) {
-                this.shopCache = parsed.data;
-                document.getElementById('shop-time').innerText = `Refreshed: ${today}`;
-                return;
+                this.shopCache = parsed.data; document.getElementById('shop-time').innerText = `Refreshed: ${today}`; return;
             }
         }
         this.refreshShop(today, false);
@@ -725,32 +642,25 @@ const System = {
 
     getWearRate(rank) {
         const r = Math.random();
-        if(rank === 'S') return (0.500 + r * 4.500).toFixed(3);
-        if(rank === 'A') return (5.000 + r * 10.000).toFixed(3);
-        if(rank === 'B') return (20.000 + r * 5.000).toFixed(3);
-        if(rank === 'C') return (30.000 + r * 10.000).toFixed(3);
-        if(rank === 'D') return (45.000 + r * 10.000).toFixed(3);
-        return (70.000 + r * 20.000).toFixed(3);
+        if(rank === 'S') return (0.500 + r * 4.500).toFixed(3); if(rank === 'A') return (5.000 + r * 10.000).toFixed(3);
+        if(rank === 'B') return (20.000 + r * 5.000).toFixed(3); if(rank === 'C') return (30.000 + r * 10.000).toFixed(3);
+        if(rank === 'D') return (45.000 + r * 10.000).toFixed(3); return (70.000 + r * 20.000).toFixed(3);
     },
 
     refreshShop(today, force = false) {
         let shop = { swords: [], titles: [] };
-        
         Object.keys(DB.swords).forEach(rank => {
             DB.swords[rank].forEach(sw => {
-                let name = typeof sw === 'object' ? sw.name : sw;
-                let desc = typeof sw === 'object' ? sw.desc : '';
-                let wear = rank === 'UNKNOWN' ? '???' : this.getWearRate(rank);
-                
-                let price = 999999;
+                let name = typeof sw === 'object' ? sw.name : sw; let desc = typeof sw === 'object' ? sw.desc : '';
+                let wear = rank === 'UNKNOWN' ? '???' : this.getWearRate(rank); let price = 999999;
                 if(rank !== 'UNKNOWN') {
                     let wFloat = parseFloat(wear);
                     if(rank === 'S') price = Math.floor(10000 * (10 - wFloat));
-                    else if(rank === 'A') price = Math.floor(Math.random() * 5001) + 10000;
-                    else if(rank === 'B') price = Math.floor(Math.random() * 1001) + 4000;
-                    else if(rank === 'C') price = Math.floor(Math.random() * 1001) + 3000;
-                    else if(rank === 'D') price = Math.floor(Math.random() * 1001) + 2000;
-                    else if(rank === 'E') price = Math.floor(Math.random() * 1001) + 1000;
+                    else if(rank === 'A') price = Math.floor(Math.random() * 5001) + 10000; 
+                    else if(rank === 'B') price = Math.floor(Math.random() * 1001) + 4000;  
+                    else if(rank === 'C') price = Math.floor(Math.random() * 1001) + 3000;  
+                    else if(rank === 'D') price = Math.floor(Math.random() * 1001) + 2000;  
+                    else if(rank === 'E') price = Math.floor(Math.random() * 1001) + 1000;  
                 }
                 shop.swords.push({ name, rank, wear, desc, price });
             });
@@ -766,15 +676,12 @@ const System = {
         }
         shop.titles.sort((a,b) => this.rankWeight[b.rank] - this.rankWeight[a.rank]);
 
-        this.shopCache = shop;
-        StorageMgr.set('sl_shop_v14', JSON.stringify({ date: today, data: this.shopCache }));
-        if(force) document.getElementById('shop-time').innerText = `Refreshed (Hourglass)`;
-        else document.getElementById('shop-time').innerText = `Refreshed: ${today}`;
+        this.shopCache = shop; StorageMgr.set('sl_shop_v17_cloud', JSON.stringify({ date: today, data: this.shopCache }));
+        document.getElementById('shop-time').innerText = force ? `Refreshed (Hourglass)` : `Refreshed: ${today}`;
     },
 
     renderShop(tab) {
-        if(!this.shopCache) this.checkShopRefresh();
-        if(!this.shopCache) return; 
+        if(!this.shopCache) this.checkShopRefresh(); if(!this.shopCache) return; 
 
         ['sword','potion','mat','title'].forEach(t => {
             const btn = document.getElementById(`tab-${t}`);
@@ -782,77 +689,63 @@ const System = {
         });
 
         let html = "";
-        if(tab === 'sword') {
-            this.shopCache.swords.forEach((sw, idx) => {
-                let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055; background:linear-gradient(45deg,#220011,#000); box-shadow:0 0 15px rgba(255,0,85,0.3);' : (sw.rank === 'S' ? 'border:1px solid var(--gold); box-shadow:inset 0 0 15px rgba(255,215,0,0.1);' : '');
-                let btnTxt = sw.rank === 'UNKNOWN' ? '非賣品' : `💰 ${sw.price.toLocaleString()}`;
-                let disabled = sw.rank === 'UNKNOWN' ? 'disabled' : '';
-                
-                html += `<div class="card" style="${spec}">
-                            <div class="card-col">
-                                <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
-                                ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
-                                <span style="color:#888; font-size:10px; margin-top:5px;">磨損度: ${sw.wear}%</span>
-                            </div>
-                            <button class="btn-action" ${disabled} onclick="System.buyShop('sword', ${idx})">${btnTxt}</button>
-                         </div>`;
-            });
-        } else if(tab === 'potion') {
-            DB.potions.forEach(pot => {
-                html += `<div class="card">
-                            <div class="card-col">
-                                <strong style="font-size:1.1rem; color:#fff;">${pot.name}</strong>
-                                <span style="font-size:10px; color:#aaa; margin-top:5px;">${pot.desc}</span>
-                            </div>
-                            <button class="btn-action" onclick="System.buyPotion('${pot.id}', ${pot.price})">💰 ${pot.price}</button>
-                         </div>`;
-            });
-        } else if(tab === 'mat') {
-            html = `<div style="text-align:center; padding:50px; color:#555; font-family:'Orbitron';">MATERIALS ARE DROP-ONLY</div>`;
-        } else if(tab === 'title') {
-            this.shopCache.titles.forEach((t, idx) => {
-                const owned = this.p.titles.includes(t.name);
-                html += `<div class="card">
-                            <div class="card-col">
-                                <strong class="rank-${t.rank}" style="font-size:1.1rem;">${t.name}</strong>
-                                <span style="color:#888; font-size:10px; margin-top:5px;">${t.rank}-RANK TITLE</span>
-                            </div>
-                            <button class="btn-action" ${owned?'disabled':''} onclick="System.buyShop('title', ${idx})">
-                                ${owned ? '已解鎖' : '💰 ' + t.price.toLocaleString()}
-                            </button>
-                         </div>`;
-            });
-        }
+        try {
+            if(tab === 'sword') {
+                this.shopCache.swords.forEach((sw, idx) => {
+                    let spec = sw.rank === 'UNKNOWN' ? 'border:1px solid #ff0055; background:linear-gradient(45deg,#220011,#000); box-shadow:0 0 15px rgba(255,0,85,0.3);' : (sw.rank === 'S' ? 'border:1px solid var(--gold); box-shadow:inset 0 0 15px rgba(255,215,0,0.1);' : '');
+                    let btnTxt = sw.rank === 'UNKNOWN' ? '非賣品' : `💰 ${sw.price.toLocaleString()}`; let disabled = sw.rank === 'UNKNOWN' ? 'disabled' : '';
+                    html += `<div class="card" style="${spec}">
+                                <div class="card-col">
+                                    <strong class="rank-${sw.rank}" style="font-size:1.1rem;">${sw.name}</strong>
+                                    ${sw.desc ? `<span style="font-size:10px; color:var(--gold); margin-top:3px;">${sw.desc}</span>` : ''}
+                                    <span style="color:#888; font-size:10px; margin-top:5px;">磨損度: ${sw.wear}%</span>
+                                </div>
+                                <button class="btn-action" ${disabled} onclick="System.buyShop('sword', ${idx})">${btnTxt}</button>
+                             </div>`;
+                });
+            } else if(tab === 'potion') {
+                DB.potions.forEach(pot => {
+                    html += `<div class="card">
+                                <div class="card-col">
+                                    <strong style="font-size:1.1rem; color:#fff;">${pot.name}</strong>
+                                    <span style="font-size:10px; color:#aaa; margin-top:5px;">${pot.desc}</span>
+                                </div>
+                                <button class="btn-action" onclick="System.buyPotion('${pot.id}', ${pot.price})">💰 ${pot.price}</button>
+                             </div>`;
+                });
+            } else if(tab === 'mat') { html = `<div style="text-align:center; padding:50px; color:#555; font-family:'Rajdhani', sans-serif;">MATERIALS ARE DROP-ONLY</div>`; } 
+            else if(tab === 'title') {
+                this.shopCache.titles.forEach((t, idx) => {
+                    const owned = this.p.titles.includes(t.name);
+                    html += `<div class="card">
+                                <div class="card-col">
+                                    <strong class="rank-${t.rank}" style="font-size:1.1rem;">${t.name}</strong>
+                                    <span style="color:#888; font-size:10px; margin-top:5px;">${t.rank}-RANK TITLE</span>
+                                </div>
+                                <button class="btn-action" ${owned?'disabled':''} onclick="System.buyShop('title', ${idx})">${owned ? '已解鎖' : '💰 ' + t.price.toLocaleString()}</button>
+                             </div>`;
+                });
+            }
+        } catch(e) { html = `<div style="text-align:center; padding:50px; color:red;">資料讀取失敗。</div>`; }
         document.getElementById('shop-list').innerHTML = html;
     },
 
     buyShop(type, idx) {
-        const item = this.shopCache[`${type}s`][idx];
-        if(!item) return;
+        const item = this.shopCache[`${type}s`][idx]; if(!item) return;
         if(this.p.coins >= item.price) {
             if(type === 'title') {
                 if(this.p.titles.includes(item.name)) return alert("你已經擁有此稱號了！");
-                this.p.coins -= item.price;
-                this.p.titles.push(item.name);
-                alert(`✨ 成功解鎖稱號：${item.name}`);
+                this.p.coins -= item.price; this.p.titles.push(item.name); alert(`✨ 成功解鎖稱號：${item.name}`);
             } else {
-                this.p.coins -= item.price;
-                item.id = Date.now() + Math.floor(Math.random()*1000);
-                this.p.bag.swords.push(item);
-                alert(`🗡️ 獲得裝備：${item.name}`);
+                this.p.coins -= item.price; item.id = Date.now() + Math.floor(Math.random()*1000); this.p.bag.swords.push(item); alert(`🗡️ 獲得裝備：${item.name}`);
             }
-            this.updateUI();
-            this.renderShop(type);
+            this.updateUI(); this.renderShop(type);
         } else alert(`❌ 蓮幣餘額不足！`);
     },
 
     buyPotion(pid, price) {
-        if(this.p.coins >= price) {
-            this.p.coins -= price;
-            this.p.bag.potions[pid] = (this.p.bag.potions[pid] || 0) + 1;
-            this.updateUI();
-            alert("成功購買藥水，請至背包使用");
-        } else alert('蓮幣餘額不足！');
+        if(this.p.coins >= price) { this.p.coins -= price; this.p.bag.potions[pid] = (this.p.bag.potions[pid] || 0) + 1; this.updateUI(); alert("成功購買藥水，請至背包使用"); } 
+        else alert('蓮幣餘額不足！');
     },
 
     renderBag(tab) {
@@ -893,10 +786,9 @@ const System = {
             });
             if(!hasPotion) html = `<div style="text-align:center; color:#555; padding:15px; border:1px dashed #333; border-radius:10px;">(空)</div>`;
         } else {
-            html += `
-            <div class="card"><div class="card-col"><strong style="color:var(--blue)"><span class="mat-icon">📐</span> 邏輯碎片</strong><span style="font-size:10px; color:#888;">理科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Orbitron'; font-weight:900;">${this.p.bag.mats.logic}</span></div>
-            <div class="card"><div class="card-col"><strong style="color:var(--gold)"><span class="mat-icon">📖</span> 語文符文</strong><span style="font-size:10px; color:#888;">文科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Orbitron'; font-weight:900;">${this.p.bag.mats.lang}</span></div>
-            <div class="card"><div class="card-col"><strong style="color:var(--purple)"><span class="mat-icon">🧠</span> 記憶結晶</strong><span style="font-size:10px; color:#888;">背科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Orbitron'; font-weight:900;">${this.p.bag.mats.mem}</span></div>`;
+            html += `<div class="card"><div class="card-col"><strong style="color:var(--blue)"><span class="mat-icon">📐</span> 邏輯碎片</strong><span style="font-size:10px; color:#888;">理科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.logic}</span></div>
+                     <div class="card"><div class="card-col"><strong style="color:var(--gold)"><span class="mat-icon">📖</span> 語文符文</strong><span style="font-size:10px; color:#888;">文科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.lang}</span></div>
+                     <div class="card"><div class="card-col"><strong style="color:var(--purple)"><span class="mat-icon">🧠</span> 記憶結晶</strong><span style="font-size:10px; color:#888;">背科地下城掉落</span></div><span style="font-size:1.5rem; font-family:'Rajdhani', sans-serif; font-weight:900;">${this.p.bag.mats.mem}</span></div>`;
         }
         document.getElementById('bag-list').innerHTML = html;
     },
@@ -904,21 +796,16 @@ const System = {
     equipWeapon(id) {
         if(this.p.curWeapon && this.p.curWeapon.id === id) this.p.curWeapon = null;
         else this.p.curWeapon = this.p.bag.swords.find(w => w.id === id);
-        this.updateUI();
-        this.renderBag('sword');
+        this.updateUI(); this.renderBag('sword');
     },
 
     usePotion(pid) {
-        if(this.p.bag.potions[pid] <= 0) return;
-        this.p.bag.potions[pid]--;
-
+        if(this.p.bag.potions[pid] <= 0) return; this.p.bag.potions[pid]--;
         if(pid === 'p_double') { this.p.buffs.doubleXp = true; alert("✨ 雙倍經驗藥劑已啟用！"); }
         else if(pid === 'p_time') { this.refreshShop(new Date().toLocaleDateString(), true); alert("⏳ 商店已強制刷新！"); }
         else if(pid === 'p_luck') { this.p.buffs.luck = true; alert("🍀 幸運四葉草生效！"); }
         else if(pid === 'p_seven') this.openSevenCloverModal();
-        
-        this.updateUI();
-        this.renderBag('potion');
+        this.updateUI(); this.renderBag('potion');
     },
 
     openSevenCloverModal() {
@@ -930,37 +817,30 @@ const System = {
                         <button class="btn-action" style="padding:5px 10px;" ${owned?'disabled':''} onclick="System.pickATitle('${t}')">${owned?'擁有':'選擇'}</button>
                      </div>`;
         });
-        document.getElementById('seven-clover-list').innerHTML = html;
-        document.getElementById('seven-clover-modal').style.display = 'flex';
+        document.getElementById('seven-clover-list').innerHTML = html; document.getElementById('seven-clover-modal').style.display = 'flex';
     },
 
     pickATitle(t) {
-        this.p.titles.push(t);
-        this.p.curTitle = t; 
-        document.getElementById('seven-clover-modal').style.display = 'none';
-        alert(`✨ 憑藉七葉草的魔力，你獲得並裝備了 A 級稱號：【${t}】`);
-        this.updateUI();
+        this.p.titles.push(t); this.p.curTitle = t; document.getElementById('seven-clover-modal').style.display = 'none';
+        alert(`✨ 憑藉七葉草的魔力，你裝備了 A 級稱號：【${t}】`); this.updateUI();
     },
 
     renderForge() {
         document.getElementById('forge-m-logic').innerText = this.p.bag.mats.logic;
         document.getElementById('forge-m-lang').innerText = this.p.bag.mats.lang;
         document.getElementById('forge-m-mem').innerText = this.p.bag.mats.mem;
-
         let html = "";
-        if(this.p.bag.swords.length === 0) html = `<div style="text-align:center; color:#555; padding:20px;">背包空空如也，沒有武器可以鍛造。</div>`;
+        if(this.p.bag.swords.length === 0) html = `<div style="text-align:center; color:#555; padding:20px;">背包無武器可鍛造。</div>`;
         this.p.bag.swords.forEach(sw => {
             let req = sw.rank === 'S' ? 7 : (sw.rank === 'A' ? 3 : 1);
             let canForge = (this.p.bag.mats.logic >= req && this.p.bag.mats.lang >= req && this.p.bag.mats.mem >= req);
-            
             html += `<div class="card" style="flex-direction:column; align-items:flex-start;">
                         <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <strong class="rank-${sw.rank}">${sw.name}</strong>
-                            <span style="color:#aaa; font-size:12px;">磨損: ${sw.wear}%</span>
+                            <strong class="rank-${sw.rank}">${sw.name}</strong><span style="color:#aaa; font-size:12px;">磨損: ${sw.wear}%</span>
                         </div>
                         <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
                             <span style="font-size:10px; color:#888;">消耗各碎片 x${req}</span>
-                            <button class="btn-action" style="${canForge?'background:#ff8c00;':'background:#333;color:#666;'}" ${canForge?'':'disabled'} onclick="System.forgeWeapon(${sw.id}, '${sw.rank}', ${req})">修復鍛造</button>
+                            <button class="btn-action" style="${canForge?'background:#ff8c00;':'background:#333;color:#666;'}" ${canForge?'':'disabled'} onclick="System.forgeWeapon(${sw.id}, '${sw.rank}', ${req})">修復</button>
                         </div>
                      </div>`;
         });
@@ -970,127 +850,200 @@ const System = {
     forgeWeapon(id, rank, req) {
         if(this.p.bag.mats.logic < req || this.p.bag.mats.lang < req || this.p.bag.mats.mem < req) return;
         this.p.bag.mats.logic -= req; this.p.bag.mats.lang -= req; this.p.bag.mats.mem -= req;
-
         let sw = this.p.bag.swords.find(w => w.id === id);
         let reduction = rank === 'S' ? (1.000 + Math.random()*0.500) : (1.000 + Math.random()*2.000);
-        
-        let oldWear = parseFloat(sw.wear);
-        let newWear = oldWear - reduction;
-        if(newWear < 0) newWear = 0;
-        sw.wear = newWear.toFixed(3);
-
+        let oldWear = parseFloat(sw.wear); let newWear = oldWear - reduction; if(newWear < 0) newWear = 0; sw.wear = newWear.toFixed(3);
         if(this.p.curWeapon && this.p.curWeapon.id === id) this.p.curWeapon.wear = sw.wear;
-        alert(`🔨 鍛造成功！${sw.name} 磨損度降低了 ${reduction.toFixed(3)}% \n(目前磨損: ${sw.wear}%)`);
-        this.save();
-        this.renderForge();
+        alert(`🔨 鍛造成功！${sw.name} 磨損度降低了 ${reduction.toFixed(3)}%`);
+        this.save(); this.renderForge();
     },
 
-    verifyAdmin() {
-        if(document.getElementById('inp-admin-pwd').value === 'Ricky_0414') {
-            this.isAdminUnlocked = true;
-            document.getElementById('admin-login').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'flex';
-            this.renderAdminPanel();
-        } else {
-            alert("ACCESS DENIED: 密碼錯誤");
+    /* =========================================
+       🌟 排行榜 (Leaderboard) - Firebase 讀取
+    ========================================= */
+    async renderLeaderboard() {
+        const lbEl = document.getElementById('leaderboard-list');
+        lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">連線至雲端伺服器中...</div>`;
+        
+        try {
+            const q = query(collection(db, "players"), orderBy("lv", "desc"), orderBy("exp", "desc"));
+            const querySnapshot = await getDocs(q);
+            
+            let html = "";
+            let rank = 1;
+            
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                
+                let badgeClass = "rank-badge";
+                if(rank === 1) badgeClass += " top-1";
+                else if(rank === 2) badgeClass += " top-2";
+                else if(rank === 3) badgeClass += " top-3";
+
+                let weaponDisplay = "徒手";
+                if(data.curWeapon) weaponDisplay = `<span class="rank-${data.curWeapon.rank}">${data.curWeapon.name}</span>`;
+
+                html += `
+                <div class="card" style="margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,215,0,0.2);">
+                    <div class="${badgeClass}">${rank}</div>
+                    <div class="card-col">
+                        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                            <strong style="color:var(--blue); font-size:1.3rem; font-family:'Rajdhani', sans-serif;">${data.acc}</strong>
+                            <span style="color:var(--purple); font-weight:900; font-size:1.2rem; font-family:'Orbitron';">Lv.${data.lv}</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--gold); margin-top:4px;">[ ${data.curTitle} ]</div>
+                        <div style="font-size:11px; color:#888; margin-top:4px;">⚔️ 裝備: ${weaponDisplay}</div>
+                    </div>
+                </div>`;
+                rank++;
+            });
+            
+            if(html === "") html = `<div style="text-align:center; padding:30px; color:#555;">目前沒有任何獵人資料</div>`;
+            lbEl.innerHTML = html;
+            
+        } catch (error) {
+            console.error("讀取排行榜失敗:", error);
+            lbEl.innerHTML = `<div style="text-align:center; padding:30px; color:red;">無法取得雲端資料，請確認是否開啟了測試模式。</div>`;
         }
     },
 
-    renderAdminPanel() {
-        document.getElementById('adm-lv').value = this.p.lv;
-        document.getElementById('adm-coins').value = Math.floor(this.p.coins);
-        document.getElementById('adm-sp').value = this.p.sp;
-        document.getElementById('adm-iq').value = this.p.iq;
-        document.getElementById('adm-str').value = this.p.str;
-        document.getElementById('adm-mp').value = this.p.mp;
-        document.getElementById('adm-dex').value = this.p.dex;
+    /* =========================================
+       👑 終端 / 上帝模式 (GOD MODE)
+    ========================================= */
+    verifyAdmin() {
+        if(document.getElementById('inp-admin-pwd').value === 'Ricky_0414') {
+            this.isAdminUnlocked = true; document.getElementById('admin-login').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex'; this.renderAdminPanel();
+        } else alert("ACCESS DENIED: 密碼錯誤");
+    },
 
-        let swordHtml = `<option value="">-- 請選擇武器 --</option>`;
+    renderAdminPanel() {
+        document.getElementById('adm-lv').value = this.p.lv; document.getElementById('adm-coins').value = Math.floor(this.p.coins);
+        document.getElementById('adm-sp').value = this.p.sp; document.getElementById('adm-iq').value = this.p.iq;
+        document.getElementById('adm-str').value = this.p.str; document.getElementById('adm-mp').value = this.p.mp; document.getElementById('adm-dex').value = this.p.dex;
+        
+        let swordHtml = `<option value="">-- 選擇武器 --</option>`;
         Object.keys(DB.swords).forEach(rank => {
             let optGroup = `<optgroup label="${rank}-RANK">`;
-            DB.swords[rank].forEach(sw => {
-                let name = typeof sw === 'object' ? sw.name : sw;
-                optGroup += `<option value="${rank}|${name}">${name}</option>`;
-            });
-            optGroup += `</optgroup>`;
-            swordHtml += optGroup;
+            DB.swords[rank].forEach(sw => { let name = typeof sw === 'object' ? sw.name : sw; optGroup += `<option value="${rank}|${name}">${name}</option>`; });
+            optGroup += `</optgroup>`; swordHtml += optGroup;
         });
         document.getElementById('adm-sel-sword').innerHTML = swordHtml;
 
-        let titleHtml = `<option value="">-- 請選擇稱號 --</option>`;
+        let titleHtml = `<option value="">-- 選擇稱號 --</option>`;
         Object.keys(DB.titles).forEach(rank => {
             let optGroup = `<optgroup label="${rank}-RANK">`;
-            DB.titles[rank].forEach(t => {
-                optGroup += `<option value="${t}">${t}</option>`;
-            });
-            optGroup += `</optgroup>`;
-            titleHtml += optGroup;
+            DB.titles[rank].forEach(t => { optGroup += `<option value="${t}">${t}</option>`; });
+            optGroup += `</optgroup>`; titleHtml += optGroup;
         });
         document.getElementById('adm-sel-title').innerHTML = titleHtml;
     },
 
-    adminSetStats() {
-        this.p.lv = parseInt(document.getElementById('adm-lv').value) || 1;
-        this.p.coins = parseInt(document.getElementById('adm-coins').value) || 0;
-        this.p.sp = parseInt(document.getElementById('adm-sp').value) || 0;
-        this.p.iq = parseInt(document.getElementById('adm-iq').value) || 1;
-        this.p.str = parseInt(document.getElementById('adm-str').value) || 1;
-        this.p.mp = parseInt(document.getElementById('adm-mp').value) || 1;
-        this.p.dex = parseInt(document.getElementById('adm-dex').value) || 1;
+    async adminSetStats() {
+        let targetAcc = document.getElementById('adm-target').value.trim();
         
-        this.p.exp = this.getMaxExp(this.p.lv - 1);
-        if(this.p.lv === 1) this.p.exp = 0;
+        let lv = parseInt(document.getElementById('adm-lv').value) || 1;
+        let coins = parseInt(document.getElementById('adm-coins').value) || 0;
+        let sp = parseInt(document.getElementById('adm-sp').value) || 0;
+        let iq = parseInt(document.getElementById('adm-iq').value) || 1;
+        let str = parseInt(document.getElementById('adm-str').value) || 1;
+        let mp = parseInt(document.getElementById('adm-mp').value) || 1;
+        let dex = parseInt(document.getElementById('adm-dex').value) || 1;
+        let exp = this.getMaxExp(lv - 1); if(lv === 1) exp = 0;
 
-        this.updateUI();
-        alert("✅ 數值已強制覆寫寫入！");
-    },
-
-    adminGiveSword() {
-        const val = document.getElementById('adm-sel-sword').value;
-        if(!val) return alert("請先選擇一把武器");
-        
-        const parts = val.split('|');
-        const rank = parts[0];
-        const name = parts[1];
-
-        let desc = "";
-        let target = DB.swords[rank].find(s => (typeof s === 'object' ? s.name : s) === name);
-        if(typeof target === 'object') desc = target.desc;
-
-        let godItem = { id: Date.now() + Math.floor(Math.random()*1000), name: name, rank: rank, wear: rank === 'UNKNOWN' ? '???' : '0.000', desc: desc, price: 0 };
-        this.p.bag.swords.push(godItem);
-        this.save();
-        alert(`🗡️ [上帝模式] 已將完美無瑕的【${name}】放入背包！`);
-    },
-
-    adminGiveTitle() {
-        const title = document.getElementById('adm-sel-title').value;
-        if(!title) return alert("請先選擇一個稱號");
-
-        if(!this.p.titles.includes(title)) {
-            this.p.titles.push(title);
-            this.save();
-            alert(`📜 [上帝模式] 成功解鎖稱號：【${title}】`);
+        if (!targetAcc || targetAcc === this.p.acc) {
+            this.p.lv = lv; this.p.coins = coins; this.p.sp = sp; this.p.iq = iq; this.p.str = str; this.p.mp = mp; this.p.dex = dex; this.p.exp = exp;
+            this.updateUI(); alert("✅ 你已強制覆寫自己的數值！");
         } else {
-            alert(`⚠️ 你已經擁有這個稱號了`);
+            try {
+                const targetRef = doc(db, "players", targetAcc);
+                const targetSnap = await getDoc(targetRef);
+                if(targetSnap.exists()) {
+                    let targetData = targetSnap.data();
+                    targetData.lv = lv; targetData.coins = coins; targetData.sp = sp; targetData.iq = iq; targetData.str = str; targetData.mp = mp; targetData.dex = dex; targetData.exp = exp;
+                    await setDoc(targetRef, targetData);
+                    alert(`✅ 已成功竄改同學【${targetAcc}】的數值！`);
+                } else {
+                    alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+                }
+            } catch(e) { console.error(e); alert("竄改失敗，連線異常"); }
         }
     },
 
-    adminGiveMats() {
-        this.p.bag.mats.logic += 100;
-        this.p.bag.mats.lang += 100;
-        this.p.bag.mats.mem += 100;
-        this.save();
-        alert("📦 已派發所有打鐵素材各 100 個！");
+    async adminGiveSword() {
+        const val = document.getElementById('adm-sel-sword').value; if(!val) return alert("請選擇武器");
+        const parts = val.split('|'); const rank = parts[0]; const name = parts[1];
+        let desc = ""; let target = DB.swords[rank].find(s => (typeof s === 'object' ? s.name : s) === name); if(typeof target === 'object') desc = target.desc;
+        let godItem = { id: Date.now() + Math.floor(Math.random()*1000), name: name, rank: rank, wear: rank === 'UNKNOWN' ? '???' : '0.000', desc: desc, price: 0 };
+        
+        let targetAcc = document.getElementById('adm-target').value.trim();
+        if (!targetAcc || targetAcc === this.p.acc) {
+            this.p.bag.swords.push(godItem); this.save(); alert(`🗡️ [上帝模式] 生成給自己：【${name}】`);
+        } else {
+            try {
+                const targetRef = doc(db, "players", targetAcc);
+                const targetSnap = await getDoc(targetRef);
+                if(targetSnap.exists()) {
+                    let targetData = targetSnap.data();
+                    targetData.bag.swords.push(godItem);
+                    await setDoc(targetRef, targetData);
+                    alert(`🗡️ [上帝模式] 已將【${name}】塞入同學【${targetAcc}】的背包！`);
+                } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+            } catch(e) { alert("生成失敗"); }
+        }
     },
 
-    adminGivePotions() {
-        this.p.bag.potions.p_double += 10;
-        this.p.bag.potions.p_time += 10;
-        this.p.bag.potions.p_luck += 10;
-        this.p.bag.potions.p_seven += 10;
-        this.save();
-        alert("🧪 已派發所有藥水各 10 瓶！");
+    async adminGiveTitle() {
+        const title = document.getElementById('adm-sel-title').value; if(!title) return alert("請先選擇一個稱號");
+        let targetAcc = document.getElementById('adm-target').value.trim();
+        
+        if (!targetAcc || targetAcc === this.p.acc) {
+            if(!this.p.titles.includes(title)) { this.p.titles.push(title); this.save(); alert(`📜 [上帝模式] 解鎖給自己：【${title}】`); } 
+            else alert(`⚠️ 你已經擁有此稱號`);
+        } else {
+            try {
+                const targetRef = doc(db, "players", targetAcc);
+                const targetSnap = await getDoc(targetRef);
+                if(targetSnap.exists()) {
+                    let targetData = targetSnap.data();
+                    if(!targetData.titles.includes(title)) {
+                        targetData.titles.push(title);
+                        await setDoc(targetRef, targetData);
+                        alert(`📜 [上帝模式] 已將稱號【${title}】解鎖給同學【${targetAcc}】！`);
+                    } else alert(`⚠️ 該同學已擁有此稱號`);
+                } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+            } catch(e) { alert("生成失敗"); }
+        }
+    },
+
+    async adminGiveMats() { 
+        let targetAcc = document.getElementById('adm-target').value.trim();
+        if (!targetAcc || targetAcc === this.p.acc) {
+            this.p.bag.mats.logic += 100; this.p.bag.mats.lang += 100; this.p.bag.mats.mem += 100; this.save(); alert("📦 素材各 +100 給自己！"); 
+        } else {
+            try {
+                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
+                if(targetSnap.exists()) {
+                    let td = targetSnap.data(); td.bag.mats.logic += 100; td.bag.mats.lang += 100; td.bag.mats.mem += 100;
+                    await setDoc(targetRef, td); alert(`📦 已發放素材給同學【${targetAcc}】`);
+                } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+            } catch(e) {}
+        }
+    },
+    
+    async adminGivePotions() { 
+        let targetAcc = document.getElementById('adm-target').value.trim();
+        if (!targetAcc || targetAcc === this.p.acc) {
+            this.p.bag.potions.p_double += 10; this.p.bag.potions.p_time += 10; this.p.bag.potions.p_luck += 10; this.p.bag.potions.p_seven += 10; this.save(); alert("🧪 藥水各 +10 給自己！"); 
+        } else {
+            try {
+                const targetRef = doc(db, "players", targetAcc); const targetSnap = await getDoc(targetRef);
+                if(targetSnap.exists()) {
+                    let td = targetSnap.data(); td.bag.potions.p_double += 10; td.bag.potions.p_time += 10; td.bag.potions.p_luck += 10; td.bag.potions.p_seven += 10;
+                    await setDoc(targetRef, td); alert(`🧪 已發放藥水給同學【${targetAcc}】`);
+                } else alert(`❌ 找不到同學帳號：【${targetAcc}】`);
+            } catch(e) {}
+        }
     }
 };
 
