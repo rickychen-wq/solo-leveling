@@ -22,11 +22,11 @@ const DB = {
         E: ["戰鬥力 0.5","走路草","實習砲灰","裝備回收員","迷路羔羊","萌新一號","戰場觀光客","史萊姆之友","甚至不是人類","呼吸也會累","落地成盒","走位靠賽","後勤搬運工","萬年候補生","塵埃邊緣人","訓練用假人","尚未覺醒","零戰力戰士","掃地阿伯","路人甲","雜草魂","無名小卒","勇者預備軍","體力廢材","眼神死菜鳥","邊緣雜魚","戰場背景板","脆弱靈魂","純潔無垢","剛下山傻子"]
     },
     swords: {
-        UNKNOWN: [{name:"虛空之痕 · 零", desc:"???"}], 
+        UNKNOWN: [{name:"虛空之痕 · 零", desc:"系統管理員專屬，非賣品"}], 
         S: [{name:"天御·雷神切", desc:"連鎖閃電"}, {name:"冥王·枯萎之鐮", desc:"吸血 5%"}, {name:"時空·斷層", desc:"時間靜止"}, {name:"聖光·大領主", desc:"自帶護盾"}],
         A: ["龍脊長刀","碎星者","妖刀·村正","極光細劍","重力粉碎者","寒冰之咬","黑曜石巨劍","風靈疾走"],
         B: ["鋼鐵重刃","影殺短刀","獵人彎刀","符文長劍","烈焰直劍","毒牙匕首","騎士團佩劍","破甲刺劍","巨浪斬馬刀","守望者長槍","精準獵刀","閃爍之刃","荒野戰斧","密林獵手","沉重鐵鎚"],
-        C: ["老練長劍","士兵佩刀","強化鐵劍","寬刃大刀","輕量化匕首","巡邏隊長劍","護衛手杖","鋒利切肉刀","雙手巨劍","練習長刀","鐵製短劍","守城衛士槍","野外求生刀","礦工十字鎬","粗製大劍"],
+        C: ["老練長劍","士兵佩刀","強化鐵劍","寬刃大刀","輕量化匕首","巡邏隊長劍","護衛手杖","鋒利切肉刀","雙手巨劍","練習用長刀","鐵製短劍","守城衛士槍","野外求生刀","礦工十字鎬","粗製大劍"],
         D: ["生鏽鐵片","磨損砍刀","舊式刺刀","木柄短劍","歪斜匕首","鈍掉菜刀","破損長槍","重鑄廢鐵","路邊小刀","脆弱竹劍","農用鐮刀","缺口佩刀","簡易長矛","粗糙斧頭","採集小鏟"],
         E: ["傳說木棒","削鉛筆刀","斷掉樹枝","生鏽圖釘","破爛鍋鏟","紙紮劍","髒掉抹布","塑膠玩具刀","爛掉傘骨","沒水原子筆","湯勺","雞毛撣子","小石塊","過期麵包","只有柄的劍"]
     },
@@ -62,7 +62,7 @@ const System = {
         if(id==='p-world')this.renderWorld(); if(id==='p-dungeon'){this.fetchWorldGates();this.renderQuests()} if(id==='p-enhance')this.renderUpgrades();
         if(id==='p-titles')this.renderTitles(); if(id==='p-inventory')this.renderBag('sword'); if(id==='p-forge')this.renderForge();
         if(id==='p-shop'){if(!this.shopCache)this.checkShopRefresh();this.renderShop('sword')} if(id==='p-rank')this.renderLeaderboard();
-        if(id==='p-partner')this.renderPartner(); if(id==='p-code'&&this.isAdminUnlocked)this.renderAdminPanel();
+        if(id==='p-partner')this.renderPartner(); if(id==='p-code'){ this.renderAdminPanel(); }
     },
     getMaxExp(lv){return lv<=30?100+(lv-1)*50:100+29*50+(lv-30)*100},
     getRank(lv){if(lv>=100)return{r:"國家級獵人",c:"rank-UNKNOWN"};if(lv>=71)return{r:"S-RANK HUNTER",c:"rank-S"};if(lv>=51)return{r:"A-RANK HUNTER",c:"rank-A"};if(lv>=36)return{r:"B-RANK HUNTER",c:"rank-B"};if(lv>=21)return{r:"C-RANK HUNTER",c:"rank-C"};if(lv>=11)return{r:"D-RANK HUNTER",c:"rank-D"};return{r:"E-RANK HUNTER",c:"rank-E"}},
@@ -119,7 +119,7 @@ const System = {
         const i=this.p.activeQuests.findIndex(q=>q.id===id);if(i===-1)return;const q=this.p.activeQuests[i];this.p.activeQuests.splice(i,1);
         let fx=q.xp, fc=q.xp; if(this.p.partner){fx=Math.floor(fx*1.1);fc=Math.floor(fc*1.1)}if(this.p.buffs.doubleXp){fx*=2;this.p.buffs.doubleXp=false}
         if(this.p.curWeapon){if(this.p.curWeapon.rank==='S'){fx=Math.floor(fx*1.2);fc=Math.floor(fc*1.5)}else if(this.p.curWeapon.rank==='A'){fx=Math.floor(fx*1.1);fc=Math.floor(fc*1.2)}}
-        this.p.exp+=fx;this.p.coins+=fc; let m=`獲得 ${fx}XP 與 ${fc}蓮幣`;
+        this.p.exp+=fx; this.p.coins+=fc; let m=`獲得 ${fx}XP 與 ${fc}蓮幣`;
         const rd=Math.random();if(rd<0.1){this.p.bag.mats.logic++;m+="\n🧩 邏輯碎片x1"}else if(rd<0.2){this.p.bag.mats.lang++;m+="\n📖 語文符文x1"}else if(rd<0.3){this.p.bag.mats.mem++;m+="\n🧠 記憶結晶x1"}
         if(q.bonus&&q.bonus.type){if(q.bonus.type==='title'){const t=DB.titles[q.bonus.rank][Math.floor(Math.random()*DB.titles[q.bonus.rank].length)];if(!this.p.titles.includes(t))this.p.titles.push(t);m+=`\n✨ 賞賜稱號：[${t}]`}else if(q.bonus.type==='potion'){this.p.bag.potions[q.bonus.id]=(this.p.bag.potions[q.bonus.id]||0)+1;m+=`\n🧪 賞賜藥水：${q.bonus.name}`}else if(q.bonus.type==='mat'){this.p.bag.mats[q.bonus.id]+=parseInt(q.bonus.amount);m+=`\n📦 賞賜素材：${q.bonus.name}x${q.bonus.amount}`}}
         alert(m);this.checkLevelUp();this.updateUI();this.renderWorldGates();this.renderQuests()
@@ -128,20 +128,27 @@ const System = {
     addStat(id){if(this.p.sp>0){this.p[id]++;this.p.sp--;this.updateUI();this.renderUpgrades()}else alert('點數不足')},
     renderTitles(){let h="";['S','A','B','C','D','E'].forEach(r=>{h+=`<h2 class="section-title rank-${r}">${r}-RANK</h2>`;DB.titles[r].forEach(t=>{if(t==="🚫 卑鄙的作弊者")return;const u=this.p.titles.includes(t),is=this.p.curTitle===t;if(u)h+=`<div class="card ${is?'equipped':''}" onclick="System.equipTitle('${t}')"><strong><span class="rank-${r}">${t}</span></strong>${is?'<span style="color:var(--purple);font-size:10px;">裝備中</span>':''}</div>`;else h+=`<div class="card locked-title"><strong>${r==='S'?'???':t}</strong><span>未解鎖</span></div>`})});document.getElementById('titles-list').innerHTML=h},
     equipTitle(t){this.p.curTitle=t;this.updateUI();this.renderTitles()},
-    checkShopRefresh(){const t=new Date().toLocaleDateString();let s=StorageMgr.get('sl_shop_v33');if(s){const p=JSON.parse(s);if(p.date===t){this.shopCache=p.data;document.getElementById('shop-time').innerText=t;return}}this.refreshShop(t,false)},
+    checkShopRefresh(){const t=new Date().toLocaleDateString();let s=StorageMgr.get('sl_shop_v34');if(s){const p=JSON.parse(s);if(p.date===t){this.shopCache=p.data;document.getElementById('shop-time').innerText=t;return}}this.refreshShop(t,false)},
     refreshShop(t,f){
-        let sh={swords:[],titles:[]};Object.keys(DB.swords).forEach(rk=>{DB.swords[rk].forEach(sw=>{let n=typeof sw==='object'?sw.name:sw,d=typeof sw==='object'?sw.desc:'',w=rk==='UNKNOWN'?'???':this.getWearRate(rk),p=999999;if(rk!=='UNKNOWN'){let wf=parseFloat(w);if(rk==='S')p=Math.floor(10000*(10-wf));else if(rk==='A')p=Math.floor(Math.random()*5001)+10000;else if(rk==='B')p=Math.floor(Math.random()*1001)+4000;else if(rk==='C')p=Math.floor(Math.random()*1001)+3000;else if(rk==='D')p=Math.floor(Math.random()*1001)+2000;else p=Math.floor(Math.random()*1001)+1000}sh.swords.push({name:n,rank:rk,wear:w,desc:d,price:p})})});sh.swords.sort((a,b)=>this.rankWeight[b.rank]-this.rankWeight[a.rank]);
+        let sh={swords:[],titles:[]};Object.keys(DB.swords).forEach(rk=>{DB.swords[rk].forEach(sw=>{let n=typeof sw==='object'?sw.name:sw,d=typeof sw==='object'?sw.desc:'',w=rk==='UNKNOWN'?'???':this.getWearRate(rk),p=rk==='UNKNOWN'?999999:0;if(rk!=='UNKNOWN'){let wf=parseFloat(w);if(rk==='S')p=Math.floor(10000*(10-wf));else if(rk==='A')p=Math.floor(Math.random()*5001)+10000;else if(rk==='B')p=Math.floor(Math.random()*1001)+4000;else if(rk==='C')p=Math.floor(Math.random()*1001)+3000;else if(rk==='D')p=Math.floor(Math.random()*1001)+2000;else p=Math.floor(Math.random()*1001)+1000}sh.swords.push({name:n,rank:rk,wear:w,desc:d,price:p})})});sh.swords.sort((a,b)=>this.rankWeight[b.rank]-this.rankWeight[a.rank]);
         for(let i=0;i<12;i++){const r=Math.random()*100;let rk='E';if(r<1.5)rk='S';else if(r<5)rk='A';else if(r<25)rk='B';else if(r<45)rk='C';else if(r<65)rk='D';let n=DB.titles[rk][Math.floor(Math.random()*DB.titles[rk].length)],p=rk==='S'?5000:rk==='A'?2500:rk==='B'?1000:rk==='C'?500:rk==='D'?200:100;sh.titles.push({name:n,rank:rk,price:p})}sh.titles.sort((a,b)=>this.rankWeight[b.rank]-this.rankWeight[a.rank]);
-        this.shopCache=sh;StorageMgr.set('sl_shop_v33',JSON.stringify({date:t,data:sh}));document.getElementById('shop-time').innerText=f?'Refreshed':t;
+        this.shopCache=sh;StorageMgr.set('sl_shop_v34',JSON.stringify({date:t,data:sh}));document.getElementById('shop-time').innerText=f?'Refreshed':t;
     },
     getWearRate(r){const d=Math.random();return r==='S'?(0.5+d*4.5).toFixed(3):r==='A'?(5+d*10).toFixed(3):r==='B'?(20+d*5).toFixed(3):r==='C'?(30+d*10).toFixed(3):r==='D'?(45+d*10).toFixed(3):(70+d*20).toFixed(3)},
     renderShop(tab){
         if(!this.shopCache)this.checkShopRefresh();['sword','potion','title'].forEach(t=>{const b=document.getElementById(`tab-${t}`);if(b){b.style.background=t===tab?'var(--purple)':'#222';b.style.color=t===tab?'#fff':'#888'}});
-        let h="";if(tab==='sword'){this.shopCache.swords.forEach((s,i)=>{let sp=s.rank==='UNKNOWN'?'border:1px solid #f05':(s.rank==='S'?'border:1px solid var(--gold)':'');h+=`<div class="card" style="${sp}"><div class="card-col" onclick='System.showWeaponModel(${JSON.stringify(s)})'><strong class="rank-${s.rank}">${s.name}</strong><span style="font-size:10px;color:#888;">磨損: ${s.wear}%</span></div><button class="btn-action" ${s.rank==='UNKNOWN'?'disabled':''} onclick="System.buyShop('sword',${i})">💰 ${s.price}</button></div>`})}
+        let h="";if(tab==='sword'){this.shopCache.swords.forEach((s,i)=>{let sp=s.rank==='UNKNOWN'?'border:1px solid #f05':(s.rank==='S'?'border:1px solid var(--gold)':'');h+=`<div class="card" style="${sp}"><div class="card-col" onclick='System.showWeaponModel(${JSON.stringify(s)})'><strong class="rank-${s.rank}">${s.name}</strong><span style="font-size:10px;color:#888;">磨損: ${s.wear}%</span></div><button class="btn-action" ${s.rank==='UNKNOWN'?'disabled':''} onclick="System.buyShop('sword',${i})">${s.rank==='UNKNOWN'?'非賣品':'💰 '+s.price}</button></div>`})}
         else if(tab==='potion'){DB.potions.forEach(p=>{h+=`<div class="card"><div class="card-col"><strong>${p.name}</strong></div><button class="btn-action" onclick="System.buyPotion('${p.id}',${p.price})">💰 ${p.price}</button></div>`})}
         else{this.shopCache.titles.forEach((t,i)=>{const o=this.p.titles.includes(t.name);h+=`<div class="card"><div class="card-col"><strong class="rank-${t.rank}">${t.name}</strong></div><button class="btn-action" ${o?'disabled':''} onclick="System.buyShop('title',${i})">${o?'已解鎖':'💰 '+t.price}</button></div>`})}document.getElementById('shop-list').innerHTML=h;
     },
-    buyShop(t,i){const it=this.shopCache[`${t}s`][i];if(this.p.coins>=it.price){if(t==='title'){this.p.titles.push(it.name)}else{it.id=Date.now();this.p.bag.swords.push(it)}this.p.coins-=it.price;alert("購買成功");this.updateUI();this.renderShop(t)}else alert("餘額不足")},
+    buyShop(t,i){
+        const it=this.shopCache[`${t}s`][i]; 
+        if(it.rank==='UNKNOWN') return alert("這是非賣品！");
+        if(this.p.coins>=it.price){
+            if(t==='title'){this.p.titles.push(it.name)}else{const newItem=Object.assign({},it); newItem.id=Date.now(); this.p.bag.swords.push(newItem)}
+            this.p.coins-=it.price; alert("購買成功"); this.updateUI(); this.renderShop(t);
+        } else alert("餘額不足");
+    },
     buyPotion(id,pr){if(this.p.coins>=pr){this.p.coins-=pr;this.p.bag.potions[id]=(this.p.bag.potions[id]||0)+1;this.updateUI();alert("購買成功")}else alert("餘額不足")},
     renderBag(tab){
         ['sword','potion','mat'].forEach(t=>{const b=document.getElementById(`bag-tab-${t}`);if(b){b.style.background=t===tab?'var(--purple)':'#222';b.style.color=t===tab?'#fff':'#888'}});
@@ -167,22 +174,62 @@ const System = {
     async sendPactReq(){const t=document.getElementById('inp-p-req').value.trim();const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let d=s.data();d.requests=d.requests||[];d.requests.push(this.p.acc);await setDoc(r,d);alert("已發送")}else alert("無此人")},
     async acceptPact(t){const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let d=s.data();d.partner=this.p.acc;await setDoc(r,d)}this.p.partner=t;this.p.requests=this.p.requests.filter(x=>x!==t);await this.save();this.updateUI();this.renderPartner()},
     async breakPact(){if(this.p.partner){const r=doc(db,"players",this.p.partner),s=await getDoc(r);if(s.exists()){let d=s.data();d.partner=null;await setDoc(r,d)}}this.p.partner=null;await this.save();this.updateUI();this.renderPartner()},
+    
+    // 👑 終極上帝控制台：保底修復，保證選單不再空
     verifyAdmin(){if(document.getElementById('inp-admin-pwd').value==='Ricky_0414'){this.isAdminUnlocked=true;document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='flex';this.renderAdminPanel()}else alert("密碼錯誤")},
     renderAdminPanel(){
-        ['lv','coins','sp','iq','str','mp','dex'].forEach(k=>document.getElementById(`adm-${k}`).value=Math.floor(this.p[k]));
-        let s="<option value=''>--武器--</option>";Object.keys(DB.swords).forEach(rk=>{s+=`<optgroup label="${rk}">`;DB.swords[rk].forEach(x=>{let n=typeof x==='object'?x.name:x;s+=`<option value="${rk}|${n}">${n}</option>`});s+=`</optgroup>`});document.getElementById('adm-sel-sword').innerHTML=s;
-        let t="<option value=''>--稱號--</option>";Object.keys(DB.titles).forEach(rk=>{t+=`<optgroup label="${rk}">`;DB.titles[rk].forEach(x=>{t+=`<option value="${x}">${x}</option>`});t+=`</optgroup>`});document.getElementById('adm-sel-title').innerHTML=t;
+        // 渲染基礎數值
+        ['lv','coins','sp','iq','str','mp','dex'].forEach(k=>{
+            const el = document.getElementById(`adm-${k}`);
+            if(el) el.value = Math.floor(this.p[k]);
+        });
+        
+        // 🔥 核心修復：強制重新生成武器選單
+        let sOpt="<option value=''>--選擇武具--</option>";
+        Object.keys(DB.swords).forEach(rk=>{
+            sOpt+=`<optgroup label="${rk}-RANK">`;
+            DB.swords[rk].forEach(x=>{
+                let name = typeof x==='object'?x.name:x;
+                sOpt+=`<option value="${rk}|${name}">${name}</option>`;
+            });
+            sOpt+=`</optgroup>`;
+        });
+        document.getElementById('adm-sel-sword').innerHTML = sOpt;
+
+        // 🔥 核心修復：強制重新生成稱號選單
+        let tOpt="<option value=''>--選擇稱號--</option>";
+        Object.keys(DB.titles).forEach(rk=>{
+            tOpt+=`<optgroup label="${rk}-RANK">`;
+            DB.titles[rk].forEach(titleName=>{
+                tOpt+=`<option value="${titleName}">${titleName}</option>`;
+            });
+            tOpt+=`</optgroup>`;
+        });
+        document.getElementById('adm-sel-title').innerHTML = tOpt;
     },
-    async adminSetStats(){let t=document.getElementById('adm-target').value.trim();let d={};['lv','coins','sp','iq','str','mp','dex'].forEach(k=>d[k]=parseInt(document.getElementById(`adm-${k}`).value)||1);d.exp=this.getMaxExp(d.lv-1);if(!t||t===this.p.acc){Object.assign(this.p,d);this.updateUI()}else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();Object.assign(td,d);await setDoc(r,td);alert("完成")}}},
-    async adminGiveSword(){const v=document.getElementById('adm-sel-sword').value;if(!v)return;const p=v.split('|'),tg=DB.swords[p[0]].find(x=>(typeof x==='object'?x.name:x)===p[1]),it={id:Date.now(),name:p[1],rank:p[0],wear:'0.000',desc:typeof tg==='object'?tg.desc:'',price:0};let t=document.getElementById('adm-target').value.trim();if(!t||t===this.p.acc){this.p.bag.swords.push(it);this.save()}else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();td.bag.swords.push(it);await setDoc(r,td)}}},
-    async adminGiveTitle(){const v=document.getElementById('adm-sel-title').value;if(!v)return;let t=document.getElementById('adm-target').value.trim();if(!t||t===this.p.acc){this.p.titles.push(v);this.save()}else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();td.titles.push(v);await setDoc(r,td)}}},
-    async adminGiveMats(){this.p.bag.mats.logic+=100;this.p.bag.mats.lang+=100;this.p.bag.mats.mem+=100;this.save();alert("完成")},
-    async adminGivePotions(){['p_double','p_time','p_luck','p_seven'].forEach(id=>this.p.bag.potions[id]=(this.p.bag.potions[id]||0)+10);this.save();alert("完成")},
-    async adminPunish(){const t=document.getElementById('adm-target').value.trim();const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let d=s.data();d.lv=1;d.exp=0;d.coins=0;d.sp=0;d.curTitle="🚫 卑鄙的作弊者";d.titles=["🚫 卑鄙的作弊者"];d.curWeapon=null;d.bag={swords:[],potions:{},mats:{logic:0,lang:0,mem:0}};await setDoc(r,d);alert("完成")}},
+    async adminSetStats(){let t=document.getElementById('adm-target').value.trim();let d={};['lv','coins','sp','iq','str','mp','dex'].forEach(k=>d[k]=parseInt(document.getElementById(`adm-${k}`).value)||1);d.exp=this.getMaxExp(d.lv-1);if(!t||t===this.p.acc){Object.assign(this.p,d);this.updateUI(); alert("自定義完成")}else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();Object.assign(td,d);await setDoc(r,td);alert("修改同學成功")}}},
+    async adminGiveSword(){
+        const v=document.getElementById('adm-sel-sword').value; if(!v) return alert("請選擇武器");
+        const p=v.split('|'),tg=DB.swords[p[0]].find(x=>(typeof x==='object'?x.name:x)===p[1]);
+        const it={id:Date.now(),name:p[1],rank:p[0],wear:'0.000',desc:typeof tg==='object'?tg.desc:'',price:0};
+        let t=document.getElementById('adm-target').value.trim();
+        if(!t||t===this.p.acc){this.p.bag.swords.push(it);this.updateUI();alert("已放入背包")}
+        else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();td.bag.swords.push(it);await setDoc(r,td);alert("已發送給同學")}}
+    },
+    async adminGiveTitle(){
+        const v=document.getElementById('adm-sel-title').value; if(!v) return alert("請選擇稱號");
+        let t=document.getElementById('adm-target').value.trim();
+        if(!t||t===this.p.acc){ if(!this.p.titles.includes(v))this.p.titles.push(v); this.updateUI();alert("稱號已解鎖") }
+        else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();if(!td.titles.includes(v))td.titles.push(v);await setDoc(r,td);alert("同學稱號已解鎖")}}
+    },
+    async adminGiveMats(){let t=document.getElementById('adm-target').value.trim();if(!t||t===this.p.acc){this.p.bag.mats.logic+=100;this.p.bag.mats.lang+=100;this.p.bag.mats.mem+=100;this.updateUI()}else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();td.bag.mats.logic+=100;td.bag.mats.lang+=100;td.bag.mats.mem+=100;await setDoc(r,td)}}alert("素材已發放")},
+    async adminGivePotions(){let t=document.getElementById('adm-target').value.trim();if(!t||t===this.p.acc){['p_double','p_time','p_luck','p_seven'].forEach(id=>this.p.bag.potions[id]=(this.p.bag.potions[id]||0)+10);this.updateUI()}else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();['p_double','p_time','p_luck','p_seven'].forEach(id=>td.bag.potions[id]=(td.bag.potions[id]||0)+10);await setDoc(r,td)}}alert("藥水已發放")},
+    async adminPunish(){const t=document.getElementById('adm-target').value.trim();if(!t)return alert("請輸入目標ID");const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let d=s.data();d.lv=1;d.exp=0;d.coins=0;d.sp=0;d.curTitle="🚫 卑鄙的作弊者";d.titles=["🚫 卑鄙的作弊者"];d.curWeapon=null;d.bag={swords:[],potions:{},mats:{logic:0,lang:0,mem:0}};await setDoc(r,d);alert("天罰執行完成")}}else{alert("找不到目標")},
+    
     startHeartbeat(){const b=()=>{updateDoc(doc(db,"players",this.p.acc),{lastSeen:Date.now()})};b();setInterval(b,30000)},
     async renderWorld(){
         const a=document.getElementById('online-list');if(this.unsubWorld)this.unsubWorld();
-        this.unsubWorld=onSnapshot(collection(db,"players"),(sn)=>{let h="";sn.forEach(d=>{const x=d.data();if(x.acc===this.p.acc||x.acc==='admin')return;const on=x.lastSeen&&(Date.now()-x.lastSeen<65000);h+=`<div class="card"><div><span class="status-dot ${on?'dot-online':'dot-offline'}"></span><strong>${x.acc}</strong> <small>Lv.${x.lv}</small></div>${on?`<button onclick="TradeSystem.startTrade('${x.acc}')">交易</button>`:'離線'}</div>`});a.innerHTML=h});
+        this.unsubWorld=onSnapshot(collection(db,"players"),(sn)=>{let h="";sn.forEach(d=>{const x=d.data();if(x.acc===this.p.acc||x.acc==='admin')return;const on=x.lastSeen&&(Date.now()-x.lastSeen<65000);h+=`<div class="card"><div><span class="status-dot ${on?'dot-online':'dot-offline'}"></span><strong>${x.acc}</strong> <small>Lv.${x.lv}</small></div>${on?`<button class="btn-action" onclick="TradeSystem.startTrade('${x.acc}')">交易</button>`:'<small style="color:#444">離線</small>'}</div>`});a.innerHTML=h});
     },
     listenForInvites(){
         if(this.unsubInvites)this.unsubInvites();
@@ -206,12 +253,12 @@ const TradeSystem = {
     buildSel(){
         let sl=document.getElementById('trade-item-select'),h="<option value=''>--選擇物品--</option>";
         System.p.bag.swords.forEach(s=>h+=`<option value="s|${s.id}">${s.name}</option>`);
-        ['logic','lang','mem'].forEach(m=>{if(System.p.bag.mats[m]>0)h+=`<option value="m|${m}">${m}</option>`});sl.innerHTML=h;
+        ['logic','lang','mem'].forEach(m=>{if(System.p.bag.mats[m]>0)h+=`<option value="m|${m}">${m==='logic'?'邏輯碎片':m==='lang'?'語文符文':'記憶結晶'}</option>`});sl.innerHTML=h;
     },
     async addItemToOffer(){
         const v=document.getElementById('trade-item-select').value;if(!v)return;const d=(await getDoc(doc(db,"trades",this.cti))).data(),is=System.p.acc===d.sender,my=is?d.offerA:d.offerB,p=v.split('|');
         if(p[0]==='s'){let it=System.p.bag.swords.find(x=>x.id===parseInt(p[1]));if(it&&!my.items.find(x=>x.id===it.id))my.items.push(it)}
-        else{let n=p[1],ex=my.items.find(x=>x.id===p[1]);if(ex){if(ex.amt<System.p.bag.mats[p[1]])ex.amt++}else my.items.push({id:p[1],type:'mat',name:n,amt:1})}
+        else{let n=p[1]==='logic'?'邏輯碎片':p[1]==='lang'?'語文符文':'記憶結晶',ex=my.items.find(x=>x.id===p[1]);if(ex){if(ex.amt<System.p.bag.mats[p[1]])ex.amt++}else my.items.push({id:p[1],type:'mat',name:n,amt:1})}
         updateDoc(doc(db,"trades",this.cti),is?{"offerA.items":my.items,readyA:false,readyB:false}:{"offerB.items":my.items,readyA:false,readyB:false});document.getElementById('trade-item-select').value="";
     },
     render(d){
@@ -225,7 +272,6 @@ const TradeSystem = {
         const ch=document.getElementById('trade-chat');ch.innerHTML=d.chat.map(m=>`<div>${m.user}: ${m.msg}</div>`).join('');ch.scrollTop=ch.scrollHeight;
     },
     async updateOffer(){const c=parseInt(document.getElementById('trade-coin-input').value)||0;if(c>System.p.coins)return alert("錢不夠");const d=(await getDoc(doc(db,"trades",this.cti))).data(),is=System.p.acc===d.sender;updateDoc(doc(db,"trades",this.cti),is?{"offerA.coins":c,readyA:false,readyB:false}:{"offerB.coins":c,readyA:false,readyB:false})},
-    confirmReady(){updateDoc(doc(db,"trades",this.cti),System.p.acc===(this.cti.split('_')[0]?System.p.acc:System.p.acc)?(System.p.acc===(doc(db,"trades",this.cti).sender)?{readyA:true}:{readyB:true}):{})}, //修正此邏輯
     async confirmReady(){const d=(await getDoc(doc(db,"trades",this.cti))).data(),is=System.p.acc===d.sender;updateDoc(doc(db,"trades",this.cti),is?{readyA:true}:{readyB:true})},
     sendChat(){const i=document.getElementById('trade-msg-input'),m=i.value.trim();if(m){updateDoc(doc(db,"trades",this.cti),{chat:arrayUnion({user:System.p.acc,msg:m})});i.value=""}},
     cancel(){if(this.ci){clearInterval(this.ci);this.ci=null}if(this.cti)updateDoc(doc(db,"trades",this.cti),{status:"rejected"});if(this.ut)this.ut();this.cti=null;document.getElementById('trade-overlay').style.display='none'},
