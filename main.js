@@ -36,7 +36,7 @@ const DB = {
 const StorageMgr = { get(key) { try { return localStorage.getItem(key); } catch(e) { return window.tempStore?window.tempStore[key]:null; } }, set(key, val) { try { localStorage.setItem(key, val); } catch(e) { window.tempStore=window.tempStore||{}; window.tempStore[key]=val; } } };
 
 const System = {
-    p: null, shopCache: null, timerIdx: null, isAdminUnlocked: false, unsubWorld: null,
+    p: null, shopCache: null, timerIdx: null, isAdminUnlocked: false, unsubWorld: null, unsubInvites: null,
     rankWeight: { 'UNKNOWN':7, 'S':6, 'A':5, 'B':4, 'C':3, 'D':2, 'E':1 },
     
     async login() {
@@ -225,8 +225,25 @@ const System = {
         const area=document.getElementById('online-list'); area.innerHTML="掃描中..."; if(this.unsubWorld)this.unsubWorld();
         this.unsubWorld = onSnapshot(collection(db,"players"), (snap)=>{ let html=""; snap.forEach(d=>{ const data=d.data(); if(data.acc===this.p.acc||data.acc==='admin')return; const isOn = data.lastSeen&&(Date.now()-data.lastSeen<65000); html+=`<div class="card"><div><span class="status-dot ${isOn?'dot-online':'dot-offline'}"></span><strong>${data.acc}</strong> <small style="color:#666">Lv.${data.lv}</small></div>${isOn?`<button class="btn-action" style="background:var(--comrade-green);color:#000;" onclick="TradeSystem.startTrade('${data.acc}')">交易</button>`:`<small style="color:#444">離線</small>`}</div>`; }); area.innerHTML=html; });
     },
+    
+    // 📲 監聽交易請求 (修復版：防瘋狂重複彈窗)
     listenForInvites() {
-        onSnapshot(query(collection(db,"trades"), where("target","==",this.p.acc), where("status","==","pending")), (snap)=>{ snap.forEach(c=>{ const d=c.data(); if(confirm(`📦 收到 [${d.sender}] 交易請求！進入交易室？`)){ TradeSystem.joinTrade(c.id, d); }else{ updateDoc(doc(db,"trades",c.id),{status:"rejected"}); } }); });
+        if (this.unsubInvites) this.unsubInvites(); 
+        this.unsubInvites = onSnapshot(query(collection(db,"trades"), where("target","==",this.p.acc), where("status","==","pending")), (snap)=>{ 
+            snap.docChanges().forEach(change => { 
+                if (change.type === "added") {
+                    const d = change.doc.data(); 
+                    if (TradeSystem.currentTradeId === change.doc.id) return;
+                    setTimeout(() => {
+                        if(confirm(`📦 收到 [${d.sender}] 的交易請求！進入交易室？`)){ 
+                            TradeSystem.joinTrade(change.doc.id, d); 
+                        } else { 
+                            updateDoc(doc(db,"trades",change.doc.id), {status:"rejected"}); 
+                        } 
+                    }, 100);
+                }
+            }); 
+        });
     }
 };
 
@@ -297,7 +314,6 @@ const TradeSystem = {
         
         const btn = document.getElementById('btn-confirm-trade'); 
 
-        // 🛑 防幽靈連點死鎖倒數
         if(d.readyA && d.readyB && d.status === "pending") {
             if(!this.countdownInterval && !this.isExecuting) {
                 this.countdownSec = 5;
@@ -315,7 +331,6 @@ const TradeSystem = {
                         this.countdownInterval = null;
                         btn.innerText = "處理中...";
                         
-                        // 🔒 終極鎖定：只允許發起方執行，且保證只執行一次
                         if (isA && !this.isExecuting) {
                             this.isExecuting = true;
                             this.executeFinal(d); 
@@ -360,7 +375,6 @@ const TradeSystem = {
             await runTransaction(db, async (t) => {
                 const rA=doc(db,"players",d.sender); const rB=doc(db,"players",d.target); const rT=doc(db,"trades",d.id);
                 
-                // 🔒 第一重防線：檢查雲端單子是否已經結算過
                 const tradeSnap = await t.get(rT);
                 if(tradeSnap.data().status !== "pending") throw "交易已處理過";
 
