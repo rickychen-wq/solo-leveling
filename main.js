@@ -226,7 +226,6 @@ const System = {
         this.unsubWorld = onSnapshot(collection(db,"players"), (snap)=>{ let html=""; snap.forEach(d=>{ const data=d.data(); if(data.acc===this.p.acc||data.acc==='admin')return; const isOn = data.lastSeen&&(Date.now()-data.lastSeen<65000); html+=`<div class="card"><div><span class="status-dot ${isOn?'dot-online':'dot-offline'}"></span><strong>${data.acc}</strong> <small style="color:#666">Lv.${data.lv}</small></div>${isOn?`<button class="btn-action" style="background:var(--comrade-green);color:#000;" onclick="TradeSystem.startTrade('${data.acc}')">交易</button>`:`<small style="color:#444">離線</small>`}</div>`; }); area.innerHTML=html; });
     },
     
-    // 📲 監聽交易請求 (修復版：防瘋狂重複彈窗)
     listenForInvites() {
         if (this.unsubInvites) this.unsubInvites(); 
         this.unsubInvites = onSnapshot(query(collection(db,"trades"), where("target","==",this.p.acc), where("status","==","pending")), (snap)=>{ 
@@ -247,7 +246,6 @@ const System = {
     }
 };
 
-// 🤝 獵人交易所 (究極防禦版)
 const TradeSystem = {
     currentTradeId: null, unsubTrade: null, countdownInterval: null, countdownSec: 5, isExecuting: false,
     
@@ -374,17 +372,13 @@ const TradeSystem = {
         try {
             await runTransaction(db, async (t) => {
                 const rA=doc(db,"players",d.sender); const rB=doc(db,"players",d.target); const rT=doc(db,"trades",d.id);
-                
                 const tradeSnap = await t.get(rT);
                 if(tradeSnap.data().status !== "pending") throw "交易已處理過";
-
                 const uA=(await t.get(rA)).data(); const uB=(await t.get(rB)).data();
                 if(uA.coins<d.offerA.coins || uB.coins<d.offerB.coins) throw "金額不足";
-                
                 uA.coins=uA.coins-d.offerA.coins+d.offerB.coins; uB.coins=uB.coins-d.offerB.coins+d.offerA.coins;
                 d.offerA.items.forEach(i=>{ if(i.type==='mat'){ uA.bag.mats[i.id]-=i.amt; uB.bag.mats[i.id]+=i.amt; } else { uA.bag.swords=uA.bag.swords.filter(s=>s.id!==i.id); uB.bag.swords.push(i); if(uA.curWeapon&&uA.curWeapon.id===i.id)uA.curWeapon=null; } });
                 d.offerB.items.forEach(i=>{ if(i.type==='mat'){ uB.bag.mats[i.id]-=i.amt; uA.bag.mats[i.id]+=i.amt; } else { uB.bag.swords=uB.bag.swords.filter(s=>s.id!==i.id); uA.bag.swords.push(i); if(uB.curWeapon&&uB.curWeapon.id===i.id)uB.curWeapon=null; } });
-                
                 t.update(rA, uA); t.update(rB, uB); t.update(rT, {status:"completed"});
             });
         } catch(e) { 
