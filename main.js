@@ -12,23 +12,24 @@ const SWORD_MODELS = {
     AXE: `<svg class="weapon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10L3 21M14 10L21 3M14 10L21 17L17 21L10 14Z" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 };
 
+// 🔥 利用 .split() 大幅壓縮字數，保證代碼不中斷
 const DB = {
     titles: {
-        S: ["創世神：萬象起源", "虛空之王：秩序崩壞者", "因果律：命運編織者", "永恆傳說：不朽之冠", "唯一神：降臨之光"],
-        A: ["位面守護者","不滅戰神","真理探求者","弒龍大師","諸神黃昏","至高審判長","永恆之光","極暗深淵","時空旅人","萬物生靈主","禁忌魔法師","聖靈大先知","絕對零度","戰場的主宰","混沌掌控者","劍之頂峰","傳奇奠基人","天災化身","銀河開拓者","靈魂收割者","帝國之牆","神聖制裁者","無極劍聖","末日執行官","破法領主"],
-        B: ["大地粉碎者","蒼穹之眼","暗夜主宰","王國重臣","災厄終結者","巨龍獵人","戰地指揮官","聖殿執行官","幻影遊俠","秘法大師","鋼鐵要塞","風暴使徒","斷罪之刃","極限生存者","審判官","狂瀾追逐者","守護神盾","破曉之星","血色紅蓮","孤傲之狼","聖域守門人","虛空行者","戰鬥藝術家","王牌尖兵","無懼勇者","輝輝之刃","元素主導者","深淵監視者","重力主宰","鐵血領主"],
-        C: ["前線突擊手","荒野獵手","鋼鐵意志","熟練冒險家","戰術小隊長","狂暴戰斧","影之追蹤者","銀翼先鋒","疾風劍士","元素感知者","守望先驅","烈焰行者","重裝步兵","沉默暗殺員","穿雲箭手","黎明守護者","符文操作員","鋼鐵守望","中堅力量","碎石者","極光使者","戰場齒輪","精銳士官","秘法學徒","獵魔小隊","不屈之魂","疾走之影","狂想曲員","寒冰操縱者","堅盾守衛"],
-        D: ["村莊守望者","鐵鏽新秀","持劍平民","冒險初學者","見習騎士","準時下班員","小鎮地頭蛇","森林清道夫","略懂皮毛","憤怒的小鳥","正義路人","銅級傭兵","脫殼小龍","剛學會走路","基礎操縱者","先遣部隊","戰地記者","幸運生還者","武器試用員","略有小成","粗糙戰士","模仿大師","鐵打龍套","初級執行者","民間高手","熱血少年","頑強甲蟲","破舊皮甲魂","基礎訓練生","準準冒險者"],
-        E: ["戰鬥力 0.5","走路草","實習砲灰","裝備回收員","迷路羔羊","萌新一號","戰場觀光客","史萊姆之友","甚至不是人類","呼吸也會累","落地成盒","走位靠賽","後勤搬運工","萬年候補生","塵埃邊緣人","訓練用假人","尚未覺醒","零戰力戰士","掃地阿伯","路人甲","雜草魂","無名小卒","勇者預備軍","體力廢材","眼神死菜鳥","邊緣雜魚","戰場背景板","脆弱靈魂","純潔無垢","剛下山的傻子"]
+        S: "創世神：萬象起源,虛空之王：秩序崩壞者,因果律：命運編織者,永恆傳說：不朽之冠,唯一神：降臨之光".split(","),
+        A: "位面守護者,不滅戰神,真理探求者,弒龍大師,諸神黃昏,至高審判長,永恆之光,極暗深淵,時空旅人,萬物生靈主,禁忌魔法師,聖靈大先知,絕對零度,戰場的主宰,混沌掌控者,劍之頂峰,傳奇奠基人,天災化身,銀河開拓者,靈魂收割者,帝國之牆,神聖制裁者,無極劍聖,末日執行官,破法領主".split(","),
+        B: "大地粉碎者,蒼穹之眼,暗夜主宰,王國重臣,災厄終結者,巨龍獵人,戰地指揮官,聖殿執行官,幻影遊俠,秘法大師,鋼鐵要塞,風暴使徒,斷罪之刃,極限生存者,審判官,狂瀾追逐者,守護神盾,破曉之星,血色紅蓮,孤傲之狼,聖域守門人,虛空行者,戰鬥藝術家,王牌尖兵,無懼勇者,輝煌之刃,元素主導者,深淵監視者,重力主宰,鐵血領主".split(","),
+        C: "前線突擊手,荒野獵手,鋼鐵意志,熟練冒險家,戰術小隊長,狂暴戰斧,影之追蹤者,銀翼先鋒,疾風劍士,元素感知者,守望先驅,烈焰行者,重裝步兵,沉默暗殺員,穿雲箭手,黎明守護者,符文操作員,鋼鐵守望,中堅力量,碎石者,極光使者,戰場齒輪,精銳士官,秘法學徒,獵魔小隊,不屈之魂,疾走之影,狂想曲員,寒冰操縱者,堅盾守衛".split(","),
+        D: "村莊守望者,鐵鏽新秀,持劍平民,冒險初學者,見習騎士,準時下班員,小鎮地頭蛇,森林清道夫,略懂皮毛,憤怒的小鳥,正義路人,銅級傭兵,脫殼小龍,剛學會走路,基礎操縱者,先遣部隊,戰地記者,幸運生還者,武器試用員,略有小成,粗糙戰士,模仿大師,鐵打龍套,初級執行者,民間高手,熱血少年,頑強甲蟲,破舊皮甲魂,基礎訓練生,準準冒險者".split(","),
+        E: "戰鬥力 0.5,走路草,實習砲灰,裝備回收員,迷路羔羊,萌新一號,戰場觀光客,史萊姆之友,甚至不是人類,呼吸也會累,落地成盒,走位靠賽,後勤搬運工,萬年候補生,塵埃邊緣人,訓練用假人,尚未覺醒,零戰力戰士,掃地阿伯,路人甲,雜草魂,無名小卒,勇者預備軍,體力廢材,眼神死菜鳥,邊緣雜魚,戰場背景板,脆弱靈魂,純潔無垢,剛下山的傻子".split(",")
     },
     swords: {
-        UNKNOWN: [{name:"虛空之痕 · 零", desc:"系統管理員專屬，非賣品"}], 
+        UNKNOWN: [{name:"虛空之痕 · 零", desc:"非賣品"}], 
         S: [{name:"天御·雷神切", desc:"連鎖閃電"}, {name:"冥王·枯萎之鐮", desc:"吸血 5%"}, {name:"時空·斷層", desc:"時間靜止"}, {name:"聖光·大領主", desc:"自帶護盾"}],
-        A: ["龍脊長刀","碎星者","妖刀·村正","極光細劍","重力粉碎者","寒冰之咬","黑曜石巨劍","風靈疾走"],
-        B: ["鋼鐵重刃","影殺短刀","獵人彎刀","符文長劍","烈焰直劍","毒牙匕首","騎士團佩劍","破甲刺劍","巨浪斬馬刀","守望者長槍","精準獵刀","閃爍之刃","荒野戰斧","密林獵手","沉重鐵鎚"],
-        C: ["老練長劍","士兵佩刀","強化鐵劍","寬刃大刀","輕量化匕首","巡邏隊長劍","護衛手杖","鋒利切肉刀","雙手巨劍","練習用長刀","鐵製短劍","守城衛士槍","野外求生刀","礦工十字鎬","粗製大劍"],
-        D: ["生鏽鐵片","磨損砍刀","舊式刺刀","木柄短劍","歪斜匕首","鈍掉菜刀","破損長槍","重鑄廢鐵","路邊小刀","脆弱竹劍","農用鐮刀","缺口佩刀","簡易長矛","粗糙斧頭","採集小鏟"],
-        E: ["傳說木棒","削鉛筆刀","斷掉樹枝","生鏽圖釘","破爛鍋鏟","紙紮劍","髒掉抹布","塑膠玩具刀","爛掉傘骨","沒水原子筆","湯勺","雞毛撣子","小石塊","過期的麵包","只有柄的劍"]
+        A: "龍脊長刀,碎星者,妖刀·村正,極光細劍,重力粉碎者,寒冰之咬,黑曜石巨劍,風靈疾走".split(","),
+        B: "鋼鐵重刃,影殺短刀,獵人彎刀,符文長劍,烈焰直劍,毒牙匕首,騎士團佩劍,破甲刺劍,巨浪斬馬刀,守望者長槍,精準獵刀,閃爍之刃,荒野戰斧,密林獵手,沉重鐵鎚".split(","),
+        C: "老練長劍,士兵佩刀,強化鐵劍,寬刃大刀,輕量化匕首,巡邏隊長劍,護衛手杖,鋒利切肉刀,雙手巨劍,練習用長刀,鐵製短劍,守城衛士槍,野外求生刀,礦工十字鎬,粗製大劍".split(","),
+        D: "生鏽鐵片,磨損砍刀,舊式刺刀,木柄短劍,歪斜匕首,鈍掉菜刀,破損長槍,重鑄廢鐵,路邊小刀,脆弱竹劍,農用鐮刀,缺口佩刀,簡易長矛,粗糙斧頭,採集小鏟".split(","),
+        E: "傳說木棒,削鉛筆刀,斷掉樹枝,生鏽圖釘,破爛鍋鏟,紙紮劍,髒掉抹布,塑膠玩具刀,爛掉傘骨,沒水原子筆,湯勺,雞毛撣子,小石塊,過期的麵包,只有柄的劍".split(",")
     },
     potions: [{id:"p_double",name:"🧪 雙倍經驗藥劑",price:350},{id:"p_time",name:"⏳ 時光沙漏",price:450},{id:"p_luck",name:"🍀 幸運四葉草",price:850},{id:"p_seven",name:"✨ 七葉草藥水",price:3500}],
     cloudGates: []
@@ -39,6 +40,7 @@ const StorageMgr = { get(k){try{return localStorage.getItem(k)}catch(e){return n
 const System = {
     p: null, shopCache: null, timerIdx: null, isAdminUnlocked: false, unsubWorld: null, unsubInvites: null,
     rankWeight: {'UNKNOWN':7,'S':6,'A':5,'B':4,'C':3,'D':2,'E':1},
+    
     async login() {
         const accEl = document.getElementById('inp-acc'); const pwdEl = document.getElementById('inp-pwd');
         if(!accEl || !pwdEl) return;
@@ -137,7 +139,7 @@ const System = {
     renderBag(tab){let h="";this.p.bag.swords.forEach(s=>h+=`<div class="card"><strong>${s.name}</strong><button onclick="System.equipWeapon(${s.id})">裝備</button></div>`);document.getElementById('bag-list').innerHTML=h},
     equipWeapon(id){this.p.curWeapon=this.p.bag.swords.find(s=>s.id===id);this.updateUI();this.renderBag('sword')},
     renderForge(){let h="";this.p.bag.swords.forEach(s=>h+=`<div class="card"><strong>${s.name}</strong><button onclick="System.forgeWeapon(${s.id})">修復</button></div>`);document.getElementById('forge-list').innerHTML=h},
-    forgeWeapon(id){alert("鍛造修復");},
+    forgeWeapon(id){alert("鍛造功能修復中");},
     async renderLeaderboard(){const e=document.getElementById('leaderboard-list');e.innerHTML="載入中...";const sn=await getDocs(collection(db,"players"));let d=[];sn.forEach(x=>d.push(x.data()));d.sort((a,b)=>b.lv-a.lv);let h="";d.forEach(x=>h+=`<div class="card">${x.acc} Lv.${x.lv}</div>`);e.innerHTML=h},
     async renderPartner(){document.getElementById('partner-status-area').innerHTML="戰友系統連線中...";},
     verifyAdmin(){
@@ -167,7 +169,9 @@ const System = {
     startHeartbeat(){const b=()=>{if(this.p)updateDoc(doc(db,"players",this.p.acc),{lastSeen:Date.now()})};b();setInterval(b,30000)},
     async renderWorld(){const a=document.getElementById('online-list');onSnapshot(collection(db,"players"),(sn)=>{let h="";sn.forEach(d=>{const x=d.data();if(x.acc!==this.p?.acc){const on=x.lastSeen&&(Date.now()-x.lastSeen<65000);h+=`<div class="card"><strong>${x.acc}</strong> ${on?`<button onclick="TradeSystem.startTrade('${x.acc}')">交易</button>`:'離線'}</div>`}});a.innerHTML=h})},
     listenForInvites(){onSnapshot(query(collection(db,"trades"),where("target","==",this.p.acc),where("status","==","pending")),(sn)=>{sn.docChanges().forEach(c=>{if(c.type==="added"){if(confirm(`收到交易請求？`))TradeSystem.joinTrade(c.doc.id,c.doc.data())}})})},
-};const TradeSystem = {
+};
+
+const TradeSystem = {
     cti: null, ut: null, ci: null, cs: 5, ie: false,
     async startTrade(t){const id=`trade_${Date.now()}`,d={id,sender:System.p.acc,target:t,status:"pending",offerA:{coins:0,items:[]},offerB:{coins:0,items:[]},readyA:false,readyB:false,chat:[]};await setDoc(doc(db,"trades",id),d);this.joinTrade(id,d)},
     joinTrade(id,d){
