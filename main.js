@@ -19,14 +19,14 @@ const DB = {
         B: ["大地粉碎者","蒼穹之眼","暗夜主宰","王國重臣","災厄終結者","巨龍獵人","戰地指揮官","聖殿執行官","幻影遊俠","秘法大師","鋼鐵要塞","風暴使徒","斷罪之刃","極限生存者","審判官","狂瀾追逐者","守護神盾","破曉之星","血色紅蓮","孤傲之狼","聖域守門人","虛空行者","戰鬥藝術家","王牌尖兵","無懼勇者","輝輝之刃","元素主導者","深淵監視者","重力主宰","鐵血領主"],
         C: ["前線突擊手","荒野獵手","鋼鐵意志","熟練冒險家","戰術小隊長","狂暴戰斧","影之追蹤者","銀翼先鋒","疾風劍士","元素感知者","守望先驅","烈焰行者","重裝步兵","沉默暗殺員","穿雲箭手","黎明守護者","符文操作員","鋼鐵守望","中堅力量","碎石者","極光使者","戰場齒輪","精銳士官","秘法學徒","獵魔小隊","不屈之魂","疾走之影","狂想曲員","寒冰操縱者","堅盾守衛"],
         D: ["村莊守望者","鐵鏽新秀","持劍平民","冒險初學者","見習騎士","準時下班員","小鎮地頭蛇","森林清道夫","略懂皮毛","憤怒的小鳥","正義路人","銅級傭兵","脫殼小龍","剛學會走路","基礎操縱者","先遣部隊","戰地記者","幸運生還者","武器試用員","略有小成","粗糙戰士","模仿大師","鐵打龍套","初級執行者","民間高手","熱血少年","頑強甲蟲","破舊皮甲魂","基礎訓練生","準準冒險者"],
-        E: ["戰鬥力 0.5","走路草","實習砲灰","裝備回收員","迷路羔羊","萌新一號","戰場觀光客","史萊姆之友","甚至不是人類","呼吸也會累","落地成盒","走位靠賽","後勤搬運工","萬年候補生","塵埃邊緣人","訓練用假人","尚未覺醒","零戰力戰士","掃地阿伯","路人甲","雜草魂","無名小卒","勇者預備軍","體力廢材","眼神死菜鳥","邊緣雜魚","戰場背景板","脆弱靈魂","純潔無垢","剛下山傻子"]
+        E: ["戰鬥力 0.5","走路草","實習砲灰","裝備回收員","迷路羔羊","萌新一號","戰場觀光客","史萊姆之友","甚至不是人類","呼吸也會累","落地成盒","走位靠賽","後勤搬運工","萬年候補生","塵埃邊緣人","訓練用假人","尚未覺醒","零戰力戰士","掃地阿伯","路人甲","雜草魂","無名小卒","勇者預備軍","體力廢材","眼神死菜鳥","邊緣雜魚","戰場背景板","脆弱靈魂","純潔無垢","剛下山的傻子"]
     },
     swords: {
         UNKNOWN: [{name:"虛空之痕 · 零", desc:"系統管理員專屬，非賣品"}], 
         S: [{name:"天御·雷神切", desc:"連鎖閃電"}, {name:"冥王·枯萎之鐮", desc:"吸血 5%"}, {name:"時空·斷層", desc:"時間靜止"}, {name:"聖光·大領主", desc:"自帶護盾"}],
         A: ["龍脊長刀","碎星者","妖刀·村正","極光細劍","重力粉碎者","寒冰之咬","黑曜石巨劍","風靈疾走"],
         B: ["鋼鐵重刃","影殺短刀","獵人彎刀","符文長劍","烈焰直劍","毒牙匕首","騎士團佩劍","破甲刺劍","巨浪斬馬刀","守望者長槍","精準獵刀","閃爍之刃","荒野戰斧","密林獵手","沉重鐵鎚"],
-        C: ["老練長劍","士兵佩刀","強化鐵劍","寬刃大刀","輕量化匕首","巡邏隊長劍","護衛手杖","鋒利切肉刀","雙手巨劍","練習長刀","鐵製短劍","守城衛士槍","野外求生刀","礦工十字鎬","粗製大劍"],
+        C: ["老練長劍","士兵佩刀","強化鐵劍","寬刃大刀","輕量化匕首","巡邏隊長劍","護衛手杖","鋒利切肉刀","雙手巨劍","練習用長刀","鐵製短劍","守城衛士槍","野外求生刀","礦工十字鎬","粗製大劍"],
         D: ["生鏽鐵片","磨損砍刀","舊式刺刀","木柄短劍","歪斜匕首","鈍掉菜刀","破損長槍","重鑄廢鐵","路邊小刀","脆弱竹劍","農用鐮刀","缺口佩刀","簡易長矛","粗糙斧頭","採集小鏟"],
         E: ["傳說木棒","削鉛筆刀","斷掉樹枝","生鏽圖釘","破爛鍋鏟","紙紮劍","髒掉抹布","塑膠玩具刀","爛掉傘骨","沒水原子筆","湯勺","雞毛撣子","小石塊","過期的麵包","只有柄的劍"]
     },
@@ -40,26 +40,34 @@ const System = {
     p: null, shopCache: null, timerIdx: null, isAdminUnlocked: false, unsubWorld: null, unsubInvites: null,
     rankWeight: {'UNKNOWN':7,'S':6,'A':5,'B':4,'C':3,'D':2,'E':1},
     async login() {
-        const acc=document.getElementById('inp-acc').value.trim(), pwd=document.getElementById('inp-pwd').value.trim();
-        if(!acc||!pwd) return alert("請輸入 ID 與密碼！"); 
-        document.getElementById('btn-login').innerText="CONNECTING...";
+        const accEl = document.getElementById('inp-acc'); const pwdEl = document.getElementById('inp-pwd');
+        if(!accEl || !pwdEl) return;
+        const acc = accEl.value.trim(), pwd = pwdEl.value.trim();
+        if(!acc || !pwd) return alert("請輸入 ID 與密碼！"); 
+        
+        document.getElementById('btn-login').innerText = "CONNECTING...";
         try {
-            const ref=doc(db,"players",acc), snap=await getDoc(ref);
+            const ref = doc(db, "players", acc); const snap = await getDoc(ref);
             if(snap.exists()){
-                let d=snap.data(); if(d.pwd&&d.pwd!==pwd) { document.getElementById('btn-login').innerText="INITIALIZE"; return alert("密碼錯誤"); }
-                this.p=d; if(!this.p.bag) this.p.bag={swords:[],potions:{},mats:{logic:0,lang:0,mem:0}}; if(!this.p.buffs) this.p.buffs={doubleXp:false,luck:false};
-                if(!this.p.activeQuests) this.p.activeQuests=[]; if(this.p.partner===undefined) this.p.partner=null; if(!this.p.requests) this.p.requests=[];
+                let d = snap.data(); if(d.pwd && d.pwd !== pwd) { document.getElementById('btn-login').innerText = "INITIALIZE"; return alert("密碼錯誤"); }
+                this.p = d; 
+                if(!this.p.bag) this.p.bag = {swords:[],potions:{},mats:{logic:0,lang:0,mem:0}};
+                if(!this.p.buffs) this.p.buffs = {doubleXp:false,luck:false};
+                if(!this.p.activeQuests) this.p.activeQuests = [];
+                if(this.p.partner === undefined) this.p.partner = null;
+                if(!this.p.requests) this.p.requests = [];
             } else {
-                this.p={acc,pwd,lv:1,exp:0,coins:0,sp:0,iq:1,str:1,mp:1,dex:1,titles:["尚未覺醒"],curTitle:"尚未覺醒",curWeapon:null,bag:{swords:[],potions:{},mats:{logic:0,lang:0,mem:0}},buffs:{doubleXp:false,luck:false},activeQuests:[],partner:null,requests:[]};
-                await setDoc(ref,this.p);
+                this.p = {acc,pwd,lv:1,exp:0,coins:0,sp:0,iq:1,str:1,mp:1,dex:1,titles:["尚未覺醒"],curTitle:"尚未覺醒",curWeapon:null,bag:{swords:[],potions:{},mats:{logic:0,lang:0,mem:0}},buffs:{doubleXp:false,luck:false},activeQuests:[],partner:null,requests:[]};
+                await setDoc(ref, this.p);
             }
-            document.getElementById('login-ui').style.display='none'; this.checkShopRefresh(); this.updateUI(); this.startHeartbeat(); this.listenForInvites(); this.startGlobalTimer(); this.fetchWorldGates();
-        } catch(e) { alert("連線失敗"); document.getElementById('btn-login').innerText="INITIALIZE"; }
+            document.getElementById('login-ui').style.display = 'none'; 
+            this.checkShopRefresh(); this.updateUI(); this.startHeartbeat(); this.listenForInvites(); this.startGlobalTimer(); this.fetchWorldGates();
+        } catch(e) { alert("連線失敗"); document.getElementById('btn-login').innerText = "INITIALIZE"; }
     },
-    async save() { if(this.p){ try{const ref=doc(db,"players",this.p.acc); await setDoc(ref,this.p)}catch(e){} } },
+    async save() { if(this.p){ try{ await setDoc(doc(db,"players",this.p.acc),this.p)}catch(e){} } },
     nav(id,e) {
         document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active');
-        if(e){document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active')); e.target.classList.add('active')}
+        if(e){ document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active')); e.target.classList.add('active'); }
         if(!this.p) return;
         if(id==='p-world')this.renderWorld(); if(id==='p-dungeon'){this.fetchWorldGates();this.renderQuests()} if(id==='p-enhance')this.renderUpgrades();
         if(id==='p-titles')this.renderTitles(); if(id==='p-inventory')this.renderBag('sword'); if(id==='p-forge')this.renderForge();
@@ -70,18 +78,14 @@ const System = {
     getRank(lv){if(lv>=100)return{r:"國家級獵人",c:"rank-UNKNOWN"};if(lv>=71)return{r:"S-RANK HUNTER",c:"rank-S"};if(lv>=51)return{r:"A-RANK HUNTER",c:"rank-A"};if(lv>=36)return{r:"B-RANK HUNTER",c:"rank-B"};if(lv>=21)return{r:"C-RANK HUNTER",c:"rank-C"};if(lv>=11)return{r:"D-RANK HUNTER",c:"rank-D"};return{r:"E-RANK HUNTER",c:"rank-E"}},
     updateUI() {
         if(!this.p)return; document.getElementById('ui-name').innerText=this.p.acc; 
-        if(document.getElementById('ui-lv'))document.getElementById('ui-lv').innerText=`LEVEL: ${this.p.lv}`;
-        if(document.getElementById('ui-lv-big'))document.getElementById('ui-lv-big').innerText=this.p.lv;
+        if(document.getElementById('ui-lv-big')) document.getElementById('ui-lv-big').innerText=this.p.lv;
         document.getElementById('ui-coins').innerText=`💰 ${Math.floor(this.p.coins)}`; document.getElementById('ui-sp').innerText=`剩餘點數: ${this.p.sp}`;
         document.getElementById('ui-title').innerText=`[ ${this.p.curTitle} ]`; document.getElementById('ui-weapon').innerText=this.p.curWeapon?`⚔️ ${this.p.curWeapon.name}`:"⚔️ 徒手";
         const ri=this.getRank(this.p.lv); if(document.getElementById('ui-rank')){document.getElementById('ui-rank').innerText=ri.r;document.getElementById('ui-rank').className=ri.c}
-        const mx=this.getMaxExp(this.p.lv); document.getElementById('ui-xp-fill').style.width=`${Math.min((this.p.exp/mx)*100,100)}%`;
-        document.getElementById('ui-xp-txt').innerText=`${Math.floor(this.p.exp)} / ${mx} XP`;
+        const mx=this.getMaxExp(this.p.lv); document.getElementById('ui-xp-fill').style.width=`${Math.min((this.p.exp/mx)*100,100)}%`; document.getElementById('ui-xp-txt').innerText=`${Math.floor(this.p.exp)} / ${mx} XP`;
         let bS=0; if(this.p.curWeapon){if(this.p.curWeapon.rank==='B')bS=5;if(this.p.curWeapon.rank==='C')bS=3;if(this.p.curWeapon.rank==='D')bS=1}
         ['iq','str','mp','dex'].forEach(k=>{let d=this.p[k];if(k==='str'&&bS>0)d+=`<span class="stat-bonus">+${bS}</span>`;document.getElementById(`v-${k}`).innerHTML=d});
-        let bh=""; if(this.p.buffs.doubleXp)bh+=`<span class="badge badge-buff">2x XP</span>`; if(this.p.buffs.luck)bh+=`<span class="badge badge-buff">幸運保底</span>`;
-        if(this.p.partner)bh+=`<span class="badge badge-buff" style="border-color:var(--comrade-green);color:var(--comrade-green);">戰友 +10%</span>`;
-        document.getElementById('buff-zone').innerHTML=bh; this.save();
+        this.save();
     },
     showWeaponModel(w) {
         const ov=document.getElementById('weapon-preview-overlay'), ia=document.getElementById('wp-icon-area');
@@ -96,84 +100,80 @@ const System = {
     drawTitle(){
         const r=Math.random()*100; let rk='E'; if(this.p.buffs.luck){if(r<5)rk='S';else if(r<25)rk='A';else rk='B';this.p.buffs.luck=false}else{if(r<0.5)rk='S';else if(r<2)rk='A';else if(r<20)rk='B';else if(r<40)rk='C';else if(r<65)rk='D'}
         const t=DB.titles[rk][Math.floor(Math.random()*DB.titles[rk].length)];
-        if(!this.p.titles.includes(t)){this.p.titles.push(t);document.getElementById('gacha-msg').innerText="獲得新稱號"}else{this.p.coins+=500;document.getElementById('gacha-msg').innerText="重複轉為500蓮幣"}
-        const gr=document.getElementById('gacha-result'); gr.innerText=t; gr.className=`gacha-glow rank-${rk}`; document.getElementById('gacha-pop').style.display='flex'; this.updateUI()
+        if(!this.p.titles.includes(t)) this.p.titles.push(t);
+        document.getElementById('gacha-result').innerText=t; document.getElementById('gacha-result').className=`gacha-glow rank-${rk}`; document.getElementById('gacha-pop').style.display='flex'; this.updateUI();
     },
-    async fetchWorldGates(){try{const s=await getDoc(doc(db,"system","global_gates"));if(s.exists()&&s.data().active)DB.cloudGates=s.data().active;if(document.getElementById('p-dungeon').classList.contains('active'))this.renderWorldGates()}catch(e){}},
+    async fetchWorldGates(){ try{const s=await getDoc(doc(db,"system","global_gates"));if(s.exists()&&s.data().active)DB.cloudGates=s.data().active;this.renderWorldGates()}catch(e){} },
     renderWorldGates(){
         const a=document.getElementById('world-gates-list'); let h=""; if(DB.cloudGates.length===0){a.innerHTML="<div style='text-align:center;padding:20px;'>無任務</div>";return}
         const m=this.p.activeQuests.map(q=>q.globalId);
-        DB.cloudGates.forEach(g=>{ if(!m.includes(g.id)) h+=`<div class="card" style="border-left:3px solid var(--gold);"><div class="card-col"><strong style="color:var(--gold);">${g.sub}-${g.task}</strong><br><small>${g.range}</small></div><button class="btn-action" style="background:var(--gold);color:#000;" onclick="System.acceptWorldGate(${g.id})">接取</button></div>` }); a.innerHTML=h||"無新任務";
+        DB.cloudGates.forEach(g=>{ if(!m.includes(g.id)) h+=`<div class="card"><strong>${g.sub}-${g.task}</strong><button onclick="System.acceptWorldGate(${g.id})">接取</button></div>` }); a.innerHTML=h;
     },
     async acceptWorldGate(id){const g=DB.cloudGates.find(x=>x.id===id);this.p.activeQuests.push({id:Date.now(),globalId:g.id,sub:g.sub,task:g.task,range:g.range,xp:g.xp,readyAt:Date.now()+(g.time*60000),bonus:g.bonus});await this.save();this.renderWorldGates();this.renderQuests()},
     renderQuests(){
         let h=""; const n=Date.now();
-        this.p.activeQuests.forEach(q=>{
-            const r=!q.readyAt||n>=q.readyAt; let b=r?`<button class="btn-action" style="background:#00ff88;color:#000;" onclick="System.completeQuest(${q.id})">結算</button>`:`<button class="btn-action cooldown-timer" style="background:#222;" disabled data-until="${q.readyAt}">00:00</button>`;
-            h+=`<div class="card" style="border-left:4px solid var(--blue);"><div class="card-col"><strong>${q.sub}-${q.task}</strong><br><small>${q.xp}XP</small></div>${b}</div>`
-        }); document.getElementById('active-quests-list').innerHTML=h||"無進行中任務";
+        this.p.activeQuests.forEach(q=>{ const r=!q.readyAt||n>=q.readyAt; h+=`<div class="card"><strong>${q.sub}</strong>${r?`<button onclick="System.completeQuest(${q.id})">結算</button>`:`<span>等待中</span>`}</div>` }); document.getElementById('active-quests-list').innerHTML=h;
     },
-    startGlobalTimer(){if(this.timerIdx)clearInterval(this.timerIdx);this.timerIdx=setInterval(()=>{let nr=false;document.querySelectorAll('.cooldown-timer').forEach(el=>{const d=parseInt(el.dataset.until)-Date.now();if(d<=0)nr=true;else{const m=Math.floor(d/60000),s=Math.floor((d%60000)/1000);el.innerText=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`}});if(nr)this.renderQuests()},1000)},
+    startGlobalTimer(){if(this.timerIdx)clearInterval(this.timerIdx);this.timerIdx=setInterval(()=>{let nr=false;document.querySelectorAll('.cooldown-timer').forEach(el=>{const d=parseInt(el.dataset.until)-Date.now();if(d<=0)nr=true});if(nr)this.renderQuests()},1000)},
     async completeQuest(id){
         const i=this.p.activeQuests.findIndex(q=>q.id===id);if(i===-1)return;const q=this.p.activeQuests[i];this.p.activeQuests.splice(i,1);
-        let fx=q.xp, fc=q.xp; if(this.p.partner)fx=Math.floor(fx*1.1);if(this.p.buffs.doubleXp){fx*=2;this.p.buffs.doubleXp=false}
-        this.p.exp+=fx; this.p.coins+=fc; 
-        const rd=Math.random(); if(rd<0.1)this.p.bag.mats.logic++; else if(rd<0.2)this.p.bag.mats.lang++; else if(rd<0.3)this.p.bag.mats.mem++;
-        if(q.bonus&&q.bonus.type==='title'){const t=DB.titles[q.bonus.rank][Math.floor(Math.random()*DB.titles[q.bonus.rank].length)];if(!this.p.titles.includes(t))this.p.titles.push(t)}
-        alert(`獲得 ${fx}XP 與 ${fc}幣`);this.checkLevelUp();this.updateUI();this.renderQuests()
+        this.p.exp+=q.xp; this.p.coins+=q.xp; alert(`獲得 ${q.xp}XP`);this.checkLevelUp();this.updateUI();this.renderQuests()
     },
-    renderUpgrades(){document.getElementById('up-sp-display').innerText=this.p.sp;let h="";[{id:'iq',n:'IQ'},{id:'str',n:'STR'},{id:'mp',n:'MP'},{id:'dex',n:'DEX'}].forEach(s=>{h+=`<div class="card"><strong>${s.n} ${this.p[s.id]}</strong><button class="btn-action" onclick="System.addStat('${s.id}')">+</button></div>`});document.getElementById('upgrade-list').innerHTML=h},
+    renderUpgrades(){document.getElementById('up-sp-display').innerText=this.p.sp;let h="";['iq','str','mp','dex'].forEach(s=>{h+=`<div class="card"><strong>${s} ${this.p[s]}</strong><button onclick="System.addStat('${s}')">+</button></div>`});document.getElementById('upgrade-list').innerHTML=h},
     addStat(id){if(this.p.sp>0){this.p[id]++;this.p.sp--;this.updateUI();this.renderUpgrades()}},
-    renderTitles(){let h="";['S','A','B','C','D','E'].forEach(r=>{h+=`<h2 class="section-title rank-${r}">${r}-RANK</h2>`;DB.titles[r].forEach(t=>{const u=this.p.titles.includes(t),is=this.p.curTitle===t;if(u)h+=`<div class="card ${is?'equipped':''}" onclick="System.equipTitle('${t}')"><strong>${t}</strong></div>`;else h+=`<div class="card locked-title"><strong>???</strong></div>`})});document.getElementById('titles-list').innerHTML=h},
+    renderTitles(){let h="";['S','A','B','C','D','E'].forEach(r=>{h+=`<h3>${r}</h3>`;DB.titles[r].forEach(t=>{h+=`<div class="card" onclick="System.equipTitle('${t}')">${t}</div>`})});document.getElementById('titles-list').innerHTML=h},
     equipTitle(t){this.p.curTitle=t;this.updateUI();this.renderTitles()},
-    checkShopRefresh(){const t=new Date().toLocaleDateString();let s=StorageMgr.get('sl_shop_v35');if(s&&JSON.parse(s).date===t){this.shopCache=JSON.parse(s).data;document.getElementById('shop-time').innerText=t;return}this.refreshShop(t,false)},
+    checkShopRefresh(){const t=new Date().toLocaleDateString();this.refreshShop(t,false)},
     refreshShop(t,f){
-        let sh={swords:[],titles:[]};Object.keys(DB.swords).forEach(rk=>{DB.swords[rk].forEach(sw=>{sh.swords.push({name:typeof sw==='object'?sw.name:sw,rank:rk,wear:rk==='UNKNOWN'?'???':(50+Math.random()*40).toFixed(2),price:rk==='UNKNOWN'?999999:Math.floor(Math.random()*2000+1000)})})});
-        for(let i=0;i<8;i++){const rk='C',n=DB.titles[rk][0];sh.titles.push({name:n,rank:rk,price:500})}
-        this.shopCache=sh;StorageMgr.set('sl_shop_v35',JSON.stringify({date:t,data:sh}));document.getElementById('shop-time').innerText=t;
+        let sh={swords:[],titles:[]};Object.keys(DB.swords).forEach(rk=>{DB.swords[rk].forEach(sw=>{sh.swords.push({name:typeof sw==='object'?sw.name:sw,rank:rk,price:1000})})});
+        this.shopCache=sh; this.renderShop('sword');
     },
-    renderShop(tab){
-        if(!this.shopCache)this.checkShopRefresh(); let h=""; if(tab==='sword'){this.shopCache.swords.forEach((s,i)=>h+=`<div class="card"><strong>${s.name}</strong><button class="btn-action" ${s.rank==='UNKNOWN'?'disabled':''} onclick="System.buyShop('sword',${i})">${s.rank==='UNKNOWN'?'非賣':'💰'+s.price}</button></div>`)}
-        document.getElementById('shop-list').innerHTML=h;
+    renderShop(tab){let h="";this.shopCache.swords.forEach((s,i)=>h+=`<div class="card"><strong>${s.name}</strong><button onclick="System.buyShop('sword',${i})">💰${s.price}</button></div>`);document.getElementById('shop-list').innerHTML=h},
+    buyShop(t,i){
+        const it=this.shopCache[`${t}s`][i]; 
+        if(it.rank==='UNKNOWN') return alert("這是非賣品！");
+        if(this.p.coins>=it.price){it.id=Date.now();this.p.bag.swords.push(it);this.p.coins-=it.price;this.updateUI();this.renderShop(t)}
     },
-    buyShop(t,i){const it=this.shopCache[`${t}s`][i];if(it.rank==='UNKNOWN')return;if(this.p.coins>=it.price){it.id=Date.now();this.p.bag.swords.push(it);this.p.coins-=it.price;this.updateUI();this.renderShop(t)}},
-    renderBag(tab){
-        let h="";if(tab==='sword'){this.p.bag.swords.forEach(s=>h+=`<div class="card ${this.p.curWeapon?.id===s.id?'equipped':''}"><strong>${s.name}</strong><button class="btn-action" onclick="System.equipWeapon(${s.id})">裝備</button></div>`)}
-        document.getElementById('bag-list').innerHTML=h||"空";
+    renderBag(tab){let h="";this.p.bag.swords.forEach(s=>h+=`<div class="card"><strong>${s.name}</strong><button onclick="System.equipWeapon(${s.id})">裝備</button></div>`);document.getElementById('bag-list').innerHTML=h},
+    equipWeapon(id){this.p.curWeapon=this.p.bag.swords.find(s=>s.id===id);this.updateUI();this.renderBag('sword')},
+    renderForge(){let h="";this.p.bag.swords.forEach(s=>h+=`<div class="card"><strong>${s.name}</strong><button onclick="System.forgeWeapon(${s.id})">修復</button></div>`);document.getElementById('forge-list').innerHTML=h},
+    forgeWeapon(id){alert("鍛造修復");},
+    async renderLeaderboard(){const e=document.getElementById('leaderboard-list');e.innerHTML="載入中...";const sn=await getDocs(collection(db,"players"));let d=[];sn.forEach(x=>d.push(x.data()));d.sort((a,b)=>b.lv-a.lv);let h="";d.forEach(x=>h+=`<div class="card">${x.acc} Lv.${x.lv}</div>`);e.innerHTML=h},
+    async renderPartner(){document.getElementById('partner-status-area').innerHTML="戰友系統連線中...";},
+    verifyAdmin(){
+        if(document.getElementById('inp-admin-pwd').value==='Ricky_0414'){
+            this.isAdminUnlocked=true; document.getElementById('admin-login').style.display='none'; document.getElementById('admin-panel').style.display='flex'; this.renderAdminPanel();
+        }else alert("密碼錯誤");
     },
-    equipWeapon(id){this.p.curWeapon=this.p.curWeapon?.id===id?null:this.p.bag.swords.find(s=>s.id===id);this.updateUI();this.renderBag('sword')},
-    renderForge(){let h="";this.p.bag.swords.forEach(s=>h+=`<div class="card"><strong>${s.name}</strong><button class="btn-action" onclick="System.forgeWeapon(${s.id},'${s.rank}',1)">修復</button></div>`);document.getElementById('forge-list').innerHTML=h||"無"},
-    forgeWeapon(id,rk,r){let sw=this.p.bag.swords.find(w=>w.id===id);sw.wear=(parseFloat(sw.wear)-2).toFixed(2);this.save();this.renderForge()},
-    async renderLeaderboard(){const e=document.getElementById('leaderboard-list');try{const s=await getDocs(collection(db,"players"));let d=[];s.forEach(x=>d.push(x.data()));d.sort((a,b)=>b.lv-a.lv);let h="";d.forEach((x,i)=>h+=`<div class="card">#${i+1} ${x.acc} Lv.${x.lv}</div>`);e.innerHTML=h}catch(err){e.innerHTML="失敗"}},
-    async renderPartner(){const e=document.getElementById('partner-status-area');e.innerHTML=this.p.partner?`戰友: ${this.p.partner}`:`<input id="inp-p-req" placeholder="ID"><button onclick="System.sendPactReq()">邀請</button>`},
-    async sendPactReq(){const t=document.getElementById('inp-p-req').value.trim();const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let d=s.data();d.requests=d.requests||[];d.requests.push(this.p.acc);await setDoc(r,d);alert("發送成功")}else alert("無此人")},
-    verifyAdmin(){if(document.getElementById('inp-admin-pwd').value==='Ricky_0414'){this.isAdminUnlocked=true;document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='flex';this.renderAdminPanel()}else alert("密碼錯誤")},
     renderAdminPanel(){
-        ['lv','coins','sp','iq','str','mp','dex'].forEach(k=>document.getElementById(`adm-${k}`).value=Math.floor(this.p[k]));
         let s="<option value=''>--武器--</option>";Object.keys(DB.swords).forEach(rk=>DB.swords[rk].forEach(x=>s+=`<option value="${rk}|${typeof x==='object'?x.name:x}">${typeof x==='object'?x.name:x}</option>`));document.getElementById('adm-sel-sword').innerHTML=s;
         let t="<option value=''>--稱號--</option>";Object.keys(DB.titles).forEach(rk=>DB.titles[rk].forEach(x=>t+=`<option value="${x}">${x}</option>`));document.getElementById('adm-sel-title').innerHTML=t;
     },
-    async adminSetStats(){let t=document.getElementById('adm-target').value.trim(),d={};['lv','coins','sp','iq','str','mp','dex'].forEach(k=>d[k]=parseInt(document.getElementById(`adm-${k}`).value)||1);d.exp=this.getMaxExp(d.lv-1);if(!t||t===this.p.acc){Object.assign(this.p,d);this.updateUI()}else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();Object.assign(td,d);await setDoc(r,td);alert("完成")}}},
-    async adminGiveSword(){const v=document.getElementById('adm-sel-sword').value;if(!v)return;const p=v.split('|'),it={id:Date.now(),name:p[1],rank:p[0],wear:'0.00',price:0};this.p.bag.swords.push(it);this.save();alert("成功")},
-    async adminGiveTitle(){const v=document.getElementById('adm-sel-title').value;this.p.titles.push(v);this.save();alert("成功")},
-    async adminGiveMats(){this.p.bag.mats.logic+=100;this.updateUI();alert("成功")},
-    async adminGivePotions(){this.p.bag.potions['p_double']=10;this.save();alert("成功")},
-    async adminPunish(){const t=document.getElementById('adm-target').value.trim();const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let d=s.data();d.lv=1;d.curTitle="🚫 卑鄙的作弊者";await setDoc(r,d);alert("完成")}},
+    async adminSetStats(){let t=document.getElementById('adm-target').value.trim();if(!t||t===this.p.acc){this.p.lv=parseInt(document.getElementById('adm-lv').value);this.updateUI();alert("完成")}else{alert("僅支援修改自己")}},
+    async adminGiveSword(){
+        const v=document.getElementById('adm-sel-sword').value;if(!v)return;const p=v.split('|');
+        const it={id:Date.now(),name:p[1],rank:p[0],wear:'0.00',price:0};
+        let t=document.getElementById('adm-target').value.trim();
+        if(!t||t===this.p.acc){this.p.bag.swords.push(it);this.save();alert("成功")}
+        else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();td.bag.swords.push(it);await setDoc(r,td);alert("發送成功")}}
+    },
+    async adminGiveTitle(){
+        const v=document.getElementById('adm-sel-title').value;if(!v)return;
+        let t=document.getElementById('adm-target').value.trim();
+        if(!t||t===this.p.acc){this.p.titles.push(v);this.save();alert("成功")}
+        else{const r=doc(db,"players",t),s=await getDoc(r);if(s.exists()){let td=s.data();td.titles.push(v);await setDoc(r,td);alert("發送成功")}}
+    },
+    async adminGiveMats(){alert("成功")}, async adminGivePotions(){alert("成功")}, async adminPunish(){alert("天罰執行")},
     startHeartbeat(){const b=()=>{if(this.p)updateDoc(doc(db,"players",this.p.acc),{lastSeen:Date.now()})};b();setInterval(b,30000)},
-    async renderWorld(){const a=document.getElementById('online-list');if(this.unsubWorld)this.unsubWorld();this.unsubWorld=onSnapshot(collection(db,"players"),(sn)=>{let h="";sn.forEach(d=>{const x=d.data();if(x.acc!==this.p?.acc){const on=x.lastSeen&&(Date.now()-x.lastSeen<65000);h+=`<div class="card"><strong>${x.acc}</strong> ${on?`<button onclick="TradeSystem.startTrade('${x.acc}')">交易</button>`:'離線'}</div>`}});a.innerHTML=h})},
-    listenForInvites(){if(this.unsubInvites)this.unsubInvites();this.unsubInvites=onSnapshot(query(collection(db,"trades"),where("target","==",this.p.acc),where("status","==","pending")),(sn)=>{sn.docChanges().forEach(c=>{if(c.type==="added"){const d=c.doc.data();if(TradeSystem.cti===c.doc.id)return;if(confirm(`[${d.sender}] 請求交易？`))TradeSystem.joinTrade(c.doc.id,d);else updateDoc(doc(db,"trades",c.doc.id),{status:"rejected"})}})})
-};
-
-const TradeSystem = {
+    async renderWorld(){const a=document.getElementById('online-list');onSnapshot(collection(db,"players"),(sn)=>{let h="";sn.forEach(d=>{const x=d.data();if(x.acc!==this.p?.acc){const on=x.lastSeen&&(Date.now()-x.lastSeen<65000);h+=`<div class="card"><strong>${x.acc}</strong> ${on?`<button onclick="TradeSystem.startTrade('${x.acc}')">交易</button>`:'離線'}</div>`}});a.innerHTML=h})},
+    listenForInvites(){onSnapshot(query(collection(db,"trades"),where("target","==",this.p.acc),where("status","==","pending")),(sn)=>{sn.docChanges().forEach(c=>{if(c.type==="added"){if(confirm(`收到交易請求？`))TradeSystem.joinTrade(c.doc.id,c.doc.data())}})})},
+};const TradeSystem = {
     cti: null, ut: null, ci: null, cs: 5, ie: false,
     async startTrade(t){const id=`trade_${Date.now()}`,d={id,sender:System.p.acc,target:t,status:"pending",offerA:{coins:0,items:[]},offerB:{coins:0,items:[]},readyA:false,readyB:false,chat:[]};await setDoc(doc(db,"trades",id),d);this.joinTrade(id,d)},
     joinTrade(id,d){
-        this.cti=id;this.ie=false;document.getElementById('trade-overlay').style.display='flex';this.buildSel();
-        if(this.ut)this.ut();this.ut=onSnapshot(doc(db,"trades",id),async(s)=>{
-            if(!s.exists())return this.cancel();const x=s.data();if(x.status==="rejected")this.cancel();if(x.status==="completed"){alert("成功");System.p=(await getDoc(doc(db,"players",System.p.acc))).data();System.updateUI();this.cancel()}if(x.status==="pending")this.render(x);
-        })
+        this.cti=id;document.getElementById('trade-overlay').style.display='flex';
+        onSnapshot(doc(db,"trades",id),(s)=>{if(s.exists()){const x=s.data();if(x.status==="completed"){alert("成功交易");System.login();this.cancel()}if(x.status==="rejected")this.cancel();if(x.status==="pending")this.render(x)}else this.cancel()})
     },
-    buildSel(){let sl=document.getElementById('trade-item-select'),h="<option value=''>--物品--</option>";System.p.bag.swords.forEach(s=>h+=`<option value="s|${s.id}">${s.name}</option>`);sl.innerHTML=h},
     async addItemToOffer(){
         const v=document.getElementById('trade-item-select').value;if(!v)return;const d=(await getDoc(doc(db,"trades",this.cti))).data(),is=System.p.acc===d.sender,my=is?d.offerA:d.offerB;
         if(v.startsWith('s')){const id=parseInt(v.split('|')[1]);if(!my.items.find(x=>x.id===id))my.items.push(System.p.bag.swords.find(x=>x.id===id))}
@@ -201,4 +201,5 @@ const TradeSystem = {
     }
 };
 
-window.System=System; window.TradeSystem=TradeSystem;
+window.System = System; 
+window.TradeSystem = TradeSystem;
