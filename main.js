@@ -2,8 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot, query, where, updateDoc, arrayUnion, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = { apiKey: "AIzaSyDfaC7sWiz--IXnOQq9Qw0ICNDT8MpZE5o", authDomain: "solo-leveling-server.firebaseapp.com", projectId: "solo-leveling-server", storageBucket: "solo-leveling-server.firebasestorage.app", messagingSenderId: "979607975137", appId: "1:979607975137:web:70224f438280bafebf73a0", measurementId: "G-8E64C4CNSZ" };
-const app = initializeApp(firebaseConfig); 
-const db = getFirestore(app);
+const app = initializeApp(firebaseConfig); const db = getFirestore(app);
 
 const SWORD_MODELS = {
     SWORD: `<svg class="weapon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 3L21 9.5M10.5 7L17 13.5M3 21L11 13M10 21L12 19M19 10L21 8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -13,6 +12,7 @@ const SWORD_MODELS = {
     AXE: `<svg class="weapon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10L3 21M14 10L21 3M14 10L21 17L17 21L10 14Z" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 };
 
+// 壓縮資料庫以防代碼中斷
 const DB = {
     titles: {
         S: "創世神：萬象起源,虛空之王：秩序崩壞者,因果律：命運編織者,永恆傳說：不朽之冠,唯一神：降臨之光".split(","),
@@ -23,8 +23,8 @@ const DB = {
         E: "戰鬥力 0.5,走路草,實習砲灰,裝備回收員,迷路羔羊,萌新一號,戰場觀光客,史萊姆之友,甚至不是人類,呼吸也會累,落地成盒,走位靠賽,後勤搬運工,萬年候補生,塵埃邊緣人,訓練用假人,尚未覺醒,零戰力戰士,掃地阿伯,路人甲,雜草魂,無名小卒,勇者預備軍,體力廢材,眼神死菜鳥,邊緣雜魚,戰場背景板,脆弱靈魂,純潔無垢,剛下山的傻子".split(",")
     },
     swords: {
-        UNKNOWN: [{name:"虛空之痕 · 零", desc:"系統管理員專屬，非賣品"}], 
-        S: [{name:"天御·雷神切", desc:"攻擊附帶連鎖閃電"}, {name:"冥王·枯萎之鐮", desc:"擊中吸取 5% 生命值"}, {name:"時空·斷層", desc:"機率觸發「時間靜止」1 秒"}, {name:"聖光·大領主", desc:"對暗屬性雙倍傷害，自帶護盾"}],
+        UNKNOWN: [{name:"虛空之痕 · 零", desc:"非賣品"}], 
+        S: [{name:"天御·雷神切", desc:"連鎖閃電"}, {name:"冥王·枯萎之鐮", desc:"吸血 5%"}, {name:"時空·斷層", desc:"時間靜止"}, {name:"聖光·大領主", desc:"自帶護盾"}],
         A: "龍脊長刀,碎星者,妖刀·村正,極光細劍,重力粉碎者,寒冰之咬,黑曜石巨劍,風靈疾走".split(","),
         B: "鋼鐵重刃,影殺短刀,獵人彎刀,符文長劍,烈焰直劍,毒牙匕首,騎士團佩劍,破甲刺劍,巨浪斬馬刀,守望者長槍,精準獵刀,閃爍之刃,荒野戰斧,密林獵手,沉重鐵鎚".split(","),
         C: "老練長劍,士兵佩刀,強化鐵劍,寬刃大刀,輕量化匕首,巡邏隊長劍,護衛手杖,鋒利切肉刀,雙手巨劍,練習用長刀,鐵製短劍,守城衛士槍,野外求生刀,礦工十字鎬,粗製大劍".split(","),
@@ -35,10 +35,7 @@ const DB = {
     cloudGates: []
 };
 
-const StorageMgr = { 
-    get(k){ try{ return localStorage.getItem(k); } catch(e){ return null; } }, 
-    set(k,v){ try{ localStorage.setItem(k,v); } catch(e){} } 
-};
+const StorageMgr = { get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}} };
 
 const System = {
     p: null, shopCache: null, timerIdx: null, isAdminUnlocked: false, unsubWorld: null, unsubInvites: null,
@@ -87,45 +84,36 @@ const System = {
     updateUI() {
         if(!this.p)return; 
         document.getElementById('ui-name').innerText=this.p.acc; 
-        if(document.getElementById('ui-lv-small')) document.getElementById('ui-lv-small').innerText=`LEVEL: ${this.p.lv}`;
         if(document.getElementById('ui-lv-big')) document.getElementById('ui-lv-big').innerText=this.p.lv;
         document.getElementById('ui-coins').innerText=`💰 ${Math.floor(this.p.coins)}`; document.getElementById('ui-sp').innerText=`剩餘點數: ${this.p.sp}`;
-        document.getElementById('ui-title').innerText=`[ ${this.p.curTitle} ]`; document.getElementById('ui-weapon').innerText=this.p.curWeapon?`⚔️ ${this.p.curWeapon.name} [${this.p.curWeapon.rank}]`:"⚔️ 徒手";
+        document.getElementById('ui-title').innerText=`[ ${this.p.curTitle} ]`; document.getElementById('ui-weapon').innerText=this.p.curWeapon?`⚔️ ${this.p.curWeapon.name}`:"⚔️ 徒手";
         
         const ri=this.getRank(this.p.lv); if(document.getElementById('ui-rank')){document.getElementById('ui-rank').innerText=ri.r;document.getElementById('ui-rank').className=ri.c}
         const mx=this.getMaxExp(this.p.lv); document.getElementById('ui-xp-fill').style.width=`${Math.min((this.p.exp/mx)*100,100)}%`; document.getElementById('ui-xp-txt').innerText=`${Math.floor(this.p.exp)} / ${mx} XP`;
         
         let bS=0; if(this.p.curWeapon){if(this.p.curWeapon.rank==='B')bS=5;if(this.p.curWeapon.rank==='C')bS=3;if(this.p.curWeapon.rank==='D')bS=1}
         ['iq','str','mp','dex'].forEach(k=>{let d=this.p[k];if(k==='str'&&bS>0)d+=`<span class="stat-bonus" style="color:var(--gold)">+${bS}</span>`;document.getElementById(`v-${k}`).innerHTML=d});
-        
-        let bh=""; if(this.p.buffs.doubleXp)bh+=`<span class="badge badge-buff">2x XP</span>`; if(this.p.buffs.luck)bh+=`<span class="badge badge-buff">幸運保底</span>`;
-        if(this.p.partner)bh+=`<span class="badge badge-buff" style="border-color:var(--comrade-green);color:var(--comrade-green);">戰友 +10%</span>`;
-        document.getElementById('buff-zone').innerHTML=bh; this.save();
+        this.save();
     },
 
     getWeaponModelType(name) { if(name.includes('匕首')||name.includes('短刀')||name.includes('小刀')) return 'DAGGER'; if(name.includes('重刃')||name.includes('巨劍')||name.includes('大劍')||name.includes('鐵鎚')||name.includes('大刀')||name.includes('斧')) return 'HEAVY'; if(name.includes('槍')||name.includes('矛')||name.includes('刺刀')) return 'SPEAR'; return 'SWORD'; },
     
-    // 🔥 全息投影特效修復
+    // 🎨 特效修復：武器預覽特效
     showWeaponModel(w) {
-        const ov = document.getElementById('weapon-preview-overlay'), ia = document.getElementById('wp-icon-area');
-        document.getElementById('wp-name').innerText = w.name; 
-        const rt = document.getElementById('wp-rank-tag');
-        rt.innerText = `${w.rank}-RANK`; rt.className = `rank-${w.rank}`; 
-        document.getElementById('wp-desc').innerText = w.desc || "這是一把注入魔力的兵器。";
-        
-        let c = "#00d4ff"; if(w.rank==='S') c="#ffd700"; if(w.rank==='A') c="#bc13fe"; if(w.rank==='C'||w.rank==='D'||w.rank==='E') c="#aaaaaa"; if(w.rank==='UNKNOWN') c="#ff0055";
-        
-        const type = this.getWeaponModelType(w.name);
-        ia.innerHTML = SWORD_MODELS[type]; 
-        const svg = ia.querySelector('svg'); 
-        svg.style.color = c; 
-        svg.classList.add('weapon-svg'); // 這一行加上去，刀就會跟著 CSS 一起浮動發光了！
-        svg.classList.add(`rank-${w.rank}`); 
-        ov.style.display = 'flex';
+        const ov=document.getElementById('weapon-preview-overlay'), ia=document.getElementById('wp-icon-area');
+        document.getElementById('wp-name').innerText=w.name; const rt=document.getElementById('wp-rank-tag');
+        rt.innerText=`${w.rank}-RANK`; rt.className=`rank-${w.rank}`; document.getElementById('wp-desc').innerText=w.desc||"魔力兵器。";
+        let c="#00d4ff"; if(w.rank==='S')c="#ffd700"; if(w.rank==='A')c="#bc13fe"; if(w.rank==='UNKNOWN')c="#ff0055";
+        const type=this.getWeaponModelType(w.name);
+        ia.innerHTML=SWORD_MODELS[type]; 
+        const svg = ia.querySelector('svg');
+        svg.style.color=c; 
+        svg.classList.add('weapon-svg'); 
+        svg.classList.add(`rank-${w.rank}`); // 恢復光暈 CSS 綁定
+        ov.style.display='flex';
     },
 
     inspectCurrentWeapon(){if(this.p.curWeapon)this.showWeaponModel(this.p.curWeapon);else alert("目前赤手空拳")},
-    
     checkLevelUp(){let m=this.getMaxExp(this.p.lv);while(this.p.exp>=m){this.p.exp-=m;this.p.lv++;this.p.sp+=3;this.p.iq++;this.p.str++;this.p.mp++;this.p.dex++;if(this.p.lv<=50&&this.p.lv%2===0)this.drawTitle();m=this.getMaxExp(this.p.lv)}},
     
     drawTitle(){
@@ -153,19 +141,18 @@ const System = {
 
     async acceptWorldGate(id){const g=DB.cloudGates.find(x=>x.id===id);this.p.activeQuests.push({id:Date.now(),globalId:g.id,sub:g.sub,task:g.task,range:g.range,xp:g.xp,readyAt:Date.now()+(g.time*60000),bonus:g.bonus});await this.save();this.renderWorldGates();this.renderQuests()},
     
-    // 🔥 時間限制 UI 與倒數計時器修復
+    // 🎨 特效修復：地下城計時器與按鈕外觀
     renderQuests(){
         let h=""; const n=Date.now();
-        this.p.activeQuests.forEach(q=>{ 
+        this.p.activeQuests.forEach(q=>{
             const isReady = !q.readyAt||n>=q.readyAt; 
-            // 這裡把倒數計時器的 HTML 結構補回來了！
-            let btn = isReady ? `<button class="btn-action" style="background:#00ff88;color:#000;" onclick="System.completeQuest(${q.id})">結算</button>` : `<button class="btn-action cooldown-timer" style="background:#222;border:1px solid #444;" disabled data-until="${q.readyAt}">00:00</button>`;
-            h+=`<div class="card" style="border-left:4px solid var(--blue);"><div class="card-col"><strong style="color:#fff;">${q.sub}-${q.task}</strong><span style="color:#888;font-size:11px;">${q.range} | ${q.xp}XP</span></div>${btn}</div>`;
+            let btn = isReady ? `<button class="btn-action" style="background:#00ff88;color:#000;box-shadow: 0 0 10px #00ff88;" onclick="System.completeQuest(${q.id})">⚡ 結算</button>` : `<button class="btn-action cooldown-timer" style="background:#222;border:1px solid #ff0055;color:#ff0055;font-family:monospace;" disabled data-until="${q.readyAt}">00:00</button>`;
+            h+=`<div class="card" style="border-left:4px solid var(--blue);"><div class="card-col"><strong style="color:#fff;">${q.sub}-${q.task}</strong><span style="color:#888;font-size:11px;">${q.range} | <span style="color:var(--purple)">${q.xp}XP</span></span></div>${btn}</div>`;
         }); 
-        document.getElementById('active-quests-list').innerHTML=h || "<div style='text-align:center;color:#555;padding:20px;'>NO ACTIVE QUESTS</div>";
+        document.getElementById('active-quests-list').innerHTML=h || "<div style='text-align:center;color:#555;padding:20px;'>無進行中任務</div>";
     },
 
-    startGlobalTimer(){if(this.timerIdx)clearInterval(this.timerIdx);this.timerIdx=setInterval(()=>{let nr=false;document.querySelectorAll('.cooldown-timer').forEach(el=>{const d=parseInt(el.dataset.until)-Date.now();if(d<=0)nr=true;else{const m=Math.floor(d/60000),s=Math.floor((d%60000)/1000);el.innerText=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;}});if(nr)this.renderQuests()},1000)},
+    startGlobalTimer(){if(this.timerIdx)clearInterval(this.timerIdx);this.timerIdx=setInterval(()=>{let nr=false;document.querySelectorAll('.cooldown-timer').forEach(el=>{const d=parseInt(el.dataset.until)-Date.now();if(d<=0)nr=true;else{const m=Math.floor(d/60000),s=Math.floor((d%60000)/1000);el.innerText=`⏳ ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;}});if(nr)this.renderQuests()},1000)},
     
     async completeQuest(id){
         const i=this.p.activeQuests.findIndex(q=>q.id===id);if(i===-1)return;const q=this.p.activeQuests[i];this.p.activeQuests.splice(i,1);
@@ -192,25 +179,32 @@ const System = {
         this.shopCache=sh;StorageMgr.set('sl_shop_v36',JSON.stringify({date:t,data:sh}));document.getElementById('shop-time').innerText=f?'Refreshed':t;
     },
     
-    // 🔥 商店切換與排版修復
+    // 🎨 特效修復：商店切換與介面
     renderShop(tab){
         if(!this.shopCache)this.checkShopRefresh(); if(!this.shopCache)return; 
-        // 恢復按鈕變色邏輯
-        ['sword','potion','title'].forEach(t=>{const btn=document.getElementById(`tab-${t}`);if(btn){btn.style.background=t===tab?'var(--purple)':'#222';btn.style.color=t===tab?'#fff':'#888'}});
+        
+        // 確保切換按鈕的視覺特效正常運作
+        ['sword','potion','title'].forEach(t=>{
+            const btn=document.getElementById(`tab-${t}`);
+            if(btn){
+                if(t===tab) { btn.style.background='var(--purple)'; btn.style.color='#fff'; btn.style.boxShadow='0 0 10px var(--purple)'; }
+                else { btn.style.background='#222'; btn.style.color='#888'; btn.style.boxShadow='none'; }
+            }
+        });
         
         let h=""; 
         if(tab==='sword'){ 
             this.shopCache.swords.forEach((sw,idx)=>{ 
-                let sp=sw.rank==='UNKNOWN'?'border:1px solid #ff0055;':(sw.rank==='S'?'border:1px solid var(--gold);':''); 
+                let sp=sw.rank==='UNKNOWN'?'border:1px solid #ff0055;box-shadow:inset 0 0 10px #ff0055;':(sw.rank==='S'?'border:1px solid var(--gold);box-shadow:inset 0 0 10px var(--gold);':''); 
                 let bt=sw.rank==='UNKNOWN'?'非賣品':`💰 ${sw.price}`; let dis=sw.rank==='UNKNOWN'?'disabled':''; 
-                h+=`<div class="card" style="${sp}"><div class="card-col" onclick='System.showWeaponModel(${JSON.stringify(sw).replace(/"/g,"&quot;")})'><strong class="rank-${sw.rank}">${sw.name}</strong><span style="color:#888;font-size:10px;">磨損度: ${sw.wear}%</span></div><button class="btn-action" ${dis} onclick="System.buyShop('sword',${idx})">${bt}</button></div>`; 
+                h+=`<div class="card" style="${sp}"><div class="card-col" onclick='System.showWeaponModel(${JSON.stringify(sw).replace(/"/g,"&quot;")})'><strong class="rank-${sw.rank}">${sw.name}</strong><span style="color:#888;font-size:10px;">磨損度: ${sw.wear}%</span></div><button class="btn-action" style="${sw.rank==='UNKNOWN'?'background:#333;color:#555;':''}" ${dis} onclick="System.buyShop('sword',${idx})">${bt}</button></div>`; 
             }); 
         } else if(tab==='potion'){ 
-            DB.potions.forEach(pot=>{h+=`<div class="card"><div class="card-col"><strong>${pot.name}</strong><span style="font-size:10px;color:#aaa;">${pot.desc||""}</span></div><button class="btn-action" onclick="System.buyPotion('${pot.id}',${pot.price})">💰 ${pot.price}</button></div>`;}); 
+            DB.potions.forEach(pot=>{h+=`<div class="card"><div class="card-col"><strong style="color:var(--blue)">${pot.name}</strong><span style="font-size:10px;color:#aaa;">${pot.desc||""}</span></div><button class="btn-action" onclick="System.buyPotion('${pot.id}',${pot.price})">💰 ${pot.price}</button></div>`;}); 
         } else if(tab==='title'){ 
             this.shopCache.titles.forEach((t,idx)=>{ 
                 const own=this.p.titles.includes(t.name); 
-                h+=`<div class="card"><div class="card-col"><strong class="rank-${t.rank}">${t.name}</strong></div><button class="btn-action" ${own?'disabled':''} onclick="System.buyShop('title',${idx})">${own?'已解鎖':'💰 '+t.price}</button></div>`; 
+                h+=`<div class="card"><div class="card-col"><strong class="rank-${t.rank}">${t.name}</strong></div><button class="btn-action" style="${own?'background:#333;color:#555;':''}" ${own?'disabled':''} onclick="System.buyShop('title',${idx})">${own?'已解鎖':'💰 '+t.price}</button></div>`; 
             }); 
         } 
         document.getElementById('shop-list').innerHTML=h;
@@ -227,43 +221,51 @@ const System = {
     },
     buyPotion(p,pr){if(this.p.coins>=pr){this.p.coins-=pr;this.p.bag.potions[p]=(this.p.bag.potions[p]||0)+1;this.updateUI();alert("購買成功")}else alert("餘額不足")},
     
-    // 🔥 背包切換與排版修復
+    // 🎨 特效修復：背包切換與排版
     renderBag(tab){
-        ['sword','potion','mat'].forEach(t=>{const btn=document.getElementById(`bag-tab-${t}`);if(btn){btn.style.background=t===tab?'var(--purple)':'#222';btn.style.color=t===tab?'#fff':'#888'}}); 
+        ['sword','potion','mat'].forEach(t=>{
+            const btn=document.getElementById(`bag-tab-${t}`);
+            if(btn){
+                if(t===tab) { btn.style.background='var(--purple)'; btn.style.color='#fff'; btn.style.boxShadow='0 0 10px var(--purple)'; }
+                else { btn.style.background='#222'; btn.style.color='#888'; btn.style.boxShadow='none'; }
+            }
+        }); 
+        
         let h="";
         if(tab==='sword'){ 
-            if(this.p.bag.swords.length===0) h="<div style='padding:15px;color:#555;text-align:center;'>空</div>"; 
+            if(this.p.bag.swords.length===0) h="<div style='padding:15px;color:#555;text-align:center;'>背包空空如也</div>"; 
             this.p.bag.swords.forEach(sw=>{
                 let isE=(this.p.curWeapon&&this.p.curWeapon.id===sw.id); 
-                h+=`<div class="card ${isE?'equipped':''}"><div class="card-col" onclick='System.showWeaponModel(${JSON.stringify(sw).replace(/"/g,"&quot;")})'><strong class="rank-${sw.rank}">${sw.name}</strong><small>磨損: ${sw.wear}%</small></div><button class="btn-action" style="${isE?'background:#333;color:#888;':''}" onclick="System.equipWeapon(${sw.id})">${isE?'卸下':'裝備'}</button></div>`; 
+                let bdr=isE?'border:1px solid var(--purple);box-shadow:inset 0 0 15px rgba(188,19,254,0.3);':'';
+                h+=`<div class="card ${isE?'equipped':''}" style="${bdr}"><div class="card-col" onclick='System.showWeaponModel(${JSON.stringify(sw).replace(/"/g,"&quot;")})'><strong class="rank-${sw.rank}">${sw.name}</strong><small style="color:#aaa;">磨損: ${sw.wear}%</small></div><button class="btn-action" style="${isE?'background:#333;color:#888;':'background:var(--purple);color:#fff;'}" onclick="System.equipWeapon(${sw.id})">${isE?'卸下裝備':'裝備'}</button></div>`; 
             }); 
         } else if(tab==='potion'){ 
-            let has=false; DB.potions.forEach(pot=>{let amt=this.p.bag.potions[pot.id]||0; if(amt>0){has=true;h+=`<div class="card"><div><strong>${pot.name} <span style="color:var(--gold)">x${amt}</span></strong></div><button class="btn-action" onclick="System.usePotion('${pot.id}')">使用</button></div>`;}}); 
-            if(!has) h="<div style='padding:15px;color:#555;text-align:center;'>空</div>"; 
+            let has=false; DB.potions.forEach(pot=>{let amt=this.p.bag.potions[pot.id]||0; if(amt>0){has=true;h+=`<div class="card"><div><strong style="color:var(--blue)">${pot.name} <span style="color:var(--gold)">x${amt}</span></strong></div><button class="btn-action" style="background:var(--blue);color:#000;" onclick="System.usePotion('${pot.id}')">使用</button></div>`;}}); 
+            if(!has) h="<div style='padding:15px;color:#555;text-align:center;'>沒有任何藥水</div>"; 
         } else { 
-            h+=`<div class="card"><div class="card-col"><strong style="color:var(--blue)">邏輯碎片</strong></div><span style="font-size:1.5rem;font-weight:900;">${this.p.bag.mats.logic}</span></div><div class="card"><div class="card-col"><strong style="color:var(--gold)">語文符文</strong></div><span style="font-size:1.5rem;font-weight:900;">${this.p.bag.mats.lang}</span></div><div class="card"><div class="card-col"><strong style="color:var(--purple)">記憶結晶</strong></div><span style="font-size:1.5rem;font-weight:900;">${this.p.bag.mats.mem}</span></div>`; 
+            h+=`<div class="card" style="border-left:4px solid var(--blue)"><div class="card-col"><strong style="color:var(--blue)">邏輯碎片</strong></div><span style="font-size:1.5rem;font-weight:900;">${this.p.bag.mats.logic}</span></div><div class="card" style="border-left:4px solid var(--gold)"><div class="card-col"><strong style="color:var(--gold)">語文符文</strong></div><span style="font-size:1.5rem;font-weight:900;">${this.p.bag.mats.lang}</span></div><div class="card" style="border-left:4px solid var(--purple)"><div class="card-col"><strong style="color:var(--purple)">記憶結晶</strong></div><span style="font-size:1.5rem;font-weight:900;">${this.p.bag.mats.mem}</span></div>`; 
         } 
         document.getElementById('bag-list').innerHTML=h;
     },
 
     equipWeapon(id){if(this.p.curWeapon&&this.p.curWeapon.id===id)this.p.curWeapon=null;else this.p.curWeapon=this.p.bag.swords.find(s=>s.id===id);this.updateUI();this.renderBag('sword')},
-    usePotion(pid){if(this.p.bag.potions[pid]<=0)return;this.p.bag.potions[pid]--;if(pid==='p_double'){this.p.buffs.doubleXp=true;alert("雙倍經驗生效！")}else if(pid==='p_time'){this.refreshShop(new Date().toLocaleDateString(),true);alert("商店已刷新")}else if(pid==='p_luck'){this.p.buffs.luck=true;alert("保底生效")}else if(pid==='p_seven')this.openSevenCloverModal();this.updateUI();this.renderBag('potion')},
+    usePotion(pid){if(this.p.bag.potions[pid]<=0)return;this.p.bag.potions[pid]--;if(pid==='p_double'){this.p.buffs.doubleXp=true;alert("雙倍經驗生效！")}else if(pid==='p_time'){this.refreshShop(new Date().toLocaleDateString(),true);alert("商店已強制刷新")}else if(pid==='p_luck'){this.p.buffs.luck=true;alert("幸運保底生效")}else if(pid==='p_seven')this.openSevenCloverModal();this.updateUI();this.renderBag('potion')},
     openSevenCloverModal(){let h="";DB.titles['A'].forEach(t=>{const o=this.p.titles.includes(t);h+=`<div class="card"><span class="rank-A">${t}</span><button class="btn-action" ${o?'disabled':''} onclick="System.pickATitle('${t}')">${o?'擁有':'選擇'}</button></div>`});document.getElementById('seven-clover-list').innerHTML=h;document.getElementById('seven-clover-modal').style.display='flex'},
-    pickATitle(t){this.p.titles.push(t);this.p.curTitle=t;document.getElementById('seven-clover-modal').style.display='none';alert(`獲得 ${t}`);this.updateUI()},
+    pickATitle(t){this.p.titles.push(t);this.p.curTitle=t;document.getElementById('seven-clover-modal').style.display='none';alert(`成功獲得稱號：${t}`);this.updateUI()},
     
     renderForge(){
         document.getElementById('forge-m-logic').innerText=this.p.bag.mats.logic;document.getElementById('forge-m-lang').innerText=this.p.bag.mats.lang;document.getElementById('forge-m-mem').innerText=this.p.bag.mats.mem;
-        let h="";if(this.p.bag.swords.length===0)h="<div style='padding:20px;text-align:center;color:#555;'>空</div>";
-        this.p.bag.swords.forEach(sw=>{ let req=sw.rank==='S'?7:(sw.rank==='A'?3:1); let can=(this.p.bag.mats.logic>=req&&this.p.bag.mats.lang>=req&&this.p.bag.mats.mem>=req); h+=`<div class="card" style="flex-direction:column;align-items:flex-start;"><div style="width:100%;display:flex;justify-content:space-between;margin-bottom:5px;"><strong class="rank-${sw.rank}">${sw.name}</strong><span style="color:#aaa;font-size:12px;">磨損: ${sw.wear}%</span></div><div style="width:100%;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:10px;color:#888;">消耗各碎片 x${req}</span><button class="btn-action" style="${can?'background:#ff8c00;':'background:#333;color:#666;'}" ${can?'':'disabled'} onclick="System.forgeWeapon(${sw.id},'${sw.rank}',${req})">修復</button></div></div>`; }); document.getElementById('forge-list').innerHTML=h;
+        let h="";if(this.p.bag.swords.length===0)h="<div style='padding:20px;text-align:center;color:#555;'>背包中無裝備可鍛造</div>";
+        this.p.bag.swords.forEach(sw=>{ let req=sw.rank==='S'?7:(sw.rank==='A'?3:1); let can=(this.p.bag.mats.logic>=req&&this.p.bag.mats.lang>=req&&this.p.bag.mats.mem>=req); h+=`<div class="card" style="flex-direction:column;align-items:flex-start;"><div style="width:100%;display:flex;justify-content:space-between;margin-bottom:5px;"><strong class="rank-${sw.rank}">${sw.name}</strong><span style="color:#aaa;font-size:12px;">磨損: ${sw.wear}%</span></div><div style="width:100%;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:10px;color:#888;">消耗各碎片 x${req}</span><button class="btn-action" style="${can?'background:#ff8c00;color:#000;box-shadow:0 0 10px #ff8c00;':'background:#333;color:#666;'}" ${can?'':'disabled'} onclick="System.forgeWeapon(${sw.id},'${sw.rank}',${req})">⚒️ 修復</button></div></div>`; }); document.getElementById('forge-list').innerHTML=h;
     },
-    forgeWeapon(id,r,req){if(this.p.bag.mats.logic<req||this.p.bag.mats.lang<req||this.p.bag.mats.mem<req)return;this.p.bag.mats.logic-=req;this.p.bag.mats.lang-=req;this.p.bag.mats.mem-=req;let sw=this.p.bag.swords.find(w=>w.id===id);let red=r==='S'?(1+Math.random()*0.5):(1+Math.random()*2);let nw=parseFloat(sw.wear)-red;if(nw<0)nw=0;sw.wear=nw.toFixed(3);if(this.p.curWeapon&&this.p.curWeapon.id===id)this.p.curWeapon.wear=sw.wear;alert(`鍛造成功！降低 ${red.toFixed(3)}%`);this.save();this.renderForge()},
+    forgeWeapon(id,rk,req){if(this.p.bag.mats.logic<req||this.p.bag.mats.lang<req||this.p.bag.mats.mem<req)return;this.p.bag.mats.logic-=req;this.p.bag.mats.lang-=req;this.p.bag.mats.mem-=req;let sw=this.p.bag.swords.find(w=>w.id===id);let red=rk==='S'?(1+Math.random()*0.5):(1+Math.random()*2);let nw=parseFloat(sw.wear)-red;if(nw<0)nw=0;sw.wear=nw.toFixed(3);if(this.p.curWeapon&&this.p.curWeapon.id===id)this.p.curWeapon.wear=sw.wear;alert(`⚒️ 鍛造成功！磨損度降低 ${red.toFixed(3)}%`);this.save();this.renderForge()},
     
     async renderLeaderboard(){const el=document.getElementById('leaderboard-list');el.innerHTML="<div style='text-align:center;padding:30px;'>連線中...</div>";try{const snap=await getDocs(collection(db,"players"));let pD=[];snap.forEach(d=>pD.push(d.data()));pD.sort((a,b)=>{if(b.lv!==a.lv)return b.lv-a.lv;return b.exp-a.exp;});let h="";pD.forEach((d,i)=>{let w=d.curWeapon?`<span class="rank-${d.curWeapon.rank}">${d.curWeapon.name}</span>`:"徒手";h+=`<div class="card"><div class="rank-badge ${i===0?'top-1':(i===1?'top-2':(i===2?'top-3':''))}">${i+1}</div><div class="card-col"><div style="display:flex;justify-content:space-between;"><strong>${d.acc}</strong><span style="color:var(--purple);font-weight:900;">Lv.${d.lv}</span></div><div style="font-size:11px;color:var(--gold);">[ ${d.curTitle} ]</div><div style="font-size:11px;color:#888;">⚔️ ${w}</div></div></div>`;});el.innerHTML=h}catch(e){el.innerHTML="<div style='color:red;'>連線失敗</div>"}},
     
     async renderPartner(){
         const el=document.getElementById('partner-status-area');el.innerHTML="<div style='text-align:center;padding:30px;'>連線中...</div>";try{const ms=await getDoc(doc(db,"players",this.p.acc));if(ms.exists())this.p=ms.data();let h="";
-        if(this.p.partner){const ps=await getDoc(doc(db,"players",this.p.partner));if(ps.exists()){let pd=ps.data();let w=pd.curWeapon?`<span class="rank-${pd.curWeapon.rank}">${pd.curWeapon.name}</span>`:"徒手";h+=`<div style="text-align:center;color:var(--comrade-green);font-weight:900;margin-bottom:15px;">🔗 PACT ESTABLISHED</div><div class="card" style="flex-direction:column;padding:20px;border-color:var(--comrade-green);"><h3 style="color:var(--comrade-green);margin:0 0 10px 0;font-size:1.8rem;">${pd.acc}</h3><div style="width:100%;display:flex;justify-content:space-between;font-weight:900;"><span>Level:</span><span style="color:var(--purple);">${pd.lv}</span></div><div style="width:100%;display:flex;justify-content:space-between;"><span>Title:</span><span style="color:var(--gold);font-size:12px;">[ ${pd.curTitle} ]</span></div><div style="width:100%;display:flex;justify-content:space-between;margin-bottom:15px;"><span style="color:#aaa;font-size:12px;">Weapon:</span><span style="font-size:12px;">${w}</span></div><button class="btn-action" style="width:100%;background:var(--red-alert);" onclick="System.breakPact()">解除契約</button></div>`;}else{h+=`<button class="btn-action" onclick="System.breakPact()">強制解除異常</button>`;}}
-        else{h+=`<div style="background:rgba(0,255,170,0.05);border:1px solid rgba(0,255,170,0.3);padding:15px;border-radius:10px;"><input type="text" id="inp-partner-req" style="width:100%;padding:10px;background:#000;border:1px solid #555;color:#fff;margin-bottom:10px;" placeholder="輸入同學 ID..."><button class="btn-action" style="width:100%;background:var(--comrade-green);color:#000;" onclick="System.sendPactReq()">發送邀請</button></div><h3 class="section-title">收到邀請</h3>`;if(this.p.requests&&this.p.requests.length>0){this.p.requests.forEach(r=>{h+=`<div class="card" style="border-left:3px solid var(--comrade-green);"><strong>${r}</strong><div><button class="btn-action" style="background:var(--comrade-green);color:#000;margin-right:5px;" onclick="System.acceptPact('${r}')">同意</button><button class="btn-action" style="background:#444;" onclick="System.rejectPact('${r}')">拒絕</button></div></div>`;});}else h+="<div style='padding:15px;text-align:center;'>無</div>";}el.innerHTML=h}catch(e){el.innerHTML="<div style='color:red;'>連線失敗</div>"}
+        if(this.p.partner){const ps=await getDoc(doc(db,"players",this.p.partner));if(ps.exists()){let pd=ps.data();let w=pd.curWeapon?`<span class="rank-${pd.curWeapon.rank}">${pd.curWeapon.name}</span>`:"徒手";h+=`<div style="text-align:center;color:var(--comrade-green);font-weight:900;margin-bottom:15px;text-shadow:0 0 10px var(--comrade-green);">🔗 PACT ESTABLISHED</div><div class="card" style="flex-direction:column;padding:20px;border:1px solid var(--comrade-green);box-shadow:inset 0 0 20px rgba(0,255,170,0.1);"><h3 style="color:var(--comrade-green);margin:0 0 10px 0;font-size:1.8rem;">${pd.acc}</h3><div style="width:100%;display:flex;justify-content:space-between;font-weight:900;"><span>Level:</span><span style="color:var(--purple);">${pd.lv}</span></div><div style="width:100%;display:flex;justify-content:space-between;"><span>Title:</span><span style="color:var(--gold);font-size:12px;">[ ${pd.curTitle} ]</span></div><div style="width:100%;display:flex;justify-content:space-between;margin-bottom:15px;"><span style="color:#aaa;font-size:12px;">Weapon:</span><span style="font-size:12px;">${w}</span></div><button class="btn-action" style="width:100%;background:var(--red-alert);color:#fff;" onclick="System.breakPact()">解除契約</button></div>`;}else{h+=`<button class="btn-action" style="background:var(--red-alert)" onclick="System.breakPact()">強制解除異常連線</button>`;}}
+        else{h+=`<div style="background:rgba(0,255,170,0.05);border:1px solid rgba(0,255,170,0.3);padding:15px;border-radius:10px;"><input type="text" id="inp-partner-req" style="width:100%;padding:10px;background:#000;border:1px solid #555;color:#fff;margin-bottom:10px;" placeholder="輸入同學 ID..."><button class="btn-action" style="width:100%;background:var(--comrade-green);color:#000;" onclick="System.sendPactReq()">發送邀請</button></div><h3 class="section-title" style="margin-top:20px;">收到邀請</h3>`;if(this.p.requests&&this.p.requests.length>0){this.p.requests.forEach(r=>{h+=`<div class="card" style="border-left:3px solid var(--comrade-green);"><strong>${r}</strong><div><button class="btn-action" style="background:var(--comrade-green);color:#000;margin-right:5px;" onclick="System.acceptPact('${r}')">同意</button><button class="btn-action" style="background:#444;" onclick="System.rejectPact('${r}')">拒絕</button></div></div>`;});}else h+="<div style='padding:15px;text-align:center;color:#555;'>無邀請</div>";}el.innerHTML=h}catch(e){el.innerHTML="<div style='color:red;'>連線失敗</div>"}
     },
     async sendPactReq(){const tgt=document.getElementById('inp-partner-req').value.trim();if(!tgt||tgt===this.p.acc)return alert("無效ID");try{const ref=doc(db,"players",tgt);const snap=await getDoc(ref);if(!snap.exists())return alert("無此人");let td=snap.data();if(td.partner)return alert("對方已有戰友");if(!td.requests)td.requests=[];if(td.requests.includes(this.p.acc))return alert("已邀請");td.requests.push(this.p.acc);await setDoc(ref,td);alert("發送成功！");document.getElementById('inp-partner-req').value="";}catch(e){}},
     async acceptPact(tgt){try{const ref=doc(db,"players",tgt);const snap=await getDoc(ref);if(snap.exists()){let td=snap.data();if(td.partner){alert("對方已結盟");this.rejectPact(tgt);return;}td.partner=this.p.acc;await setDoc(ref,td);}}catch(e){}this.p.partner=tgt;this.p.requests=this.p.requests.filter(r=>r!==tgt);await this.save();alert("契約成立");this.updateUI();this.renderPartner()},
@@ -272,7 +274,7 @@ const System = {
 
     verifyAdmin(){if(document.getElementById('inp-admin-pwd').value==='Ricky_0414'){this.isAdminUnlocked=true;document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='flex';this.renderAdminPanel()}else alert("密碼錯誤")},
     renderAdminPanel(){
-        ['lv','coins','sp','iq','str','mp','dex'].forEach(k=>document.getElementById(`adm-${k}`).value=Math.floor(this.p[k]));
+        ['lv','coins','sp','iq','str','mp','dex'].forEach(k=>{const el=document.getElementById(`adm-${k}`); if(el) el.value=Math.floor(this.p[k])});
         let sOpt="<option value=''>--選擇武具--</option>";Object.keys(DB.swords).forEach(rk=>{sOpt+=`<optgroup label="${rk}-RANK">`;DB.swords[rk].forEach(x=>{let name=typeof x==='object'?x.name:x;sOpt+=`<option value="${rk}|${name}">${name}</option>`;});sOpt+=`</optgroup>`;});document.getElementById('adm-sel-sword').innerHTML=sOpt;
         let tOpt="<option value=''>--選擇稱號--</option>";Object.keys(DB.titles).forEach(rk=>{tOpt+=`<optgroup label="${rk}-RANK">`;DB.titles[rk].forEach(tName=>{tOpt+=`<option value="${tName}">${tName}</option>`;});tOpt+=`</optgroup>`;});document.getElementById('adm-sel-title').innerHTML=tOpt;
     },
@@ -284,21 +286,22 @@ const System = {
     async adminPunish(){const tgt=document.getElementById('adm-target').value.trim();if(!tgt)return;try{const r=doc(db,"players",tgt);const s=await getDoc(r);if(s.exists()){let d=s.data();if(d.partner){const pr=doc(db,"players",d.partner);const ps=await getDoc(pr);if(ps.exists()){let pd=ps.data();pd.partner=null;await setDoc(pr,pd)}}d.lv=1;d.exp=0;d.coins=0;d.sp=0;d.iq=1;d.str=1;d.mp=1;d.dex=1;d.curTitle="🚫 卑鄙的作弊者";d.titles=["🚫 卑鄙的作弊者"];d.bag={swords:[],potions:{},mats:{logic:0,lang:0,mem:0}};d.curWeapon=null;d.activeQuests=[];d.partner=null;d.requests=[];await setDoc(r,d);alert("天罰執行完畢")}else alert("無此人")}catch(e){}},
 
     startHeartbeat(){const b=()=>{if(this.p)updateDoc(doc(db,"players",this.p.acc),{lastSeen:Date.now()})};b();setInterval(b,30000)},
-    async renderWorld(){const a=document.getElementById('online-list');if(this.unsubWorld)this.unsubWorld();this.unsubWorld=onSnapshot(collection(db,"players"),(sn)=>{let h="";sn.forEach(d=>{const x=d.data();if(x.acc!==this.p?.acc){const on=x.lastSeen&&(Date.now()-x.lastSeen<65000);h+=`<div class="card"><div><span class="status-dot ${on?'dot-online':'dot-offline'}"></span><strong>${x.acc}</strong> <small style="color:#666">Lv.${x.lv}</small></div>${on?`<button class="btn-action" style="background:var(--comrade-green);color:#000;" onclick="TradeSystem.startTrade('${x.acc}')">交易</button>`:'<small style="color:#444">離線</small>'}</div>`}});a.innerHTML=h})},
+    async renderWorld(){const a=document.getElementById('online-list');if(this.unsubWorld)this.unsubWorld();this.unsubWorld=onSnapshot(collection(db,"players"),(sn)=>{let h="";sn.forEach(d=>{const x=d.data();if(x.acc!==this.p?.acc && x.acc!=='admin'){const on=x.lastSeen&&(Date.now()-x.lastSeen<65000);h+=`<div class="card"><div><span class="status-dot ${on?'dot-online':'dot-offline'}"></span><strong style="${on?'color:#fff;':'color:#888;'}">${x.acc}</strong> <small style="color:#666">Lv.${x.lv}</small></div>${on?`<button class="btn-action" style="background:var(--comrade-green);color:#000;box-shadow:0 0 10px rgba(0,255,170,0.5);" onclick="TradeSystem.startTrade('${x.acc}')">🤝 交易</button>`:'<small style="color:#444">離線</small>'}</div>`}});a.innerHTML=h})},
     listenForInvites(){if(this.unsubInvites)this.unsubInvites();this.unsubInvites=onSnapshot(query(collection(db,"trades"),where("target","==",this.p.acc),where("status","==","pending")),(sn)=>{sn.docChanges().forEach(c=>{if(c.type==="added"){const d=c.doc.data();if(TradeSystem.currentTradeId===c.doc.id)return;setTimeout(()=>{if(confirm(`📦 收到 [${d.sender}] 的交易請求！進入交易室？`)){TradeSystem.joinTrade(c.doc.id,d)}else{updateDoc(doc(db,"trades",c.doc.id),{status:"rejected"})}},100)}})})}
 };
 
+// 🤝 交易系統 UI 與發光特效修復
 const TradeSystem = {
     currentTradeId: null, unsubTrade: null, countdownInterval: null, countdownSec: 5, isExecuting: false,
     async startTrade(tgt){const id=`trade_${Date.now()}`;const d={id,sender:System.p.acc,target:tgt,status:"pending",offerA:{coins:0,items:[]},offerB:{coins:0,items:[]},readyA:false,readyB:false,chat:[]};await setDoc(doc(db,"trades",id),d);this.joinTrade(id,d)},
     joinTrade(id,data){
         this.currentTradeId=id;this.isExecuting=false;document.getElementById('trade-overlay').style.display='flex';document.getElementById('peer-name-label').innerText=(data.sender===System.p.acc?data.target:data.sender);this.buildItemSelect();
-        if(this.unsubTrade)this.unsubTrade();this.unsubTrade=onSnapshot(doc(db,"trades",id),async(snap)=>{if(!snap.exists())return this.cancelTrade();const d=snap.data();if(d.status==="rejected"){alert("交易中斷");this.cancelTrade()}if(d.status==="completed"){alert("✅ 交易成功！");try{System.p=(await getDoc(doc(db,"players",System.p.acc))).data();System.updateUI()}catch(e){}this.cancelTrade()}if(d.status==="pending")this.renderTradeUI(d)})
+        if(this.unsubTrade)this.unsubTrade();this.unsubTrade=onSnapshot(doc(db,"trades",id),async(snap)=>{if(!snap.exists())return this.cancelTrade();const d=snap.data();if(d.status==="rejected"){alert("❌ 交易已取消或中斷");this.cancelTrade()}if(d.status==="completed"){alert("✅ 交易成功！");try{System.p=(await getDoc(doc(db,"players",System.p.acc))).data();System.updateUI()}catch(e){}this.cancelTrade()}if(d.status==="pending")this.renderTradeUI(d)})
     },
     buildItemSelect(){
-        let sel=document.getElementById('trade-item-select');let h="<option value=''>--選背包物品(每次1個)--</option>";
-        System.p.bag.swords.forEach(s=>{h+=`<option value="s|${s.id}">${s.name} [${s.wear}%]</option>`});
-        ['logic','lang','mem'].forEach(m=>{if(System.p.bag.mats[m]>0)h+=`<option value="m|${m}">${m==='logic'?'邏輯碎片':m==='lang'?'語文符文':'記憶結晶'} (有${System.p.bag.mats[m]}個)</option>`});sel.innerHTML=h
+        let sel=document.getElementById('trade-item-select');let h="<option value=''>-- 選背包物品 (每次1個) --</option>";
+        System.p.bag.swords.forEach(s=>{h+=`<option value="s|${s.id}">⚔️ ${s.name} [${s.wear}%]</option>`});
+        ['logic','lang','mem'].forEach(m=>{if(System.p.bag.mats[m]>0)h+=`<option value="m|${m}">🧩 ${m==='logic'?'邏輯碎片':m==='lang'?'語文符文':'記憶結晶'} (有${System.p.bag.mats[m]}個)</option>`});sel.innerHTML=h
     },
     async addItemToOffer(){
         const val=document.getElementById('trade-item-select').value;if(!val)return;const d=(await getDoc(doc(db,"trades",this.currentTradeId))).data();const isA=(System.p.acc===d.sender);const myO=isA?d.offerA:d.offerB;const p=val.split('|');
@@ -307,10 +310,12 @@ const TradeSystem = {
     },
     renderTradeUI(d){
         const isA=(d.sender===System.p.acc);const myO=isA?d.offerA:d.offerB;const peO=isA?d.offerB:d.offerA;const myR=isA?d.readyA:d.readyB;const peR=isA?d.readyB:d.readyA;const btn=document.getElementById('btn-confirm-trade');
-        document.getElementById('my-offer-list').innerHTML=`💰 ${myO.coins}<br>`+myO.items.map(i=>`[${i.name}${i.amt?' x'+i.amt:''}]`).join('<br>');document.getElementById('peer-offer-list').innerHTML=`💰 ${peO.coins}<br>`+peO.items.map(i=>`[${i.name}${i.amt?' x'+i.amt:''}]`).join('<br>');
-        document.getElementById('peer-ready-status').innerText=peR?"🟢 對方已確認":"⚪ 等待中";document.getElementById('peer-trade-box').style.borderColor=peR?"var(--comrade-green)":"#333";
-        if(d.readyA&&d.readyB&&d.status==="pending"){if(!this.countdownInterval&&!this.isExecuting){this.countdownSec=5;btn.innerText=`交易鎖定... ${this.countdownSec}s`;btn.style.background="var(--gold)";btn.style.color="#000";btn.disabled=true;this.countdownInterval=setInterval(()=>{this.countdownSec--;if(this.countdownSec>0){btn.innerText=`交易鎖定... ${this.countdownSec}s`}else{clearInterval(this.countdownInterval);this.countdownInterval=null;btn.innerText="處理中...";if(isA&&!this.isExecuting){this.isExecuting=true;this.executeFinal(d)}}},1000)}}else{if(this.countdownInterval){clearInterval(this.countdownInterval);this.countdownInterval=null}btn.disabled=false;btn.innerText=myR?"等待對方...":"確認提議";btn.style.background=myR?"#004422":"#222";btn.style.color="var(--comrade-green)"}
-        const cb=document.getElementById('trade-chat');cb.innerHTML=d.chat.map(m=>`<div class="chat-msg"><span class="chat-name">${m.user}:</span>${m.msg}</div>`).join('');cb.scrollTop=cb.scrollHeight
+        document.getElementById('my-offer-list').innerHTML=`<span style="color:var(--gold);font-weight:900;">💰 ${myO.coins}</span><br>`+myO.items.map(i=>`[${i.name}${i.amt?' x'+i.amt:''}]`).join('<br>');
+        document.getElementById('peer-offer-list').innerHTML=`<span style="color:var(--gold);font-weight:900;">💰 ${peO.coins}</span><br>`+peO.items.map(i=>`[${i.name}${i.amt?' x'+i.amt:''}]`).join('<br>');
+        document.getElementById('peer-ready-status').innerHTML=peR?"<span style='color:var(--comrade-green);text-shadow:0 0 5px var(--comrade-green);'>🟢 對方已確認</span>":"<span style='color:#888;'>⚪ 等待中</span>";
+        document.getElementById('peer-trade-box').style.borderColor=peR?"var(--comrade-green)":"#333";
+        if(d.readyA&&d.readyB&&d.status==="pending"){if(!this.countdownInterval&&!this.isExecuting){this.countdownSec=5;btn.innerText=`🔒 交易鎖定中... ${this.countdownSec}s`;btn.style.background="var(--gold)";btn.style.color="#000";btn.disabled=true;this.countdownInterval=setInterval(()=>{this.countdownSec--;if(this.countdownSec>0){btn.innerText=`🔒 交易鎖定中... ${this.countdownSec}s`}else{clearInterval(this.countdownInterval);this.countdownInterval=null;btn.innerText="處理中...";if(isA&&!this.isExecuting){this.isExecuting=true;this.executeFinal(d)}}},1000)}}else{if(this.countdownInterval){clearInterval(this.countdownInterval);this.countdownInterval=null}btn.disabled=false;btn.innerText=myR?"⏳ 等待對方...":"✔️ 確認提議";btn.style.background=myR?"#004422":"#222";btn.style.color=myR?"#888":"var(--comrade-green)";btn.style.border=myR?"1px solid #004422":"1px solid var(--comrade-green)";}
+        const cb=document.getElementById('trade-chat');cb.innerHTML=d.chat.map(m=>`<div class="chat-msg"><span class="chat-name" style="color:var(--blue)">${m.user}:</span> <span style="color:#fff">${m.msg}</span></div>`).join('');cb.scrollTop=cb.scrollHeight
     },
     async updateOffer(){const c=parseInt(document.getElementById('trade-coin-input').value)||0;if(c>System.p.coins)return alert("蓮幣不足");const d=(await getDoc(doc(db,"trades",this.currentTradeId))).data();const isA=(System.p.acc===d.sender);updateDoc(doc(db,"trades",this.currentTradeId),isA?{"offerA.coins":c,readyA:false,readyB:false}:{"offerB.coins":c,readyA:false,readyB:false})},
     async confirmReady(){const d=(await getDoc(doc(db,"trades",this.currentTradeId))).data();const isA=(System.p.acc===d.sender);updateDoc(doc(db,"trades",this.currentTradeId),isA?{readyA:true}:{readyB:true})},
