@@ -1,5 +1,9 @@
+/* =========================================
+   🔥 獨自升級 V33 終極滿血特效版 style.css 🔥
+   (包含所有排版修復 + 霓虹發光特效)
+========================================= */
 :root {
-    --bg: #0a0a0a;
+    --bg: #050505;
     --card-bg: #111;
     --gold: #ffd700;
     --purple: #bc13fe;
@@ -13,115 +17,98 @@ body {
     background-color: var(--bg);
     color: var(--text-main);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    padding-bottom: 80px; 
+    margin: 0; padding: 0; padding-bottom: 80px;
 }
 
-/* 隱藏/顯示分頁 */
-.page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+/* 1️⃣ 頁面與導航列 */
+.page { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
 .page.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* 底部導航列 */
 .bottom-nav {
     position: fixed; bottom: 0; left: 0; width: 100%;
-    background: #000; border-top: 1px solid #333;
+    background: rgba(0, 0, 0, 0.9); border-top: 1px solid var(--purple);
     display: flex; justify-content: space-around;
-    padding: 10px 0; z-index: 100;
+    padding: 12px 0; z-index: 100; backdrop-filter: blur(5px);
+    box-shadow: 0 -2px 15px rgba(188, 19, 254, 0.2);
 }
-.nav-link {
-    color: #888; text-decoration: none; font-size: 12px;
-    font-weight: bold; cursor: pointer; padding: 5px 10px; border-radius: 5px;
-}
-.nav-link.active { color: var(--purple); text-shadow: 0 0 10px var(--purple); }
+.nav-link { color: #666; text-decoration: none; font-size: 13px; font-weight: 900; padding: 5px 10px; transition: 0.3s; cursor: pointer; }
+.nav-link.active { color: var(--purple); text-shadow: 0 0 12px var(--purple); transform: scale(1.1); }
 
-/* 通用卡片設計 */
-.card {
-    background: var(--card-bg);
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+/* 2️⃣ 核心卡片與文字發光 */
+.card { background: var(--card-bg); border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+.card:hover { border-color: #555; }
 .card-col { display: flex; flex-direction: column; }
-.card.equipped { border: 1px solid var(--purple); box-shadow: inset 0 0 10px rgba(188,19,254,0.2); }
+.card.equipped { border: 1px solid var(--purple); box-shadow: inset 0 0 15px rgba(188,19,254,0.25); }
 
-/* 通用按鈕 */
-.btn-action {
-    background: #222; color: #fff; border: 1px solid #444;
-    padding: 8px 15px; border-radius: 5px; cursor: pointer;
-    font-weight: bold; transition: 0.2s;
-}
-.btn-action:hover:not(:disabled) { background: #333; transform: scale(1.05); }
-.btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+.section-title { color: #fff; border-bottom: 2px solid var(--purple); padding-bottom: 8px; margin-top: 30px; font-size: 1.3rem; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 10px var(--purple); }
 
-/* 等級與狀態顏色 */
-.rank-UNKNOWN { color: #ff0055; text-shadow: 0 0 8px #ff0055; }
-.rank-S { color: var(--gold); text-shadow: 0 0 8px var(--gold); font-weight: 900; }
-.rank-A { color: var(--purple); text-shadow: 0 0 8px var(--purple); font-weight: bold; }
-.rank-B { color: #00d4ff; font-weight: bold; }
-.rank-C { color: #00ffaa; }
+.rank-UNKNOWN { color: #ff0055; text-shadow: 0 0 10px #ff0055; font-weight: 900; }
+.rank-S { color: var(--gold); text-shadow: 0 0 10px var(--gold); font-weight: 900; }
+.rank-A { color: var(--purple); text-shadow: 0 0 10px var(--purple); font-weight: bold; }
+.rank-B { color: var(--blue); font-weight: bold; text-shadow: 0 0 5px var(--blue); }
+.rank-C { color: var(--comrade-green); }
 .rank-D { color: #aaaaaa; }
 .rank-E { color: #777777; }
 
-/* 狀態圓點 */
+/* 3️⃣ 按鈕與武器動畫 */
+.btn-action { background: #222; color: #fff; border: 1px solid #444; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+.btn-action:hover:not(:disabled) { background: var(--purple); box-shadow: 0 0 10px var(--purple); transform: scale(1.05); border-color: var(--purple); }
+.btn-action:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.weapon-svg { width: 100px; height: 100px; filter: drop-shadow(0 0 12px currentColor); animation: floatWp 3s ease-in-out infinite; }
+@keyframes floatWp { 0% { transform: translateY(0px); } 50% { transform: translateY(-12px); filter: drop-shadow(0 0 20px currentColor); } 100% { transform: translateY(0px); } }
+
 .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
-.dot-online { background: var(--comrade-green); box-shadow: 0 0 8px var(--comrade-green); }
+.dot-online { background: var(--comrade-green); box-shadow: 0 0 10px var(--comrade-green); animation: blink 1.5s infinite alternate; }
 .dot-offline { background: #555; }
+@keyframes blink { from { opacity: 0.5; } to { opacity: 1; } }
 
-/* 頂部標題 */
-.section-title { color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px; margin-top: 30px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
+/* 4️⃣ 🚨 緊急修復：所有彈窗絕對置中並防重疊 🚨 */
+#login-ui, #trade-overlay, #gacha-pop, #seven-clover-modal, #weapon-preview-overlay, #admin-panel {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(8px);
+    display: none; /* 預設全部隱藏，防止大腸包小腸 */
+    flex-direction: column; justify-content: center; align-items: center;
+    z-index: 9999;
+}
+#login-ui { display: flex; } /* 只有登入畫面預設顯示 */
 
-/* 武器全息圖 SVG */
-.weapon-svg { width: 100px; height: 100px; filter: drop-shadow(0 0 10px currentColor); animation: floatWp 3s ease-in-out infinite; }
-@keyframes floatWp { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+/* 5️⃣ 輸入框超帥發光特效 */
+input, select {
+    width: 85%; max-width: 320px; padding: 15px; margin: 10px 0;
+    background: rgba(20,20,20,0.8); color: #fff; font-size: 1.1rem;
+    border: 1px solid #444; border-radius: 8px; transition: 0.3s; text-align: center;
+}
+input:focus, select:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 15px rgba(188,19,254,0.5); background: #000; }
 
 /* =========================================
-   V33 究極特效區：地下城與倒數計時
+   🔥 6️⃣ 史詩特效區：高級UI與動畫 🔥
 ========================================= */
 
-/* 地下城按鈕專屬發光脈衝特效 */
-.btn-epic-enter {
+/* 地下城按鈕專屬發光脈衝 */
+.btn-epic-enter, button[onclick*="p-dungeon"] {
     animation: pulseNeon 1.5s infinite alternate !important;
     box-shadow: 0 0 20px #bc13fe, inset 0 0 10px rgba(188, 19, 254, 0.3) !important;
     border: 2px solid #bc13fe !important;
-    text-shadow: 0 0 8px #fff;
-    transition: all 0.3s ease;
-    width: 100%;
-    padding: 15px;
-    font-size: 1.5rem;
-    font-weight: 900;
-    border-radius: 8px;
-    background: linear-gradient(45deg, #111, #2a0044);
-    color: white;
-    margin-top: 20px;
-    cursor: pointer;
+    background: linear-gradient(45deg, #111, #2a0044) !important;
+    color: white !important; font-size: 1.5rem !important; font-weight: 900 !important; letter-spacing: 2px !important;
+    padding: 18px !important; border-radius: 10px !important; width: 100% !important; margin-top: 20px !important; cursor: pointer !important; text-shadow: 0 0 8px #fff !important;
 }
-.btn-epic-enter:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 40px #bc13fe, inset 0 0 20px #bc13fe !important;
-}
-@keyframes pulseNeon {
-    0% { box-shadow: 0 0 10px #bc13fe; }
-    100% { box-shadow: 0 0 30px #bc13fe, inset 0 0 15px rgba(188,19,254,0.6); border-color: #e066ff; }
-}
+.btn-epic-enter:hover, button[onclick*="p-dungeon"]:hover { transform: scale(1.02) !important; box-shadow: 0 0 40px #bc13fe, inset 0 0 20px #bc13fe !important; }
+@keyframes pulseNeon { 0% { box-shadow: 0 0 10px #bc13fe; } 100% { box-shadow: 0 0 30px #bc13fe, inset 0 0 15px rgba(188,19,254,0.6); border-color: #e066ff; } }
 
-/* 任務倒數計時器優化 (取代原本的醜紅框) */
-.cool-timer {
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid var(--purple);
-    color: var(--purple);
-    font-family: 'Courier New', monospace;
-    font-size: 1.3rem;
-    font-weight: bold;
-    padding: 8px 16px;
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
-    text-shadow: 0 0 8px var(--purple);
-    display: inline-block;
-    letter-spacing: 2px;
-}
+/* 任務與商店高級卡片 */
+.quest-card-premium { background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(35,35,35,0.95)); border-left: 4px solid var(--purple); border-radius: 10px; padding: 15px 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; }
+.quest-card-premium:hover { box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); border-left-color: #bc13fe; transform: translateY(-2px); }
+.shop-card-premium { background: rgba(15,15,15,0.95); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; transition: 0.3s; border: 1px solid #333; }
+.shop-card-premium:hover { box-shadow: 0 0 15px rgba(255,215,0,0.2); border-color: var(--gold); transform: translateY(-2px); }
+
+/* 科技感倒數計時器 */
+.cyber-timer-box { background: rgba(0, 212, 255, 0.05); border: 1px solid #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.2), inset 0 0 10px rgba(0, 212, 255, 0.1); border-radius: 8px; padding: 10px 20px; text-align: center; }
+.cyber-timer-text { color: #00d4ff; font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: bold; text-shadow: 0 0 8px #00d4ff; letter-spacing: 2px; margin: 0; }
+
+/* 任務結算/高級按鈕 */
+.btn-claim-reward { background: linear-gradient(45deg, #00ff88, #00cc66); color: #000 !important; font-weight: 900; font-size: 1.1rem; padding: 10px 25px; border: none; border-radius: 6px; box-shadow: 0 0 15px #00ff88; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+.btn-claim-reward:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 0 25px #00ff88, inset 0 0 10px rgba(255,255,255,0.5); }
+.btn-claim-reward:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; box-shadow: none; }
